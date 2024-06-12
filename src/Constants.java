@@ -2,14 +2,13 @@ public final class Constants {
     
     public static final class Path {
         // Folders
-        public static final String kFolderSrc = "src/";
-        public static final String kFolderInput = kFolderSrc+"input/";
-        public static final String kFolderOutput = kFolderSrc+"output/";
+        public static final String SRC = "src/";
+        public static final String INPUT = SRC+"input/";
+        public static final String OUTPUT = SRC+"output/";
 
         // Files
-        public static final String kTablePersona = kFolderInput+"PERSONA.TBL";
-        public static final String kTableUnit = kFolderInput+"UNIT.TBL";
-
+        public static final String PERSONA_TABLE = INPUT+"PERSONA.TBL";
+        public static final String UNIT_TABLE = INPUT+"UNIT.TBL";
     }
 
 

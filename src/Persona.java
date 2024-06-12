@@ -1,12 +1,12 @@
 public class Persona {
     
-    private boolean[] m_bitFlags;
+    private final boolean[] m_bitFlags;
 
     private Enums.Arcana m_arcana;
     private int m_arcanaID;
 
     private int m_level;
-    private int[] m_stats;
+    private final int[] m_stats;
 
     private int m_skillInheritanceID;
     private Enums.SkillInheritance m_skillInheritance;
@@ -48,5 +48,17 @@ public class Persona {
 
     public int getSkillInheritanceID() {
         return m_skillInheritanceID;
+    }
+
+    public void setBitFlag(int flag, boolean value) {
+        m_bitFlags[flag] = value;
+    }
+
+    public void setStat(int stat, int value) {
+        m_stats[stat] = value;
+    }
+
+    public void setLevel(int lvl) {
+        m_level = lvl;
     }
 }

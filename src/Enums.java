@@ -29,15 +29,15 @@ public final class Enums {
         Faith(29),
         Councillor(30);
 
-        private int m_id;
+        public final int ID;
 
         private Arcana(int id) {
-            m_id = id;
+            this.ID = id;
         }
 
         public static Arcana getArcana(int id) {
             for (Arcana arcana : Arcana.values()) {
-                if (arcana.m_id == id) {
+                if (arcana.ID == id) {
                     return arcana;
                 }
             }
@@ -62,15 +62,15 @@ public final class Enums {
         Nuke(14),
         Psy(15);
 
-        private int m_id;
+        public final int ID;
 
         private SkillInheritance(int id) {
-            m_id = id;
+            this.ID = id;
         }
 
         public static SkillInheritance getSkillInheritance(int id) {
             for (SkillInheritance skillInheritance : SkillInheritance.values()) {
-                if (skillInheritance.m_id == id) {
+                if (skillInheritance.ID == id) {
                     return skillInheritance;
                 }
             }
