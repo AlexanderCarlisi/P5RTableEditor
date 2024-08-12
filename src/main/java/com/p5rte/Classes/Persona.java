@@ -14,9 +14,11 @@ public class Persona {
 
     private int m_skillInheritanceID;
     private Enums.SkillInheritance m_skillInheritance;
+
+    private String m_personaName;
     
 
-    public Persona(boolean[] bitFlags, int arcanaID, int level, int[] stats, int skillInheritanceID) {
+    public Persona(boolean[] bitFlags, int arcanaID, int level, int[] stats, int skillInheritanceID, String name) {
         m_bitFlags = bitFlags;
         m_arcanaID = arcanaID;
         m_arcana = Enums.Arcana.getArcana(m_arcanaID);
@@ -24,6 +26,7 @@ public class Persona {
         m_stats = stats;
         m_skillInheritanceID = skillInheritanceID;
         m_skillInheritance = Enums.SkillInheritance.getSkillInheritance(m_skillInheritanceID);
+        m_personaName = name;
     }
 
     public boolean[] getBitFlags() {
@@ -46,6 +49,10 @@ public class Persona {
         return m_stats;
     }
 
+    public String getName() {
+        return m_personaName;
+    }
+    
     public Enums.SkillInheritance getSkillInheritance() {
         return m_skillInheritance;
     }
