@@ -1,0 +1,151 @@
+package com.p5rte.Classes;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import com.p5rte.GUI.GUIManager;
+import com.p5rte.Utils.Constants;
+
+
+public class PersonaTable {
+    
+    private static InputStream m_inputStreamPersona;
+    private static Persona[] m_personas;
+
+
+    public static void startPersonaStream() {
+        File inputFile = new File(Constants.Path.INPUT_PERSONA_TABLE);
+        File outputFile = new File(Constants.Path.OUTPUT_PERSONA_TABLE);
+
+        try {
+            // Check if output file already exists
+            if (outputFile.exists()) {
+                GUIManager.checkAndDeleteOutputFile(outputFile);
+                return;
+            }
+
+            // Create a new output file
+            if (!outputFile.createNewFile()) {
+                System.err.println("Failed to create new output file.");
+                return;
+            }
+
+            // Copy the data from input file to output file
+            try (InputStream inputStream = new FileInputStream(inputFile);
+                OutputStream outputStream = new FileOutputStream(outputFile)) {
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, length);
+                }
+            }
+
+            // Set the InputStream to the Output Persona Table
+            try (FileInputStream newInputStream = new FileInputStream(outputFile)) {
+                m_inputStreamPersona = newInputStream;
+            }
+
+        } catch (IOException e) {
+            System.err.println("An error occurred during file operations:");
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void readPersonas() {
+        if (m_inputStreamPersona == null) {
+            startPersonaStream();
+        }
+
+        if (m_personas != null) {
+            return;
+        }
+
+        m_personas = new Persona[464];
+
+        try {
+            m_inputStreamPersona.skip(0x4); // start of bitflags for first persona
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int p = 0; p < m_personas.length; p++) {
+            boolean[] bitFlags = new boolean[10];
+            int arcanaID = 0;
+            int level = 0;
+            int[] stats = new int[5];
+            int skillInheritanceID = 0;
+
+            try {
+
+                // BitFlags
+                byte[] bitFlagsBytes = m_inputStreamPersona.readNBytes(2);
+                int shift = 1;
+                int byteIndex = 0;
+                for (int bf = 0; bf < 10; bf++) {
+                    // Go to the Next Byte
+                    if (shift < 0) {
+                        shift = 7;
+                        byteIndex++;
+                    }
+                    bitFlags[bf] = ((Byte.toUnsignedInt(bitFlagsBytes[byteIndex]) >> shift) & 1) == 1; // Set boolean to value of Bit at shift
+                    shift--;
+                }
+                
+                // Arcana ID
+                arcanaID = m_inputStreamPersona.read();
+
+                // Level
+                level = m_inputStreamPersona.read();
+
+                // Stats
+                byte[] statBytes = m_inputStreamPersona.readNBytes(5);
+                for (int s = 0; s < 5; s++) {
+                    stats[s] = statBytes[s];
+                }
+
+                m_inputStreamPersona.skip(0x2); // Skip blank byte + Redundent skillInheritance byte
+
+                // Skill Inheritance ID
+                skillInheritanceID = m_inputStreamPersona.read();
+
+                m_inputStreamPersona.skip(0x2); // Skip Unkown Bytes
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            m_personas[p] = new Persona(bitFlags, arcanaID, level, stats, skillInheritanceID);
+        }
+
+        // Close Stream
+        try {
+            m_inputStreamPersona.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void clearPersonas() {
+        m_personas = null;
+    }
+
+
+    public static Persona getPersona(int index) {
+        if (m_personas == null) {
+            readPersonas();
+        }
+        return m_personas[index];
+    }
+
+    public static Persona[] getPersonas() {
+        if (m_personas == null) {
+            readPersonas();
+        }
+        return m_personas;
+    }
+}
