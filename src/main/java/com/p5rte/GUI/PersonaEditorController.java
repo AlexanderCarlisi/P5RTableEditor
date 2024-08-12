@@ -3,13 +3,17 @@ package com.p5rte.GUI;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.PersonaTable;
 import com.p5rte.Utils.Constants;
+import com.p5rte.Utils.Enums;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -25,6 +29,11 @@ public class PersonaEditorController {
     @FXML
     private VBox catalogueContainer;
 
+    @FXML
+    private Label personaNameLabel;
+    @FXML
+    private ComboBox<Enums.Arcana> arcanaComboBox;
+
     private Stage stage;
 
     /** Stores Buttons for Search and Filtering */
@@ -36,9 +45,11 @@ public class PersonaEditorController {
 
         // Initialize Persona Data
         PersonaTable.startPersonaStream();
+        PersonaTable.readPersonas();
 
         // Create and store buttons once
         createButtons(Constants.personaIDtoName);
+        arcanaComboBox.getItems().addAll(Enums.Arcana.values());
 
         // Set up a listener to filter the catalogue in real-time
         searchField.textProperty().addListener((obs, oldText, newText) -> filterCatalogue(newText));
@@ -68,9 +79,10 @@ public class PersonaEditorController {
         catalogueContainer.getChildren().clear();
         personaButtons.clear();
         
-        for (String persona : personas) {
-            Button personaButton = new Button(persona);
-            personaButton.setOnAction(e -> handlePersonaButtonClick(persona));
+        for (int i = 0; i < personas.length; i++) {
+            Button personaButton = new Button(personas[i]);
+            final int index = i;
+            personaButton.setOnAction(e -> handlePersonaButtonClick(index));
             catalogueContainer.getChildren().add(personaButton);
             personaButtons.add(personaButton);
         }
@@ -89,8 +101,10 @@ public class PersonaEditorController {
     }
 
 
-    private void handlePersonaButtonClick(String persona) {
-        // Handle persona button click
-        System.out.println("Clicked on: " + persona);
+    private void handlePersonaButtonClick(int index) {
+        Persona persona = PersonaTable.getPersona(index);
+
+        personaNameLabel.setText(persona.getName());
+        arcanaComboBox.setValue(persona.getArcana());
     }
 }
