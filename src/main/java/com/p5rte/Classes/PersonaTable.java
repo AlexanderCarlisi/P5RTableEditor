@@ -45,10 +45,8 @@ public class PersonaTable {
                 }
             }
 
-            // Set the InputStream to the Output Persona Table
-            try (FileInputStream newInputStream = new FileInputStream(outputFile)) {
-                m_inputStreamPersona = newInputStream;
-            }
+            // Generate new Inputstream
+            m_inputStreamPersona = new FileInputStream(outputFile);
 
         } catch (IOException e) {
             System.err.println("An error occurred during file operations:");
@@ -58,11 +56,10 @@ public class PersonaTable {
 
 
     public static void readPersonas() {
-        if (m_inputStreamPersona == null) {
+        if (m_inputStreamPersona == null && m_personas == null) {
             startPersonaStream();
-        }
 
-        if (m_personas != null) {
+        } else if (m_personas != null) {
             return;
         }
 
@@ -71,7 +68,8 @@ public class PersonaTable {
         try {
             m_inputStreamPersona.skip(0x4); // start of bitflags for first persona
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("\n\n\nCouldn't Use Inputstream for PERSONA.TBL.\n\n\n");
+            System.exit(0);
         }
 
         for (int p = 0; p < m_personas.length; p++) {
@@ -119,7 +117,7 @@ public class PersonaTable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            m_personas[p] = new Persona(bitFlags, arcanaID, level, stats, skillInheritanceID);
+            m_personas[p] = new Persona(bitFlags, arcanaID, level, stats, skillInheritanceID, Constants.personaIDtoName[p]);
         }
 
         // Close Stream
@@ -129,6 +127,7 @@ public class PersonaTable {
             e.printStackTrace();
         }
     }
+
 
     public static void clearPersonas() {
         m_personas = null;
