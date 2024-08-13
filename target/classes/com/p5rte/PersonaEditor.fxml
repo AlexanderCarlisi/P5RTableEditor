@@ -55,6 +55,10 @@
                     <VBox spacing="10">
                         <Label text="Base Stats" />
                         <HBox spacing="10">
+                            <Label text="LvL:" />
+                            <TextField fx:id="lvlField" />
+                        </HBox>
+                        <HBox spacing="10">
                             <Label text="Str:" />
                             <TextField fx:id="strengthField" />
                         </HBox>
