@@ -84,7 +84,7 @@
                             <Label text="DLC" />
                         </HBox>
                         <HBox spacing="10">
-                            <ToggleButton fx:id="TreasureFlag" />
+                            <ToggleButton fx:id="treasureFlag" />
                             <Label text="Treasure Demon" />
                         </HBox>
                         <!-- <HBox spacing="10">
@@ -94,26 +94,26 @@
                             <Label text="Unknown:" />
                         </HBox> -->
                         <HBox spacing="10">
-                            <ToggleButton fx:id="PartyFlag" />
+                            <ToggleButton fx:id="partyFlag" />
                             <Label text="Party Persona" />
                         </HBox>
                         <HBox spacing="10">
-                            <ToggleButton fx:id="StoryFlag" />
+                            <ToggleButton fx:id="storyFlag" />
                             <Label text="Story Persona:" />
                         </HBox>
                         <HBox spacing="10">
-                            <ToggleButton fx:id="NRegFlag" />
+                            <ToggleButton fx:id="nRegFlag" />
                             <Label text="Not Registerable" />
                         </HBox>
                         <!-- <HBox spacing="10">
                             <Label text="Unknown:" />
                         </HBox> -->
                         <HBox spacing="10">
-                            <ToggleButton fx:id="FusionFlag" />
+                            <ToggleButton fx:id="fusionFlag" />
                             <Label text="Cannot be Fused Normally" />
                         </HBox>
                         <HBox spacing="10">
-                            <ToggleButton fx:id="EvolvedFlag" />
+                            <ToggleButton fx:id="evolvedFlag" />
                             <Label text="Evolved" />
                         </HBox>
                     </VBox>
