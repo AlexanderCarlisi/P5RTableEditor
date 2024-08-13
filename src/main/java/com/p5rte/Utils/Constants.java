@@ -13,7 +13,10 @@ public final class Constants {
         // FXML Paths
         public static final String FXML_FOLDER = "/com/p5rte/";
         public static final String MAIN_MENU = FXML_FOLDER+"MainMenu.fxml";
-        public static final String PERSONA_EDITOR = FXML_FOLDER+"PersonaEditor.fxml";
+        // public static final String PERSONA_EDITOR = FXML_FOLDER+"PersonaEditor.fxml";
+        public static final String PERSONA_TABPANE = FXML_FOLDER + "PersonaEditorTabPane.fxml";
+        public static final String PERSONA_GENERAL = FXML_FOLDER + "PersonaEditorGeneral.fxml";
+        public static final String PERSONA_SKILLS = FXML_FOLDER + "PersonaEditorSkills.fxml";
 
         // Files
         public static final String INPUT_PERSONA_TABLE = INPUT+"PERSONA.TBL";

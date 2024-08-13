@@ -21,7 +21,7 @@ public class MainMenuController {
     private void handleEditPersona() {
         // Load the personaeditor scene
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.Path.PERSONA_EDITOR));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.Path.PERSONA_TABPANE));
             Scene personaEditorScene = new Scene(loader.load(), stage.getWidth(), stage.getHeight());
 
             PersonaEditorController controller = loader.getController();
