@@ -64,10 +64,6 @@ public class PersonaEditorController {
 
         // Set up a listener to filter the catalogue in real-time
         searchField.textProperty().addListener((obs, oldText, newText) -> filterCatalogue(newText));
-
-        // loadTabContent(Constants.Path.PERSONA_GENERAL, generalTabContent);
-        // loadTabContent(Constants.Path.PERSONA_SKILLS, skillsTabContent);
-        // loadTabContent("ResistancesTab.fxml", resistancesTabContent);
     }
 
 
@@ -126,15 +122,4 @@ public class PersonaEditorController {
         PEGeneralTabController.updateFields(persona);
         PESkillsTabController.updateFields(persona);
     }
-
-
-    // private void loadTabContent(String fxmlFile, BorderPane container) {
-    //     try {
-    //         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-    //         Parent content = loader.load();
-    //         container.getChildren().add(content);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 }
