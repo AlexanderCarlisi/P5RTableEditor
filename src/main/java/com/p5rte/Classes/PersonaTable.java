@@ -65,6 +65,7 @@ public class PersonaTable {
 
         m_personas = new Persona[464];
 
+        // Segment 1 of Persona Table | BitFlags, ArcanaID, Level, Stats, SkillInheritanceID
         try {
             m_inputStreamPersona.skip(0x4); // start of bitflags for first persona
         } catch (IOException e) {
@@ -117,7 +118,47 @@ public class PersonaTable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             m_personas[p] = new Persona(bitFlags, arcanaID, level, stats, skillInheritanceID, Constants.personaIDtoName[p]);
+        }
+
+        // Segment 2 of Persona Table | Stat Growth Weights, Skills, and Traits
+        try {
+            m_inputStreamPersona.skip(0x10); // Skip 10 Empty Bytes between Segments
+        } catch (IOException e) {
+            System.err.println("\n\n\nCouldn't Use Inputstream for PERSONA.TBL.\n\n\n");
+            System.exit(0);
+        }
+
+        for (Persona m_persona : m_personas) {
+            int[] statWeights = new int[5];
+            Skill[] skills = new Skill[16];
+            
+            try {
+                // Stat Growth Weights
+                byte[] statWeightsBytes = m_inputStreamPersona.readNBytes(5);
+                for (int sw = 0; sw < 5; sw++) {
+                    statWeights[sw] = statWeightsBytes[sw];
+                }
+
+                m_inputStreamPersona.skip(0x1); // Skip 1 Empty Byte
+
+                // Skills
+                byte[] skillBytes = m_inputStreamPersona.readNBytes(64); // 16 total skills, 4 bytes each
+                for (int s = 0; s < 16; s++) {
+                    int pendingLevels = skillBytes[s * 4];
+                    int learnability = skillBytes[s * 4 + 1];
+                    int id = ((skillBytes[s * 4 + 2] & 0xFF) << 8) | (skillBytes[s * 4 + 3] & 0xFF);
+                    skills[s] = new Skill(pendingLevels, learnability, id);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Update Persona
+            m_persona.setStatWeights(statWeights);
+            m_persona.setSkills(skills);
         }
 
         // Close Stream

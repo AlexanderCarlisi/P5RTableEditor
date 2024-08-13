@@ -79,5 +79,26 @@ public final class Enums {
             return None;
         }
     }
+    
 
+    public static enum SkillLearnability {
+        Nothing(0),
+        Skill(1),
+        Trait(3);
+
+        public final int ID;
+
+        private SkillLearnability(int id) {
+            this.ID = id;
+        }
+
+        public static SkillLearnability getSkillLearnability(int id) {
+            for (SkillLearnability skillLearnability : SkillLearnability.values()) {
+                if (skillLearnability.ID == id) {
+                    return skillLearnability;
+                }
+            }
+            return Nothing;
+        }
+    }
 }

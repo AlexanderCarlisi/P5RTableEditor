@@ -16,6 +16,9 @@ public class Persona {
     private Enums.SkillInheritance m_skillInheritance;
 
     private String m_personaName;
+
+    private int[] m_statWeights;
+    private Skill[] m_skills;
     
 
     public Persona(boolean[] bitFlags, int arcanaID, int level, int[] stats, int skillInheritanceID, String name) {
@@ -61,6 +64,14 @@ public class Persona {
         return m_skillInheritanceID;
     }
 
+    public int[] getStatWeights() {
+        return m_statWeights;
+    }
+
+    public Skill[] getSkills() {
+        return m_skills;
+    }
+
     public void setBitFlag(int flag, boolean value) {
         m_bitFlags[flag] = value;
     }
@@ -71,5 +82,13 @@ public class Persona {
 
     public void setLevel(int lvl) {
         m_level = lvl;
+    }
+
+    public void setStatWeights(int[] weights) {
+        m_statWeights = weights;
+    }
+
+    public void setSkills(Skill[] skills) {
+        m_skills = skills;
     }
 }

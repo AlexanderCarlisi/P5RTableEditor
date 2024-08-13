@@ -163,5 +163,19 @@ public class PersonaEditorController {
         nRegFlag.setSelected(flags[6]);
         fusionFlag.setSelected(flags[8]);
         evolvedFlag.setSelected(flags[9]);
+
+        // System.out.println("Weighted Stats");
+        // for (int weightedStat : persona.getStatWeights()) {
+        //     System.out.println("Weighted Stat: " + weightedStat);
+        //     System.out.println("\n");
+        // }
+
+        // System.out.println("Skills");
+        // for (Skill s : persona.getSkills()) {
+        //     System.out.println("Skill ID: " + s.getID());
+        //     System.out.println("learnability: " + s.getLearnability());
+        //     System.out.println("Pending Levels: " + s.getPendingLevels());
+        //     System.out.println("\n");
+        // }
     }
 }
