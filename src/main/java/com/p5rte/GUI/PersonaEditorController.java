@@ -16,6 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -33,6 +34,36 @@ public class PersonaEditorController {
     private Label personaNameLabel;
     @FXML
     private ComboBox<Enums.Arcana> arcanaComboBox;
+
+    // Stat Fields
+    @FXML
+    private TextField lvlField;
+    @FXML
+    private TextField strengthField;
+    @FXML
+    private TextField magicField;
+    @FXML
+    private TextField enduranceField;
+    @FXML
+    private TextField agilityField;
+    @FXML
+    private TextField luckField;
+
+    // Bit Flag Toggle Buttons
+    @FXML
+    private ToggleButton DLCFlag;
+    @FXML
+    private ToggleButton treasureFlag;
+    @FXML
+    private ToggleButton partyFlag;
+    @FXML
+    private ToggleButton storyFlag;
+    @FXML
+    private ToggleButton nRegFlag;
+    @FXML
+    private ToggleButton fusionFlag;
+    @FXML
+    private ToggleButton evolvedFlag;
 
     private Stage stage;
 
@@ -104,7 +135,33 @@ public class PersonaEditorController {
     private void handlePersonaButtonClick(int index) {
         Persona persona = PersonaTable.getPersona(index);
 
+        // Set Name
         personaNameLabel.setText(persona.getName());
+
+        // Set Arcana
         arcanaComboBox.setValue(persona.getArcana());
+
+        // resistances are in Unit.TBL
+        // Two Combo boxes for resistances
+        // one displays the current element, the other displays the affinity to the element (weak, resist, etc.)
+
+        // Set Stats
+        lvlField.setText(String.valueOf(persona.getLevel()));
+        int[] stats = persona.getStats();
+        strengthField.setText(String.valueOf(stats[0]));
+        magicField.setText(String.valueOf(stats[1]));
+        enduranceField.setText(String.valueOf(stats[2]));
+        agilityField.setText(String.valueOf(stats[3]));
+        luckField.setText(String.valueOf(stats[4]));
+
+        // Set Bit Flags
+        boolean[] flags = persona.getBitFlags();
+        DLCFlag.setSelected(flags[0]);
+        treasureFlag.setSelected(flags[1]);
+        partyFlag.setSelected(flags[4]);
+        storyFlag.setSelected(flags[5]);
+        nRegFlag.setSelected(flags[6]);
+        fusionFlag.setSelected(flags[8]);
+        evolvedFlag.setSelected(flags[9]);
     }
 }
