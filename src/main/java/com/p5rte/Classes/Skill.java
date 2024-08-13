@@ -1,5 +1,6 @@
 package com.p5rte.Classes;
 
+import com.p5rte.Utils.Enums.ESkill;
 import com.p5rte.Utils.Enums.SkillLearnability;
 
 public class Skill {
@@ -23,5 +24,9 @@ public class Skill {
 
     public int getID() {
         return m_id;
+    }
+
+    public ESkill getSkillEnum() {
+        return ESkill.getESkill(m_id);
     }
 }
