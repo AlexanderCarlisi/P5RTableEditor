@@ -122,6 +122,47 @@
                         </HBox>
                     </VBox>
                 </HBox>
+
+                <!-- Stat Weights and Skills -->
+                <HBox>
+                    <!-- Stat Weight VBox -->
+                    <VBox spacing="10">
+                        <Label text="Level Up Stat Weight" />
+                        <HBox spacing="10">
+                            <Label text="Str:" />
+                            <TextField fx:id="strWeightField" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Mag:" />
+                            <TextField fx:id="magWeightField" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="End:" />
+                            <TextField fx:id="endWeightField" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Agi:" />
+                            <TextField fx:id="agiWeightField" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Luk:" />
+                            <TextField fx:id="lukWeightField" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Skills Scrollable VBox -->
+                    <VBox spacing="5">
+                        <Label text="Skills" />
+                        <HBox>
+                            <Label text="SkillInheritance: " />
+                            <ComboBox fx:id="inheritanceComboBox" />
+                        </HBox>
+                        <ScrollPane fitToWidth="true" fitToHeight="true">
+                            <VBox fx:id="skillContainer" spacing="5" />
+                            <!-- Populated with HBox's with 2 ComboBoxes (SkillID, Learnability) and 1 textField (pendingLevels) -->
+                        </ScrollPane>
+                    </VBox>
+                </HBox>
             </VBox>
         </ScrollPane>
     </center>
