@@ -105,6 +105,9 @@ public class PESkillsTabController {
         instance = this;
         populateSkillContainer();
         inheritanceComboBox.getItems().addAll(Enums.SkillInheritance.values());
+        inheritanceComboBox.setOnHidden(e -> {
+            currentPersona.setSkillInheritance(inheritanceComboBox.getValue());
+        });
     }
 
 
@@ -128,14 +131,14 @@ public class PESkillsTabController {
             skillHolders[i] = new SkillHolder(skillID, learnability, pendingLevels);
             
             final int index = i;
-            skillID.setOnAction(e -> {
-                updateSkill(index);
+            skillID.setOnHidden(e -> {
+                currentPersona.setSkill(index, skillID.getValue().ordinal(), learnability.getValue(), readPendingLevels(pendingLevels.getText()));
             });
-            learnability.setOnAction(e -> {
-                updateSkill(index);
+            learnability.setOnHidden(e -> {
+                currentPersona.setSkill(index, skillID.getValue().ordinal(), learnability.getValue(), readPendingLevels(pendingLevels.getText()));
             });
             pendingLevels.textProperty().addListener((obs, oldValue, newValue) -> {
-                updateSkill(index);
+                currentPersona.setSkill(index, skillID.getValue().ordinal(), learnability.getValue(), readPendingLevels(pendingLevels.getText()));
             });
         }
     }
@@ -161,21 +164,12 @@ public class PESkillsTabController {
     }
 
 
-    private static int readPendingLevels(int holderIndex) {
-        String pendingLevels = instance.skillHolders[holderIndex].pendingLevels.getText();
-
-        if (pendingLevels.isEmpty()) return 0;
-        for (char c : pendingLevels.toCharArray()) {
+    private static int readPendingLevels(String value) {
+        if (value.isEmpty()) return 0;
+        for (char c : value.toCharArray()) {
             if (!Character.isDigit(c)) return 0;
         }
 
-        return Integer.parseInt(pendingLevels);
-    }
-
-
-    private static void updateSkill(int index) {
-        if (instance.currentPersona != null) {
-            instance.currentPersona.setSkill(index, instance.skillHolders[index].skillID.getValue().ordinal(), instance.skillHolders[index].learnability.getValue(), readPendingLevels(index));
-        }
+        return Integer.parseInt(value);
     }
 }

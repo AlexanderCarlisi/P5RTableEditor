@@ -111,4 +111,9 @@ public class Persona {
     public void setAffinities(HashMap<AffinityIndex, AffinityElement> affinities) {
         m_affinities = affinities;
     }
+
+    public void setSkillInheritance(Enums.SkillInheritance inheritance) {
+        m_skillInheritance = inheritance;
+        m_skillInheritanceID = inheritance.ordinal();
+    }
 }
