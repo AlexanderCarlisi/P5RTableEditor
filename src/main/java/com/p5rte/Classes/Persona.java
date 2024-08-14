@@ -19,6 +19,8 @@ public class Persona {
 
     private int[] m_statWeights;
     private Skill[] m_skills;
+
+    private Affinities m_affinities;
     
 
     public Persona(boolean[] bitFlags, int arcanaID, int level, int[] stats, int skillInheritanceID, String name) {
@@ -72,6 +74,10 @@ public class Persona {
         return m_skills;
     }
 
+    public Affinities getAffinities() {
+        return m_affinities;
+    }
+
     public void setBitFlag(int flag, boolean value) {
         m_bitFlags[flag] = value;
     }
@@ -90,5 +96,9 @@ public class Persona {
 
     public void setSkills(Skill[] skills) {
         m_skills = skills;
+    }
+
+    public void setAffinities(Affinities affinities) {
+        m_affinities = affinities;
     }
 }
