@@ -1,6 +1,9 @@
 package com.p5rte.Classes;
 
+import java.util.HashMap;
+
 import com.p5rte.Utils.Enums;
+import com.p5rte.Utils.Enums.AffinityIndex;
 
 public class Persona {
     
@@ -20,7 +23,7 @@ public class Persona {
     private int[] m_statWeights;
     private Skill[] m_skills;
 
-    private Affinities m_affinities;
+    private HashMap<AffinityIndex, AffinityElement> m_affinities;
     
 
     public Persona(boolean[] bitFlags, int arcanaID, int level, int[] stats, int skillInheritanceID, String name) {
@@ -74,8 +77,8 @@ public class Persona {
         return m_skills;
     }
 
-    public Affinities getAffinities() {
-        return m_affinities;
+    public AffinityElement getAffinity(AffinityIndex index) {
+        return m_affinities.get(index);
     }
 
     public void setBitFlag(int flag, boolean value) {
@@ -98,7 +101,7 @@ public class Persona {
         m_skills = skills;
     }
 
-    public void setAffinities(Affinities affinities) {
+    public void setAffinities(HashMap<AffinityIndex, AffinityElement> affinities) {
         m_affinities = affinities;
     }
 }
