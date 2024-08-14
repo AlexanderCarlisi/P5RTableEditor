@@ -49,6 +49,9 @@ public class PersonaEditorController {
 
         // Set up a listener to filter the catalogue in real-time
         searchField.textProperty().addListener((obs, oldText, newText) -> filterCatalogue(newText));
+
+        // Set the first Persona as the default selection
+        handlePersonaButtonClick(0);
     }
 
 
@@ -106,5 +109,6 @@ public class PersonaEditorController {
         // Update Tabs
         PEGeneralTabController.updateFields(persona);
         PESkillsTabController.updateFields(persona);
+        PEAffinityTabController.updateFields(persona);
     }
 }

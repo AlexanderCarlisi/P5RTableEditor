@@ -3,6 +3,8 @@ package com.p5rte.GUI;
 import java.io.File;
 import java.io.IOException;
 
+import com.p5rte.Classes.AffinityElement;
+import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.Enums;
@@ -57,8 +59,13 @@ public class GUIManager extends Application {
         PersonaStream.start();
 
         // Debugging
-        // System.out.println("\n\n\n" + 
-        //     PersonaStream.getPersona(27).getAffinities().elements.get(AffinityIndex.Gun).data.get(AffinityDataIndex.Resist));
+        
+        // Persona persona = PersonaStream.getPersona(1);
+        // AffinityElement ele = persona.getAffinity(AffinityIndex.Nuke);
+        // for (AffinityDataIndex index : AffinityDataIndex.values()) {
+        //     System.out.println(index + " : " + ele.data.get(index));
+        // }
+        // System.out.println("multiplier : " + ele.multiplier);
     }
 
 

@@ -43,6 +43,9 @@
                 <Tab text="Skills">
                     <fx:include source="PersonaEditorSkills.fxml" />
                 </Tab>
+                <Tab text="Affinities">
+                    <fx:include source="PersonaEditorAffinity.fxml" />
+                </Tab>
             </tabs>
         </TabPane>
     </center>
