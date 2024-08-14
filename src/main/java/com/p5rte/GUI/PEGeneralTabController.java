@@ -2,13 +2,13 @@ package com.p5rte.GUI;
 
 import com.p5rte.Classes.Persona;
 import com.p5rte.Utils.Enums;
+import com.p5rte.Utils.Enums.BitFlag;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -62,13 +62,13 @@ public class PEGeneralTabController {
     @FXML
     private TextField lukWeightField;
 
-    // Skills Tab Fields
-    @FXML
-    private ComboBox<Enums.SkillInheritance> inheritanceComboBox;
-    @FXML
-    private VBox skillContainer;
-
     private Stage stage;
+
+    private Persona currentPersona;
+
+    private final TextField[] statFields = new TextField[5];
+    private final TextField[] statWeightFields = new TextField[5];
+    private final ToggleButton[] bitFlagButtons = new ToggleButton[7];
 
     private static PEGeneralTabController instance;
 
@@ -79,14 +79,69 @@ public class PEGeneralTabController {
 
     @FXML
     public void initialize() {
-        arcanaComboBox.getItems().addAll(Enums.Arcana.values());
-
         instance = this;
+
+        // Arcana Box Setup
+        arcanaComboBox.getItems().addAll(Enums.Arcana.values());
+        arcanaComboBox.setOnHidden(eh -> {
+            if (currentPersona != null) {
+                currentPersona.setArcana(arcanaComboBox.getValue());
+            }
+        });
+
+        // Stat Fields Setup 
+        statFields[0] = strengthField;
+        statFields[1] = magicField;
+        statFields[2] = enduranceField;
+        statFields[3] = agilityField;
+        statFields[4] = luckField;
+
+        statWeightFields[0] = strWeightField;
+        statWeightFields[1] = magWeightField;
+        statWeightFields[2] = endWeightField;
+        statWeightFields[3] = agiWeightField;
+        statWeightFields[4] = lukWeightField;
+
+        for (int i = 0; i < statFields.length; i++) {
+            final int index = i;
+            statFields[i].textProperty().addListener((obs, oldText, newText) -> {
+                setStat(newText, index);
+            });
+            statWeightFields[i].textProperty().addListener((obs, oldText, newText) -> {
+                setWeightedStat(newText, index);
+            });
+        }
+        lvlField.textProperty().addListener((obs, oldText, newText) -> {
+            if (instance == null) return;
+
+            int value = getStatFromField(newText);
+            instance.currentPersona.setLevel(value);
+        });
+
+        // Bit Flags Setup
+        bitFlagButtons[0] = DLCFlag;
+        bitFlagButtons[1] = treasureFlag;
+        bitFlagButtons[2] = partyFlag;
+        bitFlagButtons[3] = storyFlag;
+        bitFlagButtons[4] = nRegFlag;
+        bitFlagButtons[5] = fusionFlag;
+        bitFlagButtons[6] = evolvedFlag;
+
+        for (int i = 0; i < bitFlagButtons.length; i++) {
+            final int index = i;
+            bitFlagButtons[i].setOnAction(eh -> {
+                if (currentPersona != null) {
+                    currentPersona.setBitFlag(BitFlag.values()[index].ordinal(), bitFlagButtons[index].isSelected());
+                }
+            });
+        }
     }
 
 
     public static void updateFields(Persona persona) {
         if (instance == null) return;
+
+        instance.currentPersona = persona;
 
         // Set Name
         instance.personaNameLabel.setText(persona.getName());
@@ -97,28 +152,55 @@ public class PEGeneralTabController {
         // Set Stats
         instance.lvlField.setText(String.valueOf(persona.getLevel()));
         int[] stats = persona.getStats();
-        instance.strengthField.setText(String.valueOf(stats[0]));
-        instance.magicField.setText(String.valueOf(stats[1]));
-        instance.enduranceField.setText(String.valueOf(stats[2]));
-        instance.agilityField.setText(String.valueOf(stats[3]));
-        instance.luckField.setText(String.valueOf(stats[4]));
+        for (int i = 0; i < stats.length; i++) {
+            instance.statFields[i].setText(String.valueOf(stats[i]));
+        }
 
         // Set Bit Flags
         boolean[] flags = persona.getBitFlags();
-        instance.DLCFlag.setSelected(flags[0]);
-        instance.treasureFlag.setSelected(flags[1]);
-        instance.partyFlag.setSelected(flags[4]);
-        instance.storyFlag.setSelected(flags[5]);
-        instance.nRegFlag.setSelected(flags[6]);
-        instance.fusionFlag.setSelected(flags[8]);
-        instance.evolvedFlag.setSelected(flags[9]);
+        int flagIndex = 0;
+        for (ToggleButton button : instance.bitFlagButtons) {
+            for (BitFlag flag : BitFlag.values()) {
+                if (flagIndex == flag.INDEX) {
+                    button.setSelected(flags[flagIndex]);
+                    break;
+                }
+            }
+            flagIndex++;
+        }
 
         // Set Stat Weights
         int[] statWeights = persona.getStatWeights();
-        instance.strWeightField.setText(String.valueOf(statWeights[0]));
-        instance.magWeightField.setText(String.valueOf(statWeights[1]));
-        instance.endWeightField.setText(String.valueOf(statWeights[2]));
-        instance.agiWeightField.setText(String.valueOf(statWeights[3]));
-        instance.lukWeightField.setText(String.valueOf(statWeights[4]));
+        for (int i = 0; i < statWeights.length; i++) {
+            instance.statWeightFields[i].setText(String.valueOf(statWeights[i]));
+        }
+    }
+
+
+    private static int getStatFromField(String newText) {
+        final int defaultReturn = 0;
+        final int min = 0;
+        final int max = 99;
+
+        if (!newText.isEmpty() && newText.matches("\\d+")) {
+            int value = Integer.parseInt(newText);
+            return Math.min(Math.max(value, min), max);
+        }
+
+        return defaultReturn;
+    }
+
+
+    private static void setStat(String newText, int index) {
+        if (instance == null) return;
+
+        int value = getStatFromField(newText);
+        instance.currentPersona.setStat(index, value);
+    }
+    private static void setWeightedStat(String newText, int index) {
+        if (instance == null) return;
+
+        int value = getStatFromField(newText);
+        instance.currentPersona.setStatWeight(index, value);
     }
 }

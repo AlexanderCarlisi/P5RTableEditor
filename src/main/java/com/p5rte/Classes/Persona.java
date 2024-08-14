@@ -116,4 +116,13 @@ public class Persona {
         m_skillInheritance = inheritance;
         m_skillInheritanceID = inheritance.ordinal();
     }
+
+    public void setArcana(Enums.Arcana arcana) {
+        m_arcana = arcana;
+        m_arcanaID = arcana.ordinal();
+    }
+
+    public void setStatWeight(int index, int weight) {
+        m_statWeights[index] = weight;
+    }
 }

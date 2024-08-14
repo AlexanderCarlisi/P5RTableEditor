@@ -3,6 +3,7 @@ package com.p5rte.GUI;
 import java.io.File;
 import java.io.IOException;
 
+import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
 
@@ -55,7 +56,7 @@ public class GUIManager extends Application {
 
         // Debugging
         
-        // Persona persona = PersonaStream.getPersona(1);
+        Persona persona = PersonaStream.getPersona(0);
         // // AffinityElement ele = persona.getAffinity(AffinityIndex.Nuke);
         // // for (AffinityDataIndex index : AffinityDataIndex.values()) {
         // //     System.out.println(index + " : " + ele.data.get(index));
@@ -63,6 +64,7 @@ public class GUIManager extends Application {
         // // System.out.println("multiplier : " + ele.multiplier);
         // Skill[] skills = persona.getSkills();
         // System.out.println(skills[0].getLearnability());
+        System.out.println(persona.getBitFlags()[6]);
     }
 
 
