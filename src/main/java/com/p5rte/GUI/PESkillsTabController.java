@@ -3,7 +3,11 @@ package com.p5rte.GUI;
 import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.Skill;
 import com.p5rte.Utils.Enums;
+import com.p5rte.Utils.Enums.ESkill;
 
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.util.StringConverter;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -14,17 +18,62 @@ import javafx.stage.Stage;
 
 public class PESkillsTabController {
 
-    private class SkillHolder {
+    public class SkillHolder {
         public ComboBox<Enums.ESkill> skillID;
         public ComboBox<Enums.SkillLearnability> learnability;
         public TextField pendingLevels;
-
+    
         public SkillHolder(ComboBox<Enums.ESkill> skillID, ComboBox<Enums.SkillLearnability> learnability, TextField pendingLevels) {
             this.skillID = skillID;
             this.learnability = learnability;
             this.pendingLevels = pendingLevels;
+    
+            // Set ComboBox to be editable
+            this.skillID.setEditable(true);
+    
+            // FilteredList for filtering items based on user input
+            FilteredList<Enums.ESkill> filteredSkills = new FilteredList<>(FXCollections.observableArrayList(Enums.ESkill.values()), p -> true);
+    
+            // Set the ComboBox items to the filtered list
+            this.skillID.setItems(filteredSkills);
+    
+            // Add a listener to the ComboBox's editor (TextField) to filter items
+            this.skillID.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+                
+                final TextField editor = this.skillID.getEditor();
+                final ESkill selected = this.skillID.getSelectionModel().getSelectedItem();
+        
+                // Only proceed if the text actually changes
+                if (newValue == null || !newValue.equals(oldValue)) {
+                    // If no item is selected or the editor text doesn't match the selected item, filter the list
+                    if (selected == null || !selected.name().equals(editor.getText())) {
+                        filteredSkills.setPredicate(skill -> {
+                            // Show all skills if the editor is empty
+                            if (newValue == null || newValue.isEmpty()) {
+                                return true;
+                            }
+                            // Filter by the skill name
+                            String lowerCaseFilter = newValue.toLowerCase();
+                            return skill.name().toLowerCase().contains(lowerCaseFilter);
+                        });
+                    }
+                }   
+            });
+    
+            // Update the editor's text when an item is selected
+            this.skillID.setConverter(new StringConverter<Enums.ESkill>() {
+                @Override
+                public String toString(Enums.ESkill skill) {
+                    return skill == null ? "" : skill.name();   
+                }
+    
+                @Override
+                public Enums.ESkill fromString(String string) {
+                    return skillID.getItems().stream().filter(skill -> skill.name().equals(string)).findFirst().orElse(null);   
+                }
+            });
         }
-    }
+    }    
     
 
     // Skills Tab Fields
@@ -63,6 +112,7 @@ public class PESkillsTabController {
 
             ComboBox<Enums.ESkill> skillID = new ComboBox<>();
             skillID.getItems().addAll(Enums.ESkill.values());
+            // Set SkillID to be Searchable
 
             ComboBox<Enums.SkillLearnability> learnability = new ComboBox<>();
             learnability.getItems().addAll(Enums.SkillLearnability.values());
