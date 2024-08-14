@@ -202,8 +202,7 @@ public class PersonaStream {
             for (AffinityIndex ai : AffinityIndex.values()) {
                 elements.put(ai, readAffinityElement());
             }
-            Affinities affinities = new Affinities(elements);
-            m_persona.setAffinities(affinities);
+            m_persona.setAffinities(elements);
         }
 
         // Close Stream
@@ -219,9 +218,9 @@ public class PersonaStream {
         HashMap<AffinityDataIndex, Boolean> data = new HashMap<>();
         try {
             byte[] bytes = m_inputStreamUnit.readNBytes(2);
-            for (int shift = 7; shift >= 0; shift--) {
+            for (int shift = 0; shift < 8; shift++) {
                 // Shift through the bits and set boolean values
-                data.put(AffinityDataIndex.values()[shift], (bytes[0] >> shift & 1) == 1);
+                data.put(AffinityDataIndex.values()[7 - shift], (bytes[0] >> shift & 1) == 1);
             }
             return new AffinityElement(bytes[1], data);
 
