@@ -89,12 +89,14 @@ public class PersonaEditorController {
     private void filterCatalogue(String query) {
         // Filter by Number
         if (query.length() > 0 && Character.isDigit(query.charAt(0))) {
-            try {
-                Button indexButton = personaButtons.get(Integer.parseInt(query));
-                catalogueContainer.getChildren().clear();
-                catalogueContainer.getChildren().add(indexButton);
-                
-            } catch (Exception e) {}
+            // Check is Index is within bounds of Persona List
+            int index = Integer.parseInt(query);
+            if (index < 0 || index >= personaButtons.size()) return;
+
+            // Make button visible
+            Button indexButton = personaButtons.get(Integer.parseInt(query));
+            catalogueContainer.getChildren().clear();
+            catalogueContainer.getChildren().add(indexButton);
             return;
         }
 
