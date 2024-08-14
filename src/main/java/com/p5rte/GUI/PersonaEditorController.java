@@ -12,9 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -89,6 +87,18 @@ public class PersonaEditorController {
 
 
     private void filterCatalogue(String query) {
+        // Filter by Number
+        if (query.length() > 0 && Character.isDigit(query.charAt(0))) {
+            try {
+                Button indexButton = personaButtons.get(Integer.parseInt(query));
+                catalogueContainer.getChildren().clear();
+                catalogueContainer.getChildren().add(indexButton);
+                
+            } catch (Exception e) {}
+            return;
+        }
+
+        // Filter by Text
         List<Button> visibleButtons = new ArrayList<>();
         for (Button button : personaButtons) {
             boolean visible = button.getText().toLowerCase().contains(query.toLowerCase());
