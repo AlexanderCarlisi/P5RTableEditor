@@ -88,9 +88,26 @@ public final class Enums {
 
 
     public enum AffinityIndex {
-        Physical, Gun, Fire, Ice, Electric, Wind, Bless, 
-        Curse, Nuke, Psy, Almighty, Ailment, Dizzy, Confuse, 
-        Fear, Forget, Hunger, Sleep, Rage, Despair, Brainwash;
+        Physical,
+        Gun,
+        Fire,
+        Ice,
+        Electric,
+        Wind,
+        Psy,
+        Nuke,
+        Bless,
+        Curse,
+        Almighty,
+        Dizzy,
+        Confuse,
+        Fear,
+        Forget,
+        Hunger,
+        Sleep,
+        Rage,
+        Despair,
+        Brainwash;
 
         public static AffinityIndex getAt(int index) {
             return AffinityIndex.values()[index];
