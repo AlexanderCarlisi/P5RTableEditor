@@ -26,7 +26,7 @@ public class Skill {
         return m_id;
     }
 
-    public ESkill getSkillEnum() {
-        return ESkill.getESkill(m_id);
+    public ESkill getESkill() {
+        return ESkill.getAt(m_id);
     }
 }
