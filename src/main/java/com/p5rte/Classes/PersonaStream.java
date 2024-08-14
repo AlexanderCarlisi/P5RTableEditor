@@ -6,62 +6,90 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 import com.p5rte.GUI.GUIManager;
 import com.p5rte.Utils.Constants;
+import com.p5rte.Utils.Enums.AffinityDataIndex;
+import com.p5rte.Utils.Enums.AffinityIndex;
 
 
-public class PersonaTable {
+public class PersonaStream {
     
     private static InputStream m_inputStreamPersona;
+    private static InputStream m_inputStreamUnit;
     private static Persona[] m_personas;
 
 
-    public static void startPersonaStream() {
-        File inputFile = new File(Constants.Path.INPUT_PERSONA_TABLE);
-        File outputFile = new File(Constants.Path.OUTPUT_PERSONA_TABLE);
+    public static void start() {
+
+        do { 
+            if (m_inputStreamPersona != null) break;
+            m_inputStreamPersona = startInputStream(Constants.Path.INPUT_PERSONA_TABLE, Constants.Path.OUTPUT_PERSONA_TABLE);    
+        } while (m_inputStreamPersona == null);
+
+        do { 
+            if (m_inputStreamUnit != null) break;
+            m_inputStreamUnit = startInputStream(Constants.Path.INPUT_UNIT_TABLE, Constants.Path.OUTPUT_UNIT_TABLE);
+        } while (m_inputStreamUnit == null);
+
+        readPersonas();
+    }
+
+
+    private static InputStream startInputStream(String inputPath, String outputPath) {
+        File inputFile = new File(inputPath);
+        File outputFile = new File(outputPath);
 
         try {
-            // Check if output file already exists
-            if (outputFile.exists()) {
-                GUIManager.checkAndDeleteOutputFile(outputFile);
-                return;
+
+            if (!inputFile.exists()) {
+                System.err.println("Input File not found: " + inputFile.getAbsolutePath());
+                GUIManager.DisplayWarning(
+                    "Input File Error", 
+                    "Input File not found", 
+                    "The input file could not be found. Please make sure the file is in the correct location and try again. \n\n" + inputFile.getAbsolutePath());
+                return null;
             }
 
-            // Create a new output file
-            if (!outputFile.createNewFile()) {
-                System.err.println("Failed to create new output file.");
-                return;
-            }
-
+            // Check if the output file already exists
+            if (outputFile.exists()) GUIManager.checkOutputFile(inputFile, outputFile);
+            else outputFile.createNewFile();
+            
             // Copy the data from input file to output file
-            try (InputStream inputStream = new FileInputStream(inputFile);
-                OutputStream outputStream = new FileOutputStream(outputFile)) {
-
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = inputStream.read(buffer)) > 0) {
-                    outputStream.write(buffer, 0, length);
-                }
-            }
+            copyTo(inputFile, outputFile);
 
             // Generate new Inputstream
-            m_inputStreamPersona = new FileInputStream(outputFile);
+            return new FileInputStream(outputFile);
 
         } catch (IOException e) {
             System.err.println("An error occurred during file operations:");
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void copyTo(File toCopy, File toPaste) {
+        try (InputStream inputStream = new FileInputStream(toCopy);
+            OutputStream outputStream = new FileOutputStream(toPaste)) {
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+        } catch(IOException e) {
+            System.err.println("An error occurred during file operations: " + e.getMessage());
         }
     }
 
 
     public static void readPersonas() {
-        if (m_inputStreamPersona == null && m_personas == null) {
-            startPersonaStream();
-
-        } else if (m_personas != null) {
+        if (m_inputStreamPersona == null || m_inputStreamUnit == null) {
+            start();
             return;
         }
+        if (m_personas != null) return;
 
         m_personas = new Persona[464];
 
@@ -161,11 +189,45 @@ public class PersonaTable {
             m_persona.setSkills(skills);
         }
 
+        // Segment 3 of Unit Table | Affinities
+        try {
+            m_inputStreamUnit.skip(84580); // Skip 84580 Bytes to reach beginning of affinity data
+        } catch (IOException e) {
+            System.err.println("\n\n\nCouldn't Use Inputstream for UNIT.TBL.\n\n\n");
+            System.exit(0);
+        }
+
+        for (Persona m_persona : m_personas) {
+            HashMap<AffinityIndex, AffinityElement> elements = new HashMap<>();
+            for (AffinityIndex ai : AffinityIndex.values()) {
+                elements.put(ai, readAffinityElement());
+            }
+            Affinities affinities = new Affinities(elements);
+            m_persona.setAffinities(affinities);
+        }
+
         // Close Stream
         try {
             m_inputStreamPersona.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private static AffinityElement readAffinityElement() {
+        HashMap<AffinityDataIndex, Boolean> data = new HashMap<>();
+        try {
+            byte[] bytes = m_inputStreamUnit.readNBytes(2);
+            for (int shift = 7; shift >= 0; shift--) {
+                // Shift through the bits and set boolean values
+                data.put(AffinityDataIndex.values()[shift], (bytes[0] >> shift & 1) == 1);
+            }
+            return new AffinityElement(bytes[1], data);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
