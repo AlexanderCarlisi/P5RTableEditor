@@ -86,7 +86,7 @@ public class PESkillsTabController {
         Skill[] skills = persona.getSkills();
         for (int i = 0; i < skills.length; i++) {
             Skill s = skills[i];
-            instance.skillHolders[i].skillID.setValue(s.getSkillEnum());
+            instance.skillHolders[i].skillID.setValue(s.getESkill());
             instance.skillHolders[i].learnability.setValue(s.getLearnability());
             instance.skillHolders[i].pendingLevels.setText(String.valueOf(s.getPendingLevels()));
         }

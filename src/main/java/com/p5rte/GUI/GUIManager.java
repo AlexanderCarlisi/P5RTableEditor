@@ -3,16 +3,17 @@ package com.p5rte.GUI;
 import java.io.File;
 import java.io.IOException;
 
-import com.p5rte.Classes.PersonaTable;
+import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
+import com.p5rte.Utils.Enums;
+import com.p5rte.Utils.Enums.AffinityDataIndex;
+import com.p5rte.Utils.Enums.AffinityIndex;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
@@ -51,45 +52,57 @@ public class GUIManager extends Application {
         primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> primaryStage.setHeight(newVal.doubleValue()));
 
         primaryStage.show();
+
+        // Start Loading Data from Tables
+        PersonaStream.start();
+
+        // Debugging
+        // System.out.println("\n\n\n" + 
+        //     PersonaStream.getPersona(27).getAffinities().elements.get(AffinityIndex.Gun).data.get(AffinityDataIndex.Resist));
     }
 
 
-    public static void checkAndDeleteOutputFile(File outputFile) {
+    /**
+     * Check if the output file already exists.
+     * If it does, ask the user if they want to :
+     * [1] Overwrite the file, using the current Input File as a base.
+     * [2] Use the Output file as a new Input file.
+     * [3] Cancel the operation and Close the Program.
+     * @param outputFile
+     */
+    public static void checkOutputFile(File inputfile, File outputFile) {
         if (outputFile.exists()) {
-            // Create a confirmation alert
-            Alert alert = new Alert(AlertType.CONFIRMATION);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle(outputFile.getName() + " Warning");
-            alert.setHeaderText("Output file already exists");
-            alert.setContentText("Do you want to delete the existing file and create a new one?");
+            alert.setHeaderText("The output file already exists.");
+            alert.setContentText("What would you like to do?");
 
-            // Add "Yes" and "No" buttons
-            ButtonType buttonTypeYes = new ButtonType("Yes");
-            ButtonType buttonTypeNo = new ButtonType("No (Exits Program)", ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+            ButtonType overwriteButton = new ButtonType("Overwrite");
+            ButtonType useAsInputButton = new ButtonType("Use as Input");
+            ButtonType cancelButton = new ButtonType("Close Program");
 
-            // Show the alert and wait for user response
-            alert.showAndWait().ifPresent(response -> {
-                if (response == buttonTypeYes) {
-                    // Proceed with deleting the old file
-                    if (outputFile.delete()) {
-                        System.out.println("Old output file deleted.");
-                    } else {
-                        System.out.println("Failed to delete the old output file.");
-                    }
-                    
-                    // Now that the old file is deleted, proceed with creating a new file
-                    PersonaTable.startPersonaStream();
-                } else {
-                    // User chose not to delete the file
-                    System.out.println("User chose not to delete the file.");
-                    
-                    // Quit the program
+            alert.getButtonTypes().setAll(overwriteButton, useAsInputButton, cancelButton);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType == overwriteButton) { // Overwrite
+                    PersonaStream.copyTo(inputfile, outputFile);
+
+                } else if (buttonType == useAsInputButton) { // Use as Input
+                    PersonaStream.copyTo(outputFile, inputfile);
+
+                } else if (buttonType == cancelButton) { // Cancel and Close Program
                     System.exit(0);
                 }
             });
-        } else {
-            // File doesn't exist, proceed with creating a new file
-            // You can add your logic for creating the new file here
         }
+    }
+
+
+    public static void DisplayWarning(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

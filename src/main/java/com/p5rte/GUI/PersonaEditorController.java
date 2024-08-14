@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.p5rte.Classes.Persona;
-import com.p5rte.Classes.PersonaTable;
+import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
 
 import javafx.fxml.FXML;
@@ -54,11 +54,6 @@ public class PersonaEditorController {
 
     @FXML
     public void initialize() {
-
-        // Initialize Persona Data
-        PersonaTable.startPersonaStream();
-        PersonaTable.readPersonas();
-
         // Create and store Persona Catalogue Buttons
         createButtons(Constants.personaIDtoName);
 
@@ -113,7 +108,7 @@ public class PersonaEditorController {
 
 
     private void handlePersonaButtonClick(int index) {
-        Persona persona = PersonaTable.getPersona(index);
+        Persona persona = PersonaStream.getPersona(index);
 
         // Set General Tab Name to Persona Name
         generalTab.setText(persona.getName());
