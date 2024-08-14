@@ -35,7 +35,7 @@
         </VBox>
     </left>
     <center>
-        <TabPane fx:id="tabPane">
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab text="PersonaName" fx:id="generalTab">
                     <fx:include source="PersonaEditorGeneral.fxml" />

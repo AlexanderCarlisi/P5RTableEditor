@@ -19,6 +19,9 @@ import javafx.stage.Stage;
 public class PESkillsTabController {
 
     public class SkillHolder {
+        /*
+         * TODO: Add Traits 
+         */
         public ComboBox<Enums.ESkill> skillID;
         public ComboBox<Enums.SkillLearnability> learnability;
         public TextField pendingLevels;
