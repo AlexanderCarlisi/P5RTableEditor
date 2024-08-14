@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.p5rte.Utils.Enums;
 import com.p5rte.Utils.Enums.AffinityIndex;
+import com.p5rte.Utils.Enums.SkillLearnability;
 
 public class Persona {
     
@@ -99,6 +100,12 @@ public class Persona {
 
     public void setSkills(Skill[] skills) {
         m_skills = skills;
+    }
+
+    public void setSkill(int index, int id, SkillLearnability learnability, int pendingLevels) {
+        m_skills[index].setID(id);
+        m_skills[index].setLearnability(learnability);
+        m_skills[index].setPendingLevels(pendingLevels);
     }
 
     public void setAffinities(HashMap<AffinityIndex, AffinityElement> affinities) {

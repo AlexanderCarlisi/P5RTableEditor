@@ -29,4 +29,16 @@ public class Skill {
     public ESkill getESkill() {
         return ESkill.getAt(m_id);
     }
+
+    public void setPendingLevels(int pendingLevels) {
+        m_pendingLevels = pendingLevels;
+    }
+
+    public void setLearnability(SkillLearnability learnability) {
+        m_learnability = learnability;
+    }
+
+    public void setID(int id) {
+        m_id = id;
+    }
 }
