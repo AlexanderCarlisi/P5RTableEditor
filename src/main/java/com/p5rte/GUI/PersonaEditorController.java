@@ -28,17 +28,7 @@ public class PersonaEditorController {
     private VBox catalogueContainer;
 
     @FXML
-    private TabPane tabPane;
-
-    @FXML
     private Tab generalTab;
-    @FXML
-    private BorderPane generalTabContent;
-
-    @FXML
-    private Tab skillsTab;
-    @FXML
-    private BorderPane skillsTabContent;
 
 
     /** Stores Buttons for Search and Filtering */

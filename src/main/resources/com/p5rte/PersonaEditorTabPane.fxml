@@ -10,6 +10,7 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.p5rte.GUI.PersonaEditorController">
     <padding>
@@ -34,13 +35,13 @@
         </VBox>
     </left>
     <center>
-        <TabPane>
+        <TabPane fx:id="tabPane">
             <tabs>
                 <Tab text="PersonaName" fx:id="generalTab">
-                    <BorderPane fx:id="generalTabContent"/>
+                    <fx:include source="PersonaEditorGeneral.fxml" />
                 </Tab>
                 <Tab text="Skills">
-                    <BorderPane fx:id="skillsTabContent"/>
+                    <fx:include source="PersonaEditorSkills.fxml" />
                 </Tab>
             </tabs>
         </TabPane>
