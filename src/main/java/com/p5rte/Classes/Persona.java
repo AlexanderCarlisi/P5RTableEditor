@@ -118,12 +118,12 @@ public class Persona {
 
     public void setSkillInheritance(Enums.SkillInheritance inheritance) {
         m_skillInheritance = inheritance;
-        m_skillInheritanceID = inheritance.ordinal();
+        m_skillInheritanceID = inheritance.ID;
     }
 
     public void setArcana(Enums.Arcana arcana) {
         m_arcana = arcana;
-        m_arcanaID = arcana.ordinal();
+        m_arcanaID = arcana.ID;
     }
 
     public void setStatWeight(int index, int weight) {
