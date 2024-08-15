@@ -111,4 +111,23 @@ public class GUIManager extends Application {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+
+    public static void SavePrompt(Runnable saveFunction) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Save Changes");
+        alert.setHeaderText("Do you want to save your changes?");
+        alert.setContentText("Any unsaved changes will be lost.");
+
+        ButtonType saveButton = new ButtonType("Save");
+        ButtonType dontSaveButton = new ButtonType("Don't Save");
+
+        alert.getButtonTypes().setAll(saveButton, dontSaveButton);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == saveButton) {
+                saveFunction.run();
+            }
+        });
+    }
 }

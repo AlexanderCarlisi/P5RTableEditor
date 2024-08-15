@@ -1,12 +1,17 @@
 package com.p5rte.Classes;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.p5rte.GUI.GUIManager;
 import com.p5rte.Utils.Constants;
@@ -153,6 +158,7 @@ public class PersonaStream {
         // Segment 2 of Persona Table | Stat Growth Weights, Skills, and Traits
         try {
             m_inputStreamPersona.skip(0x10); // Skip 10 Empty Bytes between Segments
+            // I honestly don't know why it's 10 here, it makes more sense to be 16. Its 16 in the write method.
         } catch (IOException e) {
             System.err.println("\n\n\nCouldn't Use Inputstream for PERSONA.TBL.\n\n\n");
             System.exit(0);
@@ -231,6 +237,184 @@ public class PersonaStream {
     }
 
 
+    /**
+     * Serialize a Persona object into Multiple Byte Arrays
+     * @param persona
+     * @return byte[][] {Persona Table Segment1 [0], Persona Table Segment2 [1], Unit Table Segement3 [2]}
+     */
+    private static byte[][] serializePersona(Persona persona) {
+
+        // Create a 2D byte array to hold the serialized data
+        byte[][] tables = new byte[3][];
+
+        // Serialize Persona Table Data Segement 1
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+         DataOutputStream dos = new DataOutputStream(baos)) {
+
+            // Serialize bitFlags into two bytes
+            boolean[] bitFlags = persona.getBitFlags();
+            int firstByte = 0;
+            int secondByte = 0;
+
+            // First byte (6 bits padding, 2 bits for bitFlags)
+            for (int i = 0; i < 2; i++) {
+                if (bitFlags[i]) {
+                    firstByte |= (1 << (1 - i)); // Set bits in the first byte
+                }
+            }
+
+            // Second byte (remaining 8 bits for bitFlags)
+            for (int i = 2; i < 10; i++) {
+                if (bitFlags[i]) {
+                    secondByte |= (1 << (9 - i)); // Set bits in the second byte
+                }
+            }
+
+            // Write the two bytes
+            dos.writeByte(firstByte);
+            dos.writeByte(secondByte);
+    
+            // Serialize other fields like arcanaID, level, etc.
+            dos.writeByte(persona.getArcanaID());
+            dos.writeByte(persona.getLevel());
+            
+            // Serialize stats
+            int[] stats = persona.getStats();
+            for (int stat : stats) {
+                dos.writeByte(stat);
+            }
+
+            // Blank byte
+            dos.write(new byte[1]);
+            
+            // Serialize skillInheritanceID
+            dos.writeShort(persona.getSkillInheritanceID());
+    
+            // Add 2 blank bytes
+            dos.write(new byte[2]);
+    
+            // Convert to byte array
+            tables[0] = baos.toByteArray();
+    
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+        // Serialize Persona Table Data Segement 2
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+         DataOutputStream dos = new DataOutputStream(baos)) {
+
+            // Serialize statWeights
+            int[] statWeights = persona.getStatWeights();
+            for (int statWeight : statWeights) {
+                dos.writeByte(statWeight);
+            }
+    
+            // Add Blank Byte
+            dos.write(new byte[1]);
+    
+            // Serialize skills
+            Skill[] skills = persona.getSkills();
+            for (int i = 0; i < 16; i++) {
+                dos.writeByte(skills[i].getPendingLevels());
+                dos.writeByte(skills[i].getLearnability().ID);
+                dos.writeShort(skills[i].getID());
+            }
+    
+            // Convert to byte array
+            tables[1] = baos.toByteArray();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+        // Serialize Unit Table Data Segement 3
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+         DataOutputStream dos = new DataOutputStream(baos)) {
+
+            // Serialize Affinities
+            HashMap<AffinityIndex, AffinityElement> affinities = persona.getAffinities();
+            for (AffinityIndex ai : AffinityIndex.values()) {
+                AffinityElement element = affinities.get(ai);
+                dos.writeByte(element.multiplier);
+                for (int i = 0; i < element.data.size(); i++) {
+                    int booleanByte = 0;
+                    if (element.data.get(AffinityDataIndex.values()[i])) {
+                        booleanByte |= (1 << (9 - i));
+                    }        
+                    dos.writeByte(booleanByte);
+                }
+            }
+    
+            // Convert to byte array
+            tables[2] = baos.toByteArray();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return tables;
+    }
+
+
+    public static void writeToTables() {
+        if (m_personas == null) {
+            readPersonas();
+        }
+
+        try (RandomAccessFile rafPersona = new RandomAccessFile(Constants.Path.OUTPUT_PERSONA_TABLE, "rw");
+         FileOutputStream fosUnit = new FileOutputStream(Constants.Path.OUTPUT_UNIT_TABLE);) {
+        
+            // Store Segment Data for Tables to be used later.
+            List<byte[]> pTableSegment1 = new ArrayList<>();
+            List<byte[]> pTableSegment2 = new ArrayList<>();
+            // List<byte[]> uTableSegment3 = new ArrayList<>();
+            
+            // unitChannel.position(84580);
+
+            // Serialize Persona Objects.
+            for (Persona persona : m_personas) {
+                byte[][] tables = serializePersona(persona);
+                pTableSegment1.add(tables[0]);
+                pTableSegment2.add(tables[1]);
+                // uTableSegment3.add(tables[2]);
+            }
+            
+            // Write Persona Table Segment 1
+            int personaPos = 4;
+            for (byte[] data : pTableSegment1) {
+                // personaChannel.write(ByteBuffer.wrap(data));
+                rafPersona.seek(personaPos);
+                rafPersona.write(data);
+                personaPos += data.length;
+            }
+
+            // Write Persona Table Segment 2
+            personaPos += 16; // SO its the right number here, but a different number in ReadPersonas.
+            for (byte[] skillstat : pTableSegment2) {
+                // personaChannel.write(ByteBuffer.wrap(skillstat));
+                rafPersona.seek(personaPos);
+                rafPersona.write(skillstat);
+                personaPos += skillstat.length;
+            }
+
+            // // Write Unit Table Segment 3 
+            // for (byte[] affinityData : uTableSegment3) {
+            //     unitChannel.write(ByteBuffer.wrap(affinityData));
+            // }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+
+
     public static void clearPersonas() {
         m_personas = null;
     }
@@ -241,12 +425,5 @@ public class PersonaStream {
             readPersonas();
         }
         return m_personas[index];
-    }
-
-    public static Persona[] getPersonas() {
-        if (m_personas == null) {
-            readPersonas();
-        }
-        return m_personas;
     }
 }

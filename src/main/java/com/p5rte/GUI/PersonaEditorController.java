@@ -66,6 +66,10 @@ public class PersonaEditorController {
 
             // Set the main menu scene
             stage.setScene(mainMenuScene);
+
+            // Ask to save changes before leaving
+            GUIManager.SavePrompt(() -> PersonaStream.writeToTables());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

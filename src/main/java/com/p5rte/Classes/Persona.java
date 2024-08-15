@@ -19,7 +19,7 @@ public class Persona {
     private int m_skillInheritanceID;
     private Enums.SkillInheritance m_skillInheritance;
 
-    private String m_personaName;
+    private final String m_personaName;
 
     private int[] m_statWeights;
     private Skill[] m_skills;
@@ -80,6 +80,10 @@ public class Persona {
 
     public AffinityElement getAffinity(AffinityIndex index) {
         return m_affinities.get(index);
+    }
+
+    public HashMap<AffinityIndex, AffinityElement> getAffinities() {
+        return m_affinities;
     }
 
     public void setBitFlag(int flag, boolean value) {
