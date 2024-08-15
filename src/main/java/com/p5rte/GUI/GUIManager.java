@@ -64,7 +64,7 @@ public class GUIManager extends Application {
         // // System.out.println("multiplier : " + ele.multiplier);
         // Skill[] skills = persona.getSkills();
         // System.out.println(skills[0].getLearnability());
-        System.out.println(persona.getBitFlags()[6]);
+        System.out.println(persona.getBitFlags()[9]);
     }
 
 

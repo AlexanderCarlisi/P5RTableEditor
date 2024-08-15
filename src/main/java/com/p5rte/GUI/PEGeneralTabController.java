@@ -131,7 +131,7 @@ public class PEGeneralTabController {
             final int index = i;
             bitFlagButtons[i].setOnAction(eh -> {
                 if (currentPersona != null) {
-                    currentPersona.setBitFlag(BitFlag.values()[index].ordinal(), bitFlagButtons[index].isSelected());
+                    currentPersona.setBitFlag(BitFlag.values()[index].INDEX, bitFlagButtons[index].isSelected());
                 }
             });
         }
@@ -158,15 +158,8 @@ public class PEGeneralTabController {
 
         // Set Bit Flags
         boolean[] flags = persona.getBitFlags();
-        int flagIndex = 0;
-        for (ToggleButton button : instance.bitFlagButtons) {
-            for (BitFlag flag : BitFlag.values()) {
-                if (flagIndex == flag.INDEX) {
-                    button.setSelected(flags[flagIndex]);
-                    break;
-                }
-            }
-            flagIndex++;
+        for (BitFlag flag : BitFlag.values()) {
+            instance.bitFlagButtons[flag.ordinal()].setSelected(flags[flag.INDEX]);
         }
 
         // Set Stat Weights
