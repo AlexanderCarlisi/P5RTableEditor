@@ -340,14 +340,14 @@ public class PersonaStream {
             HashMap<AffinityIndex, AffinityElement> affinities = persona.getAffinities();
             for (AffinityIndex ai : AffinityIndex.values()) {
                 AffinityElement element = affinities.get(ai);
-                dos.writeByte(element.multiplier);
-                for (int i = 0; i < element.data.size(); i++) {
-                    int booleanByte = 0;
-                    if (element.data.get(AffinityDataIndex.values()[i])) {
-                        booleanByte |= (1 << (9 - i));
-                    }        
-                    dos.writeByte(booleanByte);
+                int boolByte = 0;
+                for (int i = 0; i < 8; i++) {
+                    if (element.data.get(AffinityDataIndex.values()[7 - i])) {
+                        boolByte |= (1 << i);
+                    }
                 }
+                dos.writeByte(boolByte);
+                dos.writeByte(element.multiplier);
             }
     
             // Convert to byte array
@@ -368,27 +368,24 @@ public class PersonaStream {
         }
 
         try (RandomAccessFile rafPersona = new RandomAccessFile(Constants.Path.OUTPUT_PERSONA_TABLE, "rw");
-         FileOutputStream fosUnit = new FileOutputStream(Constants.Path.OUTPUT_UNIT_TABLE);) {
+         RandomAccessFile rafUnit = new RandomAccessFile(Constants.Path.OUTPUT_UNIT_TABLE, "rw");) {
         
             // Store Segment Data for Tables to be used later.
             List<byte[]> pTableSegment1 = new ArrayList<>();
             List<byte[]> pTableSegment2 = new ArrayList<>();
-            // List<byte[]> uTableSegment3 = new ArrayList<>();
-            
-            // unitChannel.position(84580);
+            List<byte[]> uTableSegment3 = new ArrayList<>();
 
             // Serialize Persona Objects.
             for (Persona persona : m_personas) {
                 byte[][] tables = serializePersona(persona);
                 pTableSegment1.add(tables[0]);
                 pTableSegment2.add(tables[1]);
-                // uTableSegment3.add(tables[2]);
+                uTableSegment3.add(tables[2]);
             }
             
             // Write Persona Table Segment 1
             int personaPos = 4;
             for (byte[] data : pTableSegment1) {
-                // personaChannel.write(ByteBuffer.wrap(data));
                 rafPersona.seek(personaPos);
                 rafPersona.write(data);
                 personaPos += data.length;
@@ -397,16 +394,18 @@ public class PersonaStream {
             // Write Persona Table Segment 2
             personaPos += 16; // SO its the right number here, but a different number in ReadPersonas.
             for (byte[] skillstat : pTableSegment2) {
-                // personaChannel.write(ByteBuffer.wrap(skillstat));
                 rafPersona.seek(personaPos);
                 rafPersona.write(skillstat);
                 personaPos += skillstat.length;
             }
 
-            // // Write Unit Table Segment 3 
-            // for (byte[] affinityData : uTableSegment3) {
-            //     unitChannel.write(ByteBuffer.wrap(affinityData));
-            // }
+            // Write Unit Table Segment 3 
+            int unitPos = 84580; // Start of Affinity Data
+            for (byte[] affinityData : uTableSegment3) {
+                rafUnit.seek(unitPos);
+                rafUnit.write(affinityData);
+                unitPos += affinityData.length;
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
