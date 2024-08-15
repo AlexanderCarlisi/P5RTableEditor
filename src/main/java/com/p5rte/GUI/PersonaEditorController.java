@@ -59,6 +59,7 @@ public class PersonaEditorController {
             // Load the main menu FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.Path.MAIN_MENU));
             Scene mainMenuScene = new Scene(loader.load(), stage.getWidth(), stage.getHeight());
+            mainMenuScene.getStylesheets().add(Constants.Path.DARK_MODE_CSS);
 
             // Get the main menu controller and pass the stage
             MainMenuController controller = loader.getController();

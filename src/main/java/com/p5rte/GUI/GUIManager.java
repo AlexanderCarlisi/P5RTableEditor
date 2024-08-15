@@ -3,7 +3,6 @@ package com.p5rte.GUI;
 import java.io.File;
 import java.io.IOException;
 
-import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
 
@@ -39,6 +38,7 @@ public class GUIManager extends Application {
 
         // Create the main scene
         Scene scene = new Scene(root, STARTING_WINDOW_WIDTH, STARTING_WINDOW_HEIGHT);
+        scene.getStylesheets().add(getClass().getResource(Constants.Path.DARK_MODE_CSS).toExternalForm());
 
         // Set up the primary stage
         primaryStage.setTitle("P5R Table Editor");

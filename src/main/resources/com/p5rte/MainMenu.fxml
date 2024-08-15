@@ -5,5 +5,4 @@
 
 <VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.p5rte.GUI.MainMenuController" spacing="10" alignment="CENTER">
     <Button text="Edit Persona" onAction="#handleEditPersona" />
-    <Button text="Edit Skills" onAction="#handleEditSkills" />
 </VBox>

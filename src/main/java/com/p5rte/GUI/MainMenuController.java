@@ -23,6 +23,7 @@ public class MainMenuController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.Path.PERSONA_TABPANE));
             Scene personaEditorScene = new Scene(loader.load(), stage.getWidth(), stage.getHeight());
+            personaEditorScene.getStylesheets().add(getClass().getResource(Constants.Path.DARK_MODE_CSS).toExternalForm());
 
             PersonaEditorController controller = loader.getController();
             if (controller == null) {
