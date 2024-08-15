@@ -47,6 +47,8 @@ public class PEAffinityTabController {
 
     private Persona currentPersona;
 
+    private final ToggleButton[] toggleButtons = new ToggleButton[8];
+
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -59,6 +61,34 @@ public class PEAffinityTabController {
         instance.elementComboBox.getItems().addAll(AffinityIndex.values());
         instance.elementComboBox.setValue(AffinityIndex.Physical);
         instance.elementComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateFields(instance.currentPersona));
+
+        toggleButtons[0] = dacToggle;
+        toggleButtons[1] = guaranteeToggle;
+        toggleButtons[2] = ailmentImmuneToggle;
+        toggleButtons[3] = resistToggle;
+        toggleButtons[4] = weakToggle;
+        toggleButtons[5] = drainToggle;
+        toggleButtons[6] = repelToggle;
+        toggleButtons[7] = blockToggle;
+
+        for (int i = 0; i < 8; i++) {
+            final int index = i;
+            toggleButtons[i].selectedProperty().addListener((obs, oldVal, newVal) -> {
+                if (instance.currentPersona == null) return;
+                AffinityIndex affinity = instance.elementComboBox.getValue();
+                if (affinity == null) return;
+
+                instance.currentPersona.getAffinity(affinity).data.put(AffinityDataIndex.values()[index], newVal);
+            });
+        }
+
+        instance.multiplierField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (instance.currentPersona == null) return;
+            AffinityIndex affinity = instance.elementComboBox.getValue();
+            if (affinity == null) return;
+
+            instance.currentPersona.getAffinity(affinity).multiplier = readMultiplierField(newVal);
+        });
     }
 
 
@@ -70,14 +100,20 @@ public class PEAffinityTabController {
         if (affinity == null) return;
 
         HashMap<AffinityDataIndex, Boolean> data = persona.getAffinity(affinity).data;
-        instance.dacToggle.setSelected(data.get(AffinityDataIndex.DoubleAilmentChance));
-        instance.guaranteeToggle.setSelected(data.get(AffinityDataIndex.GuaranteeAilment));
-        instance.ailmentImmuneToggle.setSelected(data.get(AffinityDataIndex.AilmentImmune));
-        instance.resistToggle.setSelected(data.get(AffinityDataIndex.Resist));
-        instance.weakToggle.setSelected(data.get(AffinityDataIndex.Weak));
-        instance.drainToggle.setSelected(data.get(AffinityDataIndex.Drain));
-        instance.repelToggle.setSelected(data.get(AffinityDataIndex.Repel));
-        instance.blockToggle.setSelected(data.get(AffinityDataIndex.Block));
+        for (int i = 0; i < 8; i++) {
+            instance.toggleButtons[i].setSelected(data.get(AffinityDataIndex.values()[i]));
+        }
         instance.multiplierField.setText(String.valueOf(persona.getAffinity(affinity).multiplier));
+    }
+
+
+    private static int readMultiplierField(String text) {
+        if (text == null || text.isEmpty()) return 20;
+
+        if (text.matches("\\d+")) {
+            return Integer.parseInt(text);
+        } else {
+            return 20;
+        }
     }
 }
