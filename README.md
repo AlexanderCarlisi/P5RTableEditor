@@ -15,6 +15,8 @@ References:
 
 TODO: (in order of priority)
   - Change from SkillID to TraitID when a Skill's learnability is set to Trait
+  - Initialize Folders for Directory Location
+  - Have default Table files to Reset changes
   - Party Member Editing : 2nd Half of Persona.TBL
   - Enemy Editing : Segments 1 and 2 of Unit.TBL
   - Skill Editing : Segments 1 and 2 of Skill.TBL
