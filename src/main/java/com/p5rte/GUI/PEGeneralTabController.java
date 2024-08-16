@@ -232,9 +232,10 @@ public class PEGeneralTabController {
 
         // Clear Listeners
         instance.arcanaComboBox.valueProperty().removeListener(instance.arcanaListener);
-        for (int i = 0; i < instance.statListeners.length; i++) {
+        for (int i = 0; i < instance.statFields.length; i++) {
             instance.statFields[i].textProperty().removeListener(instance.statListeners[i]);
         }
+        instance.lvlField.textProperty().removeListener(instance.statListeners[5]);
         for (int i = 0; i < instance.statWeightListeners.length; i++) {
             instance.statWeightFields[i].textProperty().removeListener(instance.statWeightListeners[i]);
         }
