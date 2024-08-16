@@ -2,7 +2,7 @@ This App is for Persona 5 Royal (PC) Modding.
 
 The purpose of this app is to be a more user-friendly way of editing Tables.
 The current method to edit tables requires shifting through a sea of 464 personas with no names in 010 editor.
-I can only imagine how intimidating it is for someone who wants to Mod P5R but saw 010 editor, so I made this App.
+I can only imagine how intimidating it is for someone who wants to Mod P5R but saw 010 editor, so I'm making this App.
 
 Current Features:
   - Supports 2 Tables | Persona.TBL, UNIT.TBL
