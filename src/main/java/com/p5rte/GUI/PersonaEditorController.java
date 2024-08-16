@@ -68,6 +68,10 @@ public class PersonaEditorController {
             // Set the main menu scene
             stage.setScene(mainMenuScene);
 
+            // Clear Resources from Tabs
+            PEGeneralTabController.releaseResources();
+            PESkillsTabController.releaseResources();
+
             // Ask to save changes before leaving
             GUIManager.SavePrompt(() -> PersonaStream.writeToTables());
 

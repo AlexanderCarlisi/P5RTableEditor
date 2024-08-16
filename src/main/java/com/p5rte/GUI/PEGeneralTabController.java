@@ -2,8 +2,10 @@ package com.p5rte.GUI;
 
 import com.p5rte.Classes.Persona;
 import com.p5rte.Utils.Enums;
+import com.p5rte.Utils.Enums.Arcana;
 import com.p5rte.Utils.Enums.BitFlag;
 
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -66,6 +68,17 @@ public class PEGeneralTabController {
 
     private Persona currentPersona;
 
+    private ChangeListener<Arcana> arcanaListener;
+
+    @SuppressWarnings ("unchecked")
+    private final ChangeListener<String>[] statListeners = new ChangeListener[6];
+
+    @SuppressWarnings ("unchecked")
+    private final ChangeListener<String>[] statWeightListeners = new ChangeListener[5];
+
+    @SuppressWarnings ("unchecked")
+    private final ChangeListener<Boolean>[] bitFlagListeners = new ChangeListener[7];
+
     private final TextField[] statFields = new TextField[5];
     private final TextField[] statWeightFields = new TextField[5];
     private final ToggleButton[] bitFlagButtons = new ToggleButton[7];
@@ -83,11 +96,12 @@ public class PEGeneralTabController {
 
         // Arcana Box Setup
         arcanaComboBox.getItems().addAll(Enums.Arcana.values());
-        arcanaComboBox.setOnHidden(eh -> {
+        arcanaListener = (__, ___, newArcana) -> {
             if (currentPersona != null) {
-                currentPersona.setArcana(arcanaComboBox.getValue());
+                currentPersona.setArcana(newArcana);
             }
-        });
+        };
+        arcanaComboBox.valueProperty().addListener(arcanaListener);
 
         // Stat Fields Setup 
         statFields[0] = strengthField;
@@ -102,21 +116,31 @@ public class PEGeneralTabController {
         statWeightFields[3] = agiWeightField;
         statWeightFields[4] = lukWeightField;
 
+        // Field Listeners
         for (int i = 0; i < statFields.length; i++) {
-            final int index = i;
-            statFields[i].textProperty().addListener((obs, oldText, newText) -> {
-                setStat(newText, index);
-            });
-            statWeightFields[i].textProperty().addListener((obs, oldText, newText) -> {
-                setWeightedStat(newText, index);
-            });
+            final int INDEX = i;
+
+            // Stat Listeners
+            statListeners[i] = (__, ___, newVal) -> {
+                setStat(newVal, INDEX);
+            };
+            statFields[i].textProperty().addListener(statListeners[i]);
+
+            // Stat Weight Listeners
+            statWeightListeners[i] = (__, ___, newVal) -> {
+                setWeightedStat(newVal, INDEX);
+            };
+            statWeightFields[i].textProperty().addListener(statWeightListeners[i]);
         }
-        lvlField.textProperty().addListener((obs, oldText, newText) -> {
+
+        // Level Field Listener
+        statListeners[5] = (__, ___, newVal) -> {
             if (instance == null) return;
 
-            int value = getStatFromField(newText);
+            int value = getStatFromField(newVal);
             instance.currentPersona.setLevel(value);
-        });
+        };
+        lvlField.textProperty().addListener(statListeners[5]);
 
         // Bit Flags Setup
         bitFlagButtons[0] = DLCFlag;
@@ -127,13 +151,14 @@ public class PEGeneralTabController {
         bitFlagButtons[5] = fusionFlag;
         bitFlagButtons[6] = evolvedFlag;
 
+        // Bitflag Listeners
         for (int i = 0; i < bitFlagButtons.length; i++) {
-            final int index = i;
-            bitFlagButtons[i].setOnAction(eh -> {
-                if (currentPersona != null) {
-                    currentPersona.setBitFlag(BitFlag.values()[index].INDEX, bitFlagButtons[index].isSelected());
-                }
-            });
+            final int INDEX = i;
+            bitFlagListeners[i] = (__, ___, newVal) -> {
+                if (currentPersona != null) 
+                    instance.currentPersona.setBitFlag(BitFlag.values()[INDEX].INDEX, newVal);
+            };
+            bitFlagButtons[i].selectedProperty().addListener(bitFlagListeners[i]);
         }
     }
 
@@ -195,5 +220,26 @@ public class PEGeneralTabController {
 
         int value = getStatFromField(newText);
         instance.currentPersona.setStatWeight(index, value);
+    }
+
+
+    /**
+     * Releases all resources used by this Tab.
+     * Should only be called when Returning to the Main Menu.
+     */
+    public static void releaseResources() {
+        if (instance == null) return;
+
+        // Clear Listeners
+        instance.arcanaComboBox.valueProperty().removeListener(instance.arcanaListener);
+        for (int i = 0; i < instance.statListeners.length; i++) {
+            instance.statFields[i].textProperty().removeListener(instance.statListeners[i]);
+        }
+        for (int i = 0; i < instance.statWeightListeners.length; i++) {
+            instance.statWeightFields[i].textProperty().removeListener(instance.statWeightListeners[i]);
+        }
+        for (int i = 0; i < instance.bitFlagListeners.length; i++) {
+            instance.bitFlagButtons[i].selectedProperty().removeListener(instance.bitFlagListeners[i]);
+        }
     }
 }
