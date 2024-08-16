@@ -111,6 +111,15 @@ public class Persona {
         m_skills[index].setLearnability(learnability);
         m_skills[index].setPendingLevels(pendingLevels);
     }
+    public void setSkillPendingLevel(int index, int pendingLevels) {
+        m_skills[index].setPendingLevels(pendingLevels);
+    }
+    public void setSkillLearnability(int index, SkillLearnability learnability) {
+        m_skills[index].setLearnability(learnability);
+    }
+    public void setSkillID(int index, int id) {
+        m_skills[index].setID(id);
+    }
 
     public void setAffinities(HashMap<AffinityIndex, AffinityElement> affinities) {
         m_affinities = affinities;
