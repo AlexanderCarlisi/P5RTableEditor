@@ -3,17 +3,14 @@ package com.p5rte.GUI;
 import java.util.HashMap;
 
 import com.p5rte.Classes.Persona;
-import com.p5rte.Classes.Skill;
-import com.p5rte.Utils.Enums;
 import com.p5rte.Utils.Enums.AffinityDataIndex;
 import com.p5rte.Utils.Enums.AffinityIndex;
 
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -42,12 +39,19 @@ public class PEAffinityTabController {
 
 
     private Stage stage;
-
     private static PEAffinityTabController instance;
-
     private Persona currentPersona;
-
     private final ToggleButton[] toggleButtons = new ToggleButton[8];
+
+    private final ChangeListener<AffinityIndex> elementChangeListener = (__, ___, ____) -> updateFields(currentPersona);
+    private final ChangeListener<String> multiplierChangeListener = (__, ___, newVal) -> {
+        if (currentPersona == null) return;
+        AffinityIndex affinity = elementComboBox.getValue();
+        if (affinity == null) return;
+
+        currentPersona.getAffinity(affinity).multiplier = readMultiplierField(newVal);
+    };
+    private final ChangeListener<Boolean>[] toggleChangeListeners = new ChangeListener[8]; 
 
 
     public void setStage(Stage stage) {
@@ -60,7 +64,7 @@ public class PEAffinityTabController {
         instance = this;
         instance.elementComboBox.getItems().addAll(AffinityIndex.values());
         instance.elementComboBox.setValue(AffinityIndex.Physical);
-        instance.elementComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateFields(instance.currentPersona));
+        instance.elementComboBox.valueProperty().addListener(elementChangeListener);
 
         toggleButtons[0] = dacToggle;
         toggleButtons[1] = guaranteeToggle;
@@ -73,22 +77,17 @@ public class PEAffinityTabController {
 
         for (int i = 0; i < 8; i++) {
             final int index = i;
-            toggleButtons[i].selectedProperty().addListener((obs, oldVal, newVal) -> {
-                if (instance.currentPersona == null) return;
-                AffinityIndex affinity = instance.elementComboBox.getValue();
+            toggleChangeListeners[i] = (__, ___, newVal) -> {
+                if (currentPersona == null) return;
+                AffinityIndex affinity = elementComboBox.getValue();
                 if (affinity == null) return;
 
-                instance.currentPersona.getAffinity(affinity).data.put(AffinityDataIndex.values()[index], newVal);
-            });
+                currentPersona.getAffinity(affinity).data.put(AffinityDataIndex.values()[index], newVal);
+            };
+            toggleButtons[i].selectedProperty().addListener(toggleChangeListeners[i]);
         }
 
-        instance.multiplierField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (instance.currentPersona == null) return;
-            AffinityIndex affinity = instance.elementComboBox.getValue();
-            if (affinity == null) return;
-
-            instance.currentPersona.getAffinity(affinity).multiplier = readMultiplierField(newVal);
-        });
+        instance.multiplierField.textProperty().addListener(multiplierChangeListener);
     }
 
 
@@ -114,6 +113,20 @@ public class PEAffinityTabController {
             return Integer.parseInt(text);
         } else {
             return 20;
+        }
+    }
+
+
+    /**
+     * Release all resources used by this controller
+     * This method should be called when the tab is no longer in use
+     */
+    public static void releaseResources() {
+        if (instance == null) return;
+        instance.elementComboBox.valueProperty().removeListener(instance.elementChangeListener);
+        instance.multiplierField.textProperty().removeListener(instance.multiplierChangeListener);
+        for (int i = 0; i < 8; i++) {
+            instance.toggleButtons[i].selectedProperty().removeListener(instance.toggleChangeListeners[i]);
         }
     }
 }
