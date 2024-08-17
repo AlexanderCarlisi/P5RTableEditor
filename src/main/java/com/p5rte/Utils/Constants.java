@@ -13,12 +13,15 @@ public final class Constants {
         public static final String ROOT_DIR = Paths.get("").toAbsolutePath().toString();
         public static final String INPUT = Paths.get(ROOT_DIR, "input").toString();
         public static final String OUTPUT = Paths.get(ROOT_DIR, "output").toString();
+        public static final String ORIGINAL = Paths.get(ROOT_DIR, "originals").toString();
 
         public static final String INPUT_PERSONA_TABLE = INPUT+"/PERSONA.TBL";
         public static final String OUTPUT_PERSONA_TABLE = OUTPUT+"/PERSONA.TBL";
+        public static final String ORIGINAL_PERSONA_TABLE = ORIGINAL+"/PERSONA.TBL";
 
         public static final String INPUT_UNIT_TABLE = INPUT+"/UNIT.TBL";
         public static final String OUTPUT_UNIT_TABLE = OUTPUT+"/UNIT.TBL";
+        public static final String ORIGINAL_UNIT_TABLE = ORIGINAL+"/UNIT.TBL";
 
         // FXML Paths
         public static final String MAIN_MENU = FXML_FOLDER+"MainMenu.fxml";

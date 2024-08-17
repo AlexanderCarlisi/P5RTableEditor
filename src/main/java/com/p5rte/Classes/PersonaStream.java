@@ -379,13 +379,20 @@ public class PersonaStream {
     }
 
 
-    public static void reset() {
+    public static void resetFiles() {
+        m_personas = null;
+        m_inputStreamPersona = null;
+        m_inputStreamUnit = null;
+        start();
+    }
+
+    public static void resetToOriginals() {
         m_personas = null;
         m_inputStreamPersona = null;
         m_inputStreamUnit = null;
 
-        copyTo(new File(Constants.Path.INPUT_PERSONA_TABLE), new File(Constants.Path.OUTPUT_PERSONA_TABLE));
-        copyTo(new File(Constants.Path.INPUT_UNIT_TABLE), new File(Constants.Path.OUTPUT_UNIT_TABLE));
+        copyTo(new File(Constants.Path.ORIGINAL_PERSONA_TABLE), new File(Constants.Path.INPUT_PERSONA_TABLE));
+        copyTo(new File(Constants.Path.ORIGINAL_UNIT_TABLE), new File(Constants.Path.INPUT_UNIT_TABLE));
 
         start();
     }

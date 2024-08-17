@@ -41,7 +41,12 @@ public class MainMenuController {
     }
 
     @FXML
-    private void handleResetToInput() {
-        PersonaStream.reset();
+    private void handleReloadFiles() {
+        PersonaStream.resetFiles();
+    }
+
+    @FXML
+    private void handleResetToOriginals() {
+        PersonaStream.resetToOriginals();
     }
 }
