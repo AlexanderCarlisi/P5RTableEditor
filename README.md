@@ -14,7 +14,8 @@ References:
   - This whole project wouldn't have been possible without this : https://github.com/tge-was-taken/010-Editor-Templates
 
 TODO: (in order of priority)
-  - Have default Table files to Reset changes >> First Release Ready
+  - Have default Table files to Reset changes
+  - Readd Search for Skills and Traits (it was removed when adding Traits) >> After this, time for first release.
   - Party Member Editing : 2nd Half of Persona.TBL
   - Enemy Editing : Segments 1 and 2 of Unit.TBL
   - Skill Editing : Segments 1 and 2 of Skill.TBL
