@@ -5,9 +5,10 @@ The current method to edit tables requires shifting through a sea of 464 persona
 I can only imagine how intimidating it is for someone who wants to Mod P5R but saw 010 editor, so I'm making this App.
 
 Current Features:
-  - Supports 2 Tables | Persona.TBL, UNIT.TBL
+  - Uses 2 Tables | Persona.TBL, UNIT.TBL
   - Edit Registry Persona : Stats, StatWeights, Arcana, BitFlags, SkillInheritance, Skills/Trait, and Affinities.
   - Searchable Catalogue of Registry Persona, you can search via Index or Name.
+  - Searchable Catalogue of Skills and Traits, Index and Name as well
 
 References:
   - Names and Indexs for Persona : https://amicitia.miraheze.org/wiki/Persona_5_Royal/Personas
