@@ -1,3 +1,7 @@
+/*
+ * SOURCE: https://stackoverflow.com/a/27384068
+ */
+
 package com.p5rte.Utils;
 
 import javafx.collections.FXCollections;
