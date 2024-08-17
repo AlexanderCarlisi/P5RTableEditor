@@ -369,12 +369,6 @@ public class PersonaStream {
             e.printStackTrace();
         }
     }
-    
-
-
-    public static void clearPersonas() {
-        m_personas = null;
-    }
 
 
     public static Persona getPersona(int index) {
@@ -382,5 +376,17 @@ public class PersonaStream {
             readPersonas();
         }
         return m_personas[index];
+    }
+
+
+    public static void reset() {
+        m_personas = null;
+        m_inputStreamPersona = null;
+        m_inputStreamUnit = null;
+
+        copyTo(new File(Constants.Path.INPUT_PERSONA_TABLE), new File(Constants.Path.OUTPUT_PERSONA_TABLE));
+        copyTo(new File(Constants.Path.INPUT_UNIT_TABLE), new File(Constants.Path.OUTPUT_UNIT_TABLE));
+
+        start();
     }
 }

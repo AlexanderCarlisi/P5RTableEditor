@@ -2,6 +2,7 @@ package com.p5rte.GUI;
 
 import java.io.IOException;
 
+import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
 
 import javafx.fxml.FXML;
@@ -40,34 +41,7 @@ public class MainMenuController {
     }
 
     @FXML
-    private void handleEditSkills() {
-        // Placeholder for handling the "Edit Skills" button
-        System.out.println("Edit Skills button clicked!");
+    private void handleResetToInput() {
+        PersonaStream.reset();
     }
-
-    // private void openPersonaEditor() {
-    //     try {
-    //         // Load the Persona editor FXML
-    //         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/PersonaEditor/PersonaEditor.fxml"));
-    //         Scene personaEditorScene = new Scene(loader.load(), stage.getWidth(), stage.getHeight());
-
-    //         // Get the Persona editor controller and pass the stage
-    //         PersonaEditorController controller = loader.getController();
-    //         controller.setStage(stage);
-
-    //         // Set the Persona editor scene
-    //         stage.setScene(personaEditorScene);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
-    // private Scene createMainMenuScene() {
-    //     try {
-    //         return new Scene(FXMLLoader.load(getClass().getResource("MainMenu.fxml")), stage.getWidth(), stage.getHeight());
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //         return null;
-    //     }
-    // }
 }
