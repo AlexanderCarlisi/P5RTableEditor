@@ -1,34 +1,36 @@
 package com.p5rte.Utils;
 
+import java.nio.file.Paths;
+
 public final class Constants {
     
     public static final class Path {
         // Folders
         public static final String SRC = "src/";
+        public static final String FXML_FOLDER = "/com/p5rte/";
         
-        public static final String IO = "C:/Users/alexh/Documents/P5RTableEditor/";
-        public static final String INPUT = IO+"input/";
-        public static final String OUTPUT = IO+"output/";
+        // Table Stuff
+        public static final String ROOT_DIR = Paths.get("").toAbsolutePath().toString();
+        public static final String INPUT = Paths.get(ROOT_DIR, "input").toString();
+        public static final String OUTPUT = Paths.get(ROOT_DIR, "output").toString();
+
+        public static final String INPUT_PERSONA_TABLE = INPUT+"/PERSONA.TBL";
+        public static final String OUTPUT_PERSONA_TABLE = OUTPUT+"/PERSONA.TBL";
+
+        public static final String INPUT_UNIT_TABLE = INPUT+"/UNIT.TBL";
+        public static final String OUTPUT_UNIT_TABLE = OUTPUT+"/UNIT.TBL";
 
         // FXML Paths
-        public static final String FXML_FOLDER = "/com/p5rte/";
         public static final String MAIN_MENU = FXML_FOLDER+"MainMenu.fxml";
-        // public static final String PERSONA_EDITOR = FXML_FOLDER+"PersonaEditor.fxml";
         public static final String PERSONA_TABPANE = FXML_FOLDER + "PersonaEditorTabPane.fxml";
         public static final String PERSONA_GENERAL = FXML_FOLDER + "PersonaEditorGeneral.fxml";
         public static final String PERSONA_SKILLS = FXML_FOLDER + "PersonaEditorSkills.fxml";
         public static final String DARK_MODE_CSS = FXML_FOLDER + "DarkMode.css";
-
-        // Files
-        public static final String INPUT_PERSONA_TABLE = INPUT+"PERSONA.TBL";
-        public static final String OUTPUT_PERSONA_TABLE = OUTPUT+"PERSONA.TBL";
-        public static final String INPUT_UNIT_TABLE = INPUT+"UNIT.TBL";
-        public static final String OUTPUT_UNIT_TABLE = OUTPUT+"UNIT.TBL";
     }
 
 
     // https://amicitia.miraheze.org/wiki/Persona_5_Royal/Personas
-    // Will eventually be read from Name.TBL
+    // Will eventually be read from Name.TBL . Chance of that happening is near zero, suffer the curse of 464 hard-coded values
     public static final String[] personaIDtoName = new String[] {
         "0",
         "Metatron",
