@@ -6,6 +6,7 @@ import com.p5rte.Utils.Enums;
 import com.p5rte.Utils.Enums.ESkill;
 import com.p5rte.Utils.Enums.ETrait;
 import com.p5rte.Utils.Enums.SkillLearnability;
+import com.p5rte.Utils.FxUtil;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 
 public class PESkillsTabController {
@@ -111,6 +113,35 @@ public class PESkillsTabController {
             learnability.setValue(SkillLearnability.Nothing);
             skillID.setValue(ESkill.None); // Sets TraitID via Listener
             pendingLevels.setText("0");
+
+            // Add Search to SkillID and TraitID
+            FxUtil.autoCompleteComboBoxPlus(skillID, (typedText, itemToCompare) -> itemToCompare.name().toLowerCase().contains(typedText.toLowerCase()) || String.valueOf(itemToCompare.ordinal()).equals(typedText));
+            skillID.setConverter(new StringConverter<ESkill>() {
+                @Override
+                public String toString(ESkill object) {
+                    return object != null ? object.name() : "";
+                }
+            
+                @Override
+                public ESkill fromString(String string) {
+                    return skillID.getItems().stream().filter(object ->
+                        object.name().equals(string)).findFirst().orElse(null);
+                }
+            });
+
+            FxUtil.autoCompleteComboBoxPlus(traitID, (typedText, itemToCompare) -> itemToCompare.name().toLowerCase().contains(typedText.toLowerCase()) || String.valueOf(itemToCompare.ordinal()).equals(typedText));
+            traitID.setConverter(new StringConverter<ETrait>() {
+                @Override
+                public String toString(ETrait object) {
+                    return object != null ? object.name() : "";
+                }
+            
+                @Override
+                public ETrait fromString(String string) {
+                    return traitID.getItems().stream().filter(object ->
+                        object.name().equals(string)).findFirst().orElse(null);
+                }
+            });
         }
 
 
