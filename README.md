@@ -20,4 +20,5 @@ TODO: (in order of priority)
   - Enemy Editing : Segments 1 and 2 of Unit.TBL
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
+  - ITEM TBL, NAME TBL
   - I'll think of more when eventually...
