@@ -4,11 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
 import com.p5rte.GUI.GUIManager;
@@ -60,7 +61,7 @@ public class PersonaStream {
             else outputFile.createNewFile();
             
             // Copy the data from input file to output file
-            copyTo(inputFile, outputFile);
+            Files.copy(Paths.get(inputPath), Paths.get(outputPath), StandardCopyOption.REPLACE_EXISTING);
 
             // Generate new Inputstream
             return new FileInputStream(outputFile);
@@ -69,20 +70,6 @@ public class PersonaStream {
             System.err.println("An error occurred during file operations:");
             e.printStackTrace();
             return null;
-        }
-    }
-
-    public static void copyTo(File toCopy, File toPaste) {
-        try (InputStream inputStream = new FileInputStream(toCopy);
-            OutputStream outputStream = new FileOutputStream(toPaste)) {
-
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, length);
-            }
-        } catch(IOException e) {
-            System.err.println("An error occurred during file operations: " + e.getMessage());
         }
     }
 
@@ -391,8 +378,13 @@ public class PersonaStream {
         m_inputStreamPersona = null;
         m_inputStreamUnit = null;
 
-        copyTo(new File(Constants.Path.ORIGINAL_PERSONA_TABLE), new File(Constants.Path.INPUT_PERSONA_TABLE));
-        copyTo(new File(Constants.Path.ORIGINAL_UNIT_TABLE), new File(Constants.Path.INPUT_UNIT_TABLE));
+        try {
+            Files.copy(Paths.get(Constants.Path.ORIGINAL_PERSONA_TABLE), Paths.get(Constants.Path.INPUT_PERSONA_TABLE), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(Paths.get(Constants.Path.ORIGINAL_UNIT_TABLE), Paths.get(Constants.Path.INPUT_UNIT_TABLE), StandardCopyOption.REPLACE_EXISTING);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         start();
     }

@@ -2,6 +2,8 @@ package com.p5rte.GUI;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
@@ -90,14 +92,18 @@ public class GUIManager extends Application {
             alert.getButtonTypes().setAll(overwriteButton, useAsInputButton, cancelButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType == overwriteButton) { // Overwrite
-                    PersonaStream.copyTo(inputfile, outputFile);
-
-                } else if (buttonType == useAsInputButton) { // Use as Input
-                    PersonaStream.copyTo(outputFile, inputfile);
-
-                } else if (buttonType == cancelButton) { // Cancel and Close Program
-                    System.exit(0);
+                try {
+                    if (buttonType == overwriteButton) { // Overwrite
+                        Files.copy(Paths.get(inputfile.getAbsolutePath()), Paths.get(outputFile.getAbsolutePath()), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+    
+                    } else if (buttonType == useAsInputButton) { // Use as Input
+                        Files.copy(Paths.get(outputFile.getAbsolutePath()), Paths.get(inputfile.getAbsolutePath()), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+    
+                    } else if (buttonType == cancelButton) { // Cancel and Close Program
+                        System.exit(0);
+                    }   
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             });
         }
