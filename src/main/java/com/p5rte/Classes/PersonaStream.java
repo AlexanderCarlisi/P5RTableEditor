@@ -116,7 +116,7 @@ public class PersonaStream {
 
         for (Persona m_persona : m_personas) {
             int[] statWeights = new int[5];
-            Skill[] skills = new Skill[16];
+            Skill[] skills = null;
             
             try {
                 // Stat Growth Weights
@@ -128,13 +128,15 @@ public class PersonaStream {
                 m_inputStreamPersona.skip(0x1); // Skip 1 Empty Byte
 
                 // Skills
-                byte[] skillBytes = m_inputStreamPersona.readNBytes(64); // 16 total skills, 4 bytes each
-                for (int s = 0; s < 16; s++) {
-                    int pendingLevels = skillBytes[s * 4];
-                    int learnability = skillBytes[s * 4 + 1];
-                    int id = ((skillBytes[s * 4 + 2] & 0xFF) << 8) | (skillBytes[s * 4 + 3] & 0xFF);
-                    skills[s] = new Skill(pendingLevels, learnability, id);
-                }
+                // byte[] skillBytes = m_inputStreamPersona.readNBytes(64); // 16 total skills, 4 bytes each
+                // for (int s = 0; s < 16; s++) {
+                //     int pendingLevels = skillBytes[s * 4];
+                //     int learnability = skillBytes[s * 4 + 1];
+                //     int id = ((skillBytes[s * 4 + 2] & 0xFF) << 8) | (skillBytes[s * 4 + 3] & 0xFF);
+                //     skills[s] = new Skill(pendingLevels, learnability, id);
+                // }
+                
+                skills = FileStreamUtil.readSkills(m_inputStreamPersona, 16);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -164,6 +166,7 @@ public class PersonaStream {
         // Close Stream
         try {
             m_inputStreamPersona.close();
+            m_inputStreamUnit.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -316,6 +319,9 @@ public class PersonaStream {
 
             rafUnit.seek(84580);
             rafUnit.write(segments[1]);
+
+            rafPersona.close();
+            rafUnit.close();
 
         } catch (IOException e) {
             e.printStackTrace();

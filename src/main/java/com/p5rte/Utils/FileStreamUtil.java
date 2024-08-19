@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import com.p5rte.Classes.Skill;
 import com.p5rte.GUI.GUIManager;
 
 public class FileStreamUtil {
@@ -42,5 +43,26 @@ public class FileStreamUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    public static Skill[] readSkills(InputStream inputStream, int count) throws IOException{
+        Skill[] skills = new Skill[count];
+       
+        byte[] skillBytes = inputStream.readNBytes(count * 4); // 4 bytes per Skill
+        for (int i = 0; i < count; i++) {
+            int pendingLevels = skillBytes[i * 4];
+            int learnability = skillBytes[i * 4 + 1];
+            int id = ((skillBytes[i * 4 + 2] & 0xFF) << 8) | (skillBytes[i * 4 + 3] & 0xFF); // should really look into this, im just reading a short why is it so compliated?
+            skills[i] = new Skill(pendingLevels, learnability, id);
+        }
+        
+        return skills;
+    }
+
+
+    public static int readShort(InputStream inputStream) throws IOException {
+        byte[] shortBytes = inputStream.readNBytes(2);
+        return ((shortBytes[0] & 0xFF) << 8) | (shortBytes[1] & 0xFF);
     }
 }
