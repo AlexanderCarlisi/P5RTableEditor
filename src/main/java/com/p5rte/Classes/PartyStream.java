@@ -13,8 +13,8 @@ public class PartyStream {
     private static PartyMember[] m_partyMembers;
 
 
-    public static void start() {
-        readPartyMembers(false);
+    public static void start(boolean readIndividualLevelThresholds) {
+        readPartyMembers(readIndividualLevelThresholds);
     }
 
 
@@ -102,8 +102,8 @@ public class PartyStream {
     }
 
 
-    public static void restart() {
+    public static void restart(boolean readIndividualLevelThresholds) {
         m_partyMembers = null;
-        start();
+        start(readIndividualLevelThresholds);
     }
 }

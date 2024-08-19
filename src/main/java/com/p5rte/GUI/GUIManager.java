@@ -58,7 +58,7 @@ public class GUIManager extends Application {
         // Start Loading Data from Tables
         FileStreamUtil.start();
         PersonaStream.start();
-        PartyStream.start();
+        PartyStream.start(false);
 
         // Debugging
         
