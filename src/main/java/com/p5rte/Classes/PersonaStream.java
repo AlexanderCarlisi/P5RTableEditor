@@ -2,8 +2,6 @@ package com.p5rte.Classes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -12,10 +10,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
-import com.p5rte.GUI.GUIManager;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.Enums.AffinityDataIndex;
 import com.p5rte.Utils.Enums.AffinityIndex;
+import com.p5rte.Utils.FileStreamUtil;
 
 
 public class PersonaStream {
@@ -29,52 +27,19 @@ public class PersonaStream {
 
         do { 
             if (m_inputStreamPersona != null) break;
-            m_inputStreamPersona = startInputStream(Constants.Path.INPUT_PERSONA_TABLE, Constants.Path.OUTPUT_PERSONA_TABLE);    
+            m_inputStreamPersona = FileStreamUtil.startInputStream(Constants.Path.INPUT_PERSONA_TABLE, Constants.Path.OUTPUT_PERSONA_TABLE);    
         } while (m_inputStreamPersona == null);
 
         do { 
             if (m_inputStreamUnit != null) break;
-            m_inputStreamUnit = startInputStream(Constants.Path.INPUT_UNIT_TABLE, Constants.Path.OUTPUT_UNIT_TABLE);
+            m_inputStreamUnit = FileStreamUtil.startInputStream(Constants.Path.INPUT_UNIT_TABLE, Constants.Path.OUTPUT_UNIT_TABLE);
         } while (m_inputStreamUnit == null);
 
         readPersonas();
     }
 
 
-    private static InputStream startInputStream(String inputPath, String outputPath) {
-        File inputFile = new File(inputPath);
-        File outputFile = new File(outputPath);
-
-        try {
-
-            if (!inputFile.exists()) {
-                System.err.println("Input File not found: " + inputFile.getAbsolutePath());
-                GUIManager.DisplayWarning(
-                    "Input File Error", 
-                    "Input File not found", 
-                    "The input file could not be found. Please make sure the file is in the correct location and try again. \n\n" + inputFile.getAbsolutePath());
-                return null;
-            }
-
-            // Check if the output file already exists
-            if (outputFile.exists()) GUIManager.checkOutputFile(inputFile, outputFile);
-            else outputFile.createNewFile();
-            
-            // Copy the data from input file to output file
-            Files.copy(Paths.get(inputPath), Paths.get(outputPath), StandardCopyOption.REPLACE_EXISTING);
-
-            // Generate new Inputstream
-            return new FileInputStream(outputFile);
-
-        } catch (IOException e) {
-            System.err.println("An error occurred during file operations:");
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-    public static void readPersonas() {
+    private static void readPersonas() {
         if (m_inputStreamPersona == null || m_inputStreamUnit == null) {
             start();
             return;
@@ -373,6 +338,7 @@ public class PersonaStream {
         start();
     }
 
+
     public static void resetToOriginals() {
         m_personas = null;
         m_inputStreamPersona = null;
@@ -381,7 +347,7 @@ public class PersonaStream {
         try {
             Files.copy(Paths.get(Constants.Path.ORIGINAL_PERSONA_TABLE), Paths.get(Constants.Path.INPUT_PERSONA_TABLE), StandardCopyOption.REPLACE_EXISTING);
             Files.copy(Paths.get(Constants.Path.ORIGINAL_UNIT_TABLE), Paths.get(Constants.Path.INPUT_UNIT_TABLE), StandardCopyOption.REPLACE_EXISTING);
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
