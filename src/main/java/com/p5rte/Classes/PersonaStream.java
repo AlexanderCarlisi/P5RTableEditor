@@ -2,12 +2,9 @@ package com.p5rte.Classes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
 import com.p5rte.Utils.Constants;
@@ -18,55 +15,32 @@ import com.p5rte.Utils.FileStreamUtil;
 
 public class PersonaStream {
     
-    private static InputStream m_inputStreamPersona;
-    private static InputStream m_inputStreamUnit;
     private static Persona[] m_personas;
 
 
     public static void start() {
-
-        do { 
-            if (m_inputStreamPersona != null) break;
-            m_inputStreamPersona = FileStreamUtil.startInputStream(Constants.Path.INPUT_PERSONA_TABLE, Constants.Path.OUTPUT_PERSONA_TABLE);    
-        } while (m_inputStreamPersona == null);
-
-        do { 
-            if (m_inputStreamUnit != null) break;
-            m_inputStreamUnit = FileStreamUtil.startInputStream(Constants.Path.INPUT_UNIT_TABLE, Constants.Path.OUTPUT_UNIT_TABLE);
-        } while (m_inputStreamUnit == null);
-
         readPersonas();
     }
 
 
     private static void readPersonas() {
-        if (m_inputStreamPersona == null || m_inputStreamUnit == null) {
-            start();
-            return;
-        }
-        if (m_personas != null) return;
-
         m_personas = new Persona[464];
 
         // Segment 1 of Persona Table | BitFlags, ArcanaID, Level, Stats, SkillInheritanceID
-        try {
-            m_inputStreamPersona.skip(0x4); // start of bitflags for first persona
-        } catch (IOException e) {
-            System.err.println("\n\n\nCouldn't Use Inputstream for PERSONA.TBL.\n\n\n");
-            System.exit(0);
-        }
+        try (FileInputStream personaInputStream = new FileInputStream(Constants.Path.INPUT_PERSONA_TABLE);
+         FileInputStream unitInputStream = new FileInputStream(Constants.Path.INPUT_UNIT_TABLE);) {
+            
+            personaInputStream.skip(0x4); // start of bitflags for first persona
 
-        for (int p = 0; p < m_personas.length; p++) {
-            boolean[] bitFlags = new boolean[10];
-            int arcanaID = 0;
-            int level = 0;
-            int[] stats = new int[5];
-            int skillInheritanceID = 0;
-
-            try {
+            for (int p = 0; p < m_personas.length; p++) {
+                boolean[] bitFlags = new boolean[10];
+                int arcanaID;
+                int level;
+                int[] stats = new int[5];
+                int skillInheritanceID;
 
                 // BitFlags
-                byte[] bitFlagsBytes = m_inputStreamPersona.readNBytes(2);
+                byte[] bitFlagsBytes = personaInputStream.readNBytes(2);
                 int shift = 1;
                 int byteIndex = 0;
                 for (int bf = 0; bf < 10; bf++) {
@@ -80,113 +54,78 @@ public class PersonaStream {
                 }
                 
                 // Arcana ID
-                arcanaID = m_inputStreamPersona.read();
+                arcanaID = personaInputStream.read();
 
                 // Level
-                level = m_inputStreamPersona.read();
+                level = personaInputStream.read();
 
                 // Stats
-                byte[] statBytes = m_inputStreamPersona.readNBytes(5);
+                byte[] statBytes = personaInputStream.readNBytes(5);
                 for (int s = 0; s < 5; s++) {
                     stats[s] = statBytes[s];
                 }
 
-                m_inputStreamPersona.skip(0x2); // Skip blank byte + Redundent skillInheritance byte
+                personaInputStream.skip(0x2); // Skip blank byte + Redundent skillInheritance byte
 
                 // Skill Inheritance ID
-                skillInheritanceID = m_inputStreamPersona.read();
+                skillInheritanceID = personaInputStream.read();
+                personaInputStream.skip(0x2); // Skip Unkown Bytes
 
-                m_inputStreamPersona.skip(0x2); // Skip Unkown Bytes
-
-            } catch (IOException e) {
-                e.printStackTrace();
+                m_personas[p] = new Persona(bitFlags, arcanaID, level, stats, skillInheritanceID, Constants.personaIDtoName[p]);
             }
 
-            m_personas[p] = new Persona(bitFlags, arcanaID, level, stats, skillInheritanceID, Constants.personaIDtoName[p]);
-        }
+            // Segment 2 of Persona Table | Stat Growth Weights, Skills, and Traits
+            personaInputStream.skip(0x10); // Skip 10 Empty Bytes between Segments, it should be 16, but its 10.
 
-        // Segment 2 of Persona Table | Stat Growth Weights, Skills, and Traits
-        try {
-            m_inputStreamPersona.skip(0x10); // Skip 10 Empty Bytes between Segments
-            // I honestly don't know why it's 10 here, it makes more sense to be 16. Its 16 in the write method.
-        } catch (IOException e) {
-            System.err.println("\n\n\nCouldn't Use Inputstream for PERSONA.TBL.\n\n\n");
-            System.exit(0);
-        }
-
-        for (Persona m_persona : m_personas) {
-            int[] statWeights = new int[5];
-            Skill[] skills = null;
+            for (Persona m_persona : m_personas) {
+                int[] statWeights = new int[5];
+                Skill[] skills;
             
-            try {
                 // Stat Growth Weights
-                byte[] statWeightsBytes = m_inputStreamPersona.readNBytes(5);
+                byte[] statWeightsBytes = personaInputStream.readNBytes(5);
                 for (int sw = 0; sw < 5; sw++) {
                     statWeights[sw] = statWeightsBytes[sw];
                 }
 
-                m_inputStreamPersona.skip(0x1); // Skip 1 Empty Byte
+                personaInputStream.skip(0x1); // Skip 1 Empty Byte
 
                 // Skills
-                // byte[] skillBytes = m_inputStreamPersona.readNBytes(64); // 16 total skills, 4 bytes each
-                // for (int s = 0; s < 16; s++) {
-                //     int pendingLevels = skillBytes[s * 4];
-                //     int learnability = skillBytes[s * 4 + 1];
-                //     int id = ((skillBytes[s * 4 + 2] & 0xFF) << 8) | (skillBytes[s * 4 + 3] & 0xFF);
-                //     skills[s] = new Skill(pendingLevels, learnability, id);
-                // }
-                
-                skills = FileStreamUtil.readSkills(m_inputStreamPersona, 16);
+                skills = FileStreamUtil.readSkills(personaInputStream, 16);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                // Update Persona
+                m_persona.setStatWeights(statWeights);
+                m_persona.setSkills(skills);
             }
 
-            // Update Persona
-            m_persona.setStatWeights(statWeights);
-            m_persona.setSkills(skills);
-        }
-
-        // Segment 3 of Unit Table | Affinities
-        try {
-            m_inputStreamUnit.skip(84580); // Skip 84580 Bytes to reach beginning of affinity data
-        } catch (IOException e) {
-            System.err.println("\n\n\nCouldn't Use Inputstream for UNIT.TBL.\n\n\n");
-            System.exit(0);
-        }
-
-        for (Persona m_persona : m_personas) {
-            HashMap<AffinityIndex, AffinityElement> elements = new HashMap<>();
-            for (AffinityIndex ai : AffinityIndex.values()) {
-                elements.put(ai, readAffinityElement());
+            // Segment 3 of Unit Table | Affinities
+            unitInputStream.skip(84580); // Skip 84580 Bytes to reach beginning of affinity data
+        
+            for (Persona m_persona : m_personas) {
+                HashMap<AffinityIndex, AffinityElement> elements = new HashMap<>();
+                for (AffinityIndex ai : AffinityIndex.values()) {
+                    elements.put(ai, readAffinityElement(unitInputStream));
+                }
+                m_persona.setAffinities(elements);
             }
-            m_persona.setAffinities(elements);
-        }
 
-        // Close Stream
-        try {
-            m_inputStreamPersona.close();
-            m_inputStreamUnit.close();
+            // Close Streams
+            personaInputStream.close();
+            unitInputStream.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    private static AffinityElement readAffinityElement() {
+    private static AffinityElement readAffinityElement(FileInputStream unitInputStream) throws IOException{
         HashMap<AffinityDataIndex, Boolean> data = new HashMap<>();
-        try {
-            byte[] bytes = m_inputStreamUnit.readNBytes(2);
-            for (int shift = 0; shift < 8; shift++) {
-                // Shift through the bits and set boolean values
-                data.put(AffinityDataIndex.values()[7 - shift], (bytes[0] >> shift & 1) == 1);
-            }
-            return new AffinityElement(bytes[1], data);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        byte[] bytes = unitInputStream.readNBytes(2);
+        for (int shift = 0; shift < 8; shift++) {
+            // Shift through the bits and set boolean values
+            data.put(AffinityDataIndex.values()[7 - shift], (bytes[0] >> shift & 1) == 1);
         }
+        return new AffinityElement(bytes[1], data);
     }
 
 
@@ -337,27 +276,8 @@ public class PersonaStream {
     }
 
 
-    public static void resetFiles() {
+    public static void restart() {
         m_personas = null;
-        m_inputStreamPersona = null;
-        m_inputStreamUnit = null;
-        start();
-    }
-
-
-    public static void resetToOriginals() {
-        m_personas = null;
-        m_inputStreamPersona = null;
-        m_inputStreamUnit = null;
-
-        try {
-            Files.copy(Paths.get(Constants.Path.ORIGINAL_PERSONA_TABLE), Paths.get(Constants.Path.INPUT_PERSONA_TABLE), StandardCopyOption.REPLACE_EXISTING);
-            Files.copy(Paths.get(Constants.Path.ORIGINAL_UNIT_TABLE), Paths.get(Constants.Path.INPUT_UNIT_TABLE), StandardCopyOption.REPLACE_EXISTING);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         start();
     }
 }

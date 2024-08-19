@@ -2,8 +2,8 @@ package com.p5rte.GUI;
 
 import java.io.IOException;
 
-import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
+import com.p5rte.Utils.FileStreamUtil;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,11 +42,11 @@ public class MainMenuController {
 
     @FXML
     private void handleReloadFiles() {
-        PersonaStream.resetFiles();
+        FileStreamUtil.resetToInputs();
     }
 
     @FXML
     private void handleResetToOriginals() {
-        PersonaStream.resetToOriginals();
+        FileStreamUtil.resetToOriginals();
     }
 }

@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import com.p5rte.Classes.PartyStream;
 import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
+import com.p5rte.Utils.FileStreamUtil;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -54,7 +56,9 @@ public class GUIManager extends Application {
         primaryStage.show();
 
         // Start Loading Data from Tables
+        FileStreamUtil.start();
         PersonaStream.start();
+        PartyStream.start();
 
         // Debugging
         

@@ -143,21 +143,53 @@ public final class Enums {
         Futaba,
         Akechi,
         Kasumi,
-        NoChange,
-        Progtagonist_
+        NoChange, // 100
+        Progtagonist_; // 101
+
+        /**
+         * Value stored in Tables
+         */
+        public int getTableValue() {
+            return this.ordinal() + 1;
+        }
+
+        /**
+         * Index of PartyMembers array
+         */
+        public int getPMIndex() {
+            return this.ordinal() - 1;
+        }
     }
 
 
     public enum EPartyMemberPersona {
-        CaptainKidd(202), SeitenTaisei(212), William(242),
-        Zorro(203), Mercurius(213), Diego(243),
-        Carmen(204), Hecate(214), Celestine(244),
-        Goemon(205), KamuSusano_o(215), Gorokichi(245),
-        Johanna(206), Anat(216), Agnes(246),
-        Milady(207), Astarte(217), Lucy(247),
-        Necronomicon(208), Prometheus(218), AlAzif(248),
-        RobinHood(209), Loki(239), Hereward(249),
-        CendrillonIntro(229), Cendrillon(240), Ella(250);
+        CaptainKidd(202),
+        Zorro(203),
+        Carmen(204),
+        Goemon(205),
+        Johanna(206),
+        Milady(207),
+        Necronomicon(208),
+        RobinHood(209),
+        SeitenTaisei(212),
+        Mercurius(213),
+        Hecate(214),
+        KamuSusano_o(215),
+        Anat(216),
+        Astarte(217),
+        Prometheus(218),
+        Loki(239),
+        Cendrillon(240),
+        Vanadis(241),
+        William(242),
+        Diego(243),
+        Celestine(244),
+        Gorokichi(245),
+        Agnes(246),
+        Lucy(247),
+        AlAzif(248),
+        Hereward(249),
+        Ella(250);
 
         public final int PERSONA_INDEX;
 

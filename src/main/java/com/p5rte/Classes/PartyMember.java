@@ -4,7 +4,7 @@ import com.p5rte.Utils.Enums.EPartyMember;
 
 public class PartyMember {
     
-    public int[] levelThreshold = new int[98];
+    public int[] levelThreshold;
     public EPartyMember member;
     public PartyMemberPersona[] personas = new PartyMemberPersona[3];
     
