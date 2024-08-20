@@ -13,8 +13,8 @@ public class PartyStream {
     private static PartyMember[] m_partyMembers;
 
 
-    public static void start(boolean readIndividualLevelThresholds) {
-        readPartyMembers(readIndividualLevelThresholds);
+    public static void start(boolean readIndividualLevelThresholds, boolean readIndividualSkills) {
+        readPartyMembers(readIndividualLevelThresholds, readIndividualSkills);
     }
 
 
@@ -22,7 +22,7 @@ public class PartyStream {
      * Reads the party members from the input file
      * @param readIndividualLevelThresholds : If false, the level threshold is read only from the first pm, and set to the others.
      */
-    private static void readPartyMembers(boolean readIndividualLevelThresholds) {
+    private static void readPartyMembers(boolean readIndividualLevelThresholds, boolean readIndividualSkills) {
 
         m_partyMembers = new PartyMember[9];
 
@@ -56,21 +56,21 @@ public class PartyStream {
             personaInputStream.skip(1244); // 2 Blank PMs
 
             for (int pm = 0; pm < m_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
-                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex]);
+                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], (readIndividualSkills) ? null : m_partyMembers[pm].personas[0].partySkills);
                 personaIndex++;
             }
 
             personaInputStream.skip(11196); // 18 Blank PMs
             personaInputStream.skip(1244); // Skip Akechi (I think this ones fake)
 
-            // Kasumi's First 2 Personas
-            m_partyMembers[EPartyMember.Kasumi.getPMIndex()].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon);
-            m_partyMembers[EPartyMember.Kasumi.getPMIndex()].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis);
+            // Kasumi's First 2 Personas, her index is 8
+            m_partyMembers[8].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon, (readIndividualSkills) ? null : m_partyMembers[8].personas[0].partySkills);
+            m_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis, (readIndividualSkills) ? null : m_partyMembers[8].personas[0].partySkills);
             personaIndex += 2;
 
             // 3rd Evolution personas
             for (int pm = 0; pm < m_partyMembers.length; pm++) {
-                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex]);
+                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], (readIndividualSkills) ? null : m_partyMembers[pm].personas[0].partySkills);
                 personaIndex++;
             }
             
@@ -85,11 +85,22 @@ public class PartyStream {
      * @return
      */
     private static PartyMemberPersona readPartyMemberPersona(FileInputStream personaInputStream, EPartyMemberPersona partyPersona) throws IOException {
+        return readPartyMemberPersona(personaInputStream, partyPersona, null);
+    }
+
+    /**
+     * Reads the next PartyMember Persona from the input stream.
+     * @return
+     */
+    private static PartyMemberPersona readPartyMemberPersona(FileInputStream personaInputStream, EPartyMemberPersona partyPersona, Skill[] skills) throws IOException {
        
         // Skipping Character (because you shouldnt change that), Levels Available (because it doesnt do anything), and a blank byte
         personaInputStream.skip(4);
 
-        Skill[] skills = FileStreamUtil.readSkills(personaInputStream, 32);
+        if (skills == null)
+            skills = FileStreamUtil.readSkills(personaInputStream, 32);
+        else personaInputStream.skip(32 * 4);
+
         int[][] statGain = new int[98][5];
         
         for (int lvl = 0; lvl < 98; lvl++) {
@@ -102,9 +113,9 @@ public class PartyStream {
     }
 
 
-    public static void restart(boolean readIndividualLevelThresholds) {
+    public static void restart(boolean readIndividualLevelThresholds, boolean readIndividualSkills) {
         m_partyMembers = null;
-        start(readIndividualLevelThresholds);
+        start(readIndividualLevelThresholds, readIndividualSkills);
     }
 
 
