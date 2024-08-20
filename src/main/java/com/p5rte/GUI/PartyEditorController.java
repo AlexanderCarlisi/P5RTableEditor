@@ -39,6 +39,7 @@ public class PartyEditorController {
         }
 
         partyMemberButtonClick(1);
+        PESkillsTabController.setToRegistryEditor();
     }
 
 
@@ -83,19 +84,19 @@ public class PartyEditorController {
             personaContainer.getChildren().add(personaButton);
         }
 
-        Persona persona = PartyStream.getPersona(partyMember, 0);
+        Persona registryPersona = PartyStream.getPersona(partyMember, 0);
 
-        PEGeneralTabController.updateFields(persona);
-        PESkillsTabController.updateFields(persona);
-        PEAffinityTabController.updateFields(persona);
+        PARTYEGeneralTabController.updateFields(registryPersona, partyMember.name());
+        PESkillsTabController.updateFields(PartyStream.getPartyMember(partyMember).personas[0]); // Party Persona with 32 Skills, not the registry one with only 16
+        PEAffinityTabController.updateFields(registryPersona);
     }
 
 
     private void personaButtonClick(EPartyMember partyMember, int index) {
-        Persona persona = PartyStream.getPersona(partyMember, index);
+        Persona registryPersona = PartyStream.getPersona(partyMember, index);
 
-        PEGeneralTabController.updateFields(persona);
-        PESkillsTabController.updateFields(persona);
-        PEAffinityTabController.updateFields(persona);
+        // SkillsController should only update with Individual set to true
+        PESkillsTabController.updateFields(PartyStream.getPartyMember(partyMember).personas[0]); // Party Persona with 32 Skills, not the registry one with only 16
+        PEAffinityTabController.updateFields(registryPersona);
     }
 }

@@ -1,5 +1,7 @@
 package com.p5rte.GUI;
 
+import com.p5rte.Classes.PartyMember;
+import com.p5rte.Classes.PartyMemberPersona;
 import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.Skill;
 import com.p5rte.Utils.Enums;
@@ -171,8 +173,7 @@ public class PESkillsTabController {
             learnability.valueProperty().removeListener(learnChangeListener);
             pendingLevels.textProperty().removeListener(pendingLevelsListener);
         }
-    }
-    
+    }    
 
     // Skills Tab Fields
     @FXML
@@ -181,8 +182,14 @@ public class PESkillsTabController {
     @FXML
     private VBox skillContainer;
 
+    @FXML
+    private VBox overallContainer;
+
+    @FXML
+    private HBox inheritanceHBox;
+
     /** Stores Skill Fields for Persona Skills */
-    private final SkillHolder[] skillHolders = new SkillHolder[16];
+    private final SkillHolder[] skillHolders = new SkillHolder[32];
 
     private Stage stage;
 
@@ -208,6 +215,8 @@ public class PESkillsTabController {
             }
         };
         inheritanceComboBox.valueProperty().addListener(inheritanceListener);
+
+        setToRegistryEditor();
     }
 
 
@@ -236,11 +245,23 @@ public class PESkillsTabController {
 
         // Set Skills
         Skill[] skills = persona.getSkills();
-        for (int i = 0; i < skills.length; i++) {
-            Skill s = skills[i];
-            instance.skillHolders[i].learnability.setValue(s.getLearnability());
-            instance.skillHolders[i].skillID.setValue(s.getESkill()); // updates Trait from Listener
-            instance.skillHolders[i].pendingLevels.setText(String.valueOf(s.getPendingLevels()));
+        for (int i = 0; i < 32; i++) {
+            if (i < skills.length) {
+                Skill s = skills[i];
+                instance.skillHolders[i].learnability.setValue(s.getLearnability());
+                instance.skillHolders[i].skillID.setValue(s.getESkill()); // updates Trait from Listener
+                instance.skillHolders[i].pendingLevels.setText(String.valueOf(s.getPendingLevels()));
+
+            } else {
+                instance.skillHolders[i].learnability.setValue(SkillLearnability.Nothing);
+                instance.skillHolders[i].skillID.setValue(ESkill.None); // updates Trait from Listener
+                instance.skillHolders[i].pendingLevels.setText("0");
+                
+                instance.skillHolders[i].learnability.setDisable(true);
+                instance.skillHolders[i].skillID.setDisable(true);
+                instance.skillHolders[i].traitID.setDisable(true);
+                instance.skillHolders[i].pendingLevels.setDisable(true);
+            }
         }
     }
 
@@ -265,6 +286,24 @@ public class PESkillsTabController {
         instance.inheritanceComboBox.valueProperty().removeListener(instance.inheritanceListener);
         for (SkillHolder holder : instance.skillHolders) {
             holder.clearListeners();
+        }
+    }
+
+
+    public static void setToPartyEditor() {
+        if (instance == null) return;
+
+        if(instance.overallContainer.getChildren().contains(instance.inheritanceHBox)) {
+            instance.overallContainer.getChildren().remove(instance.inheritanceHBox);
+        }
+    }
+
+
+    public static void setToRegistryEditor() {
+        if (instance == null) return;
+
+        if(!instance.overallContainer.getChildren().contains(instance.inheritanceHBox)) {
+            instance.overallContainer.getChildren().add(instance.inheritanceHBox);
         }
     }
 }

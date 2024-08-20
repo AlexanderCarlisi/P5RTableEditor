@@ -26,17 +26,19 @@
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </BorderPane.margin>
             <Label text="Party Members" />
+        </VBox>
+        <HBox>
             <ScrollPane fitToWidth="true" fitToHeight="true">
                 <VBox fx:id="partyMemberContainer" spacing="5" />
             </ScrollPane>
-        </VBox>
-        <VBox spacing="7" fx:id="personaContainer" />
+            <VBox spacing="7" fx:id="personaContainer" />
+        </HBox>
     </left>
     <center>
         <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
             <tabs>
-                <Tab text="PersonaName" fx:id="generalTab">
-                    <fx:include source="PersonaEditorGeneral.fxml" />
+                <Tab text="Starting Data" fx:id="generalTab">
+                    <fx:include source="PartyEditorGeneral.fxml" />
                 </Tab>
                 <Tab text="Skills">
                     <fx:include source="PersonaEditorSkills.fxml" />

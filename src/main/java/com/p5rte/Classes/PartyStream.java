@@ -56,7 +56,7 @@ public class PartyStream {
             personaInputStream.skip(1244); // 2 Blank PMs
 
             for (int pm = 0; pm < m_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
-                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], (readIndividualSkills) ? null : m_partyMembers[pm].personas[0].partySkills);
+                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], (readIndividualSkills) ? null : m_partyMembers[pm].personas[0].getSkills());
                 personaIndex++;
             }
 
@@ -64,13 +64,13 @@ public class PartyStream {
             personaInputStream.skip(1244); // Skip Akechi (I think this ones fake)
 
             // Kasumi's First 2 Personas, her index is 8
-            m_partyMembers[8].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon, (readIndividualSkills) ? null : m_partyMembers[8].personas[0].partySkills);
-            m_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis, (readIndividualSkills) ? null : m_partyMembers[8].personas[0].partySkills);
+            m_partyMembers[8].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon);
+            m_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis, (readIndividualSkills) ? null : m_partyMembers[8].personas[0].getSkills());
             personaIndex += 2;
 
             // 3rd Evolution personas
             for (int pm = 0; pm < m_partyMembers.length; pm++) {
-                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], (readIndividualSkills) ? null : m_partyMembers[pm].personas[0].partySkills);
+                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], (readIndividualSkills) ? null : m_partyMembers[pm].personas[0].getSkills());
                 personaIndex++;
             }
             
