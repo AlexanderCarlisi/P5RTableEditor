@@ -41,7 +41,29 @@ public class MainMenuController {
     }
 
     @FXML
-    private void handleReloadFiles() {
+    private void handleEditPartyMembers() {
+        // Load the partyeditor scene
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.Path.PARTY_TABPANE));
+            Scene partyEditorScene = new Scene(loader.load(), stage.getWidth(), stage.getHeight());
+            partyEditorScene.getStylesheets().add(getClass().getResource(Constants.Path.DARK_MODE_CSS).toExternalForm());
+
+            PartyEditorController controller = loader.getController();
+            if (controller == null) {
+                throw new IllegalStateException("Failed to load PartyEditorController.");
+            }
+            controller.setStage(stage);
+
+            stage.setScene(partyEditorScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleResetToInputs() {
         FileStreamUtil.resetToInputs();
     }
 

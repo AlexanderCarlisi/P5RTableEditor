@@ -106,4 +106,14 @@ public class PartyStream {
         m_partyMembers = null;
         start(readIndividualLevelThresholds);
     }
+
+
+    public static PartyMember getPartyMember(EPartyMember partyMember) {
+        return m_partyMembers[partyMember.getPMIndex()];
+    }
+
+
+    public static Persona getPersona(EPartyMember partyMember, int personaIndex) {
+        return PersonaStream.getPersona(getPartyMember(partyMember).personas[personaIndex].epartyPersona.PERSONA_INDEX);
+    }
 }

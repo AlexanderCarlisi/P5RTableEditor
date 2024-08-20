@@ -28,6 +28,7 @@ public final class Constants {
         public static final String PERSONA_TABPANE = FXML_FOLDER + "PersonaEditorTabPane.fxml";
         public static final String PERSONA_GENERAL = FXML_FOLDER + "PersonaEditorGeneral.fxml";
         public static final String PERSONA_SKILLS = FXML_FOLDER + "PersonaEditorSkills.fxml";
+        public static final String PARTY_TABPANE = FXML_FOLDER + "PartyEditorTabPane.fxml";
         public static final String DARK_MODE_CSS = FXML_FOLDER + "DarkMode.css";
     }
 
