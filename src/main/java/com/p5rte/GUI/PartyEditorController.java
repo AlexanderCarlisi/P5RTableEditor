@@ -82,7 +82,7 @@ public class PartyEditorController {
 
     @FXML
     private void handleSkillsToggle() {
-        GUIManager.ConfirmationPrompt("Read Skills Individually?", "", "You will lose any unsaved changes.", 
+        GUIManager.ConfirmationPrompt("Read Skills Individually?", "Toggle reading each Party Member's Persona evolution's skills individually.", "You will lose any unsaved changes.", 
         () -> {
             if (skillsToggleButton.isSelected()) {
                 PartyStream.restart(false, true);
