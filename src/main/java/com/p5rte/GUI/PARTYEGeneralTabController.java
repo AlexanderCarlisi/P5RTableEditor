@@ -94,7 +94,7 @@ public class PARTYEGeneralTabController {
     }
 
 
-    public static void updateFields(Persona persona) {
+    public static void updateFields(Persona persona, boolean disableStats) {
         if (instance == null) return;
 
         instance.currentPersona = persona;
@@ -106,10 +106,16 @@ public class PARTYEGeneralTabController {
         instance.arcanaComboBox.setValue(persona.getArcana());
 
         // Set Stats
+        
         instance.lvlField.setText(String.valueOf(persona.getLevel()));
         int[] stats = persona.getStats();
         for (int i = 0; i < stats.length; i++) {
             instance.statFields[i].setText(String.valueOf(stats[i]));
+        }
+        
+        instance.lvlField.setDisable(disableStats);
+        for (TextField field : instance.statFields) {
+            field.setDisable(disableStats);
         }
     }
 

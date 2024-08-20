@@ -19,7 +19,7 @@
 
                 <!-- Base Stats Section -->
                 <GridPane hgap="10" vgap="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Label text="Base Stats" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" style="-fx-font-size: 16px;" />
+                    <Label text="Starting Stats" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" style="-fx-font-size: 16px;" />
                     <Label text="LvL:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="lvlField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Label text="Str:" GridPane.columnIndex="0" GridPane.rowIndex="2" />

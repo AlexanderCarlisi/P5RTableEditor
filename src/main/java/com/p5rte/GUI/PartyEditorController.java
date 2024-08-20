@@ -96,7 +96,7 @@ public class PartyEditorController {
         Persona registryPersona = PartyStream.getPersona(partyMember, index);
 
         generalTab.setText(registryPersona.getName());
-        PARTYEGeneralTabController.updateFields(registryPersona);
+        PARTYEGeneralTabController.updateFields(registryPersona, index != 0);
         PESkillsTabController.updateFields(PartyStream.getPartyMember(partyMember).personas[0]); // Party Persona with 32 Skills, not the registry one with only 16
         PEAffinityTabController.updateFields(registryPersona);
     }
