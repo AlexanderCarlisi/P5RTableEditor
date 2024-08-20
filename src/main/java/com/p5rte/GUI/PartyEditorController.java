@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -23,6 +24,9 @@ public class PartyEditorController {
 
     @FXML
     private Tab generalTab;
+
+    @FXML
+    private ToggleButton skillsToggleButton;
 
 
     private Stage stage;
@@ -43,7 +47,7 @@ public class PartyEditorController {
         }
 
         partyMemberButtonClick(1);
-        PESkillsTabController.setToRegistryEditor();
+        PESkillsTabController.setToPartyEditor();
     }
 
 
@@ -76,6 +80,19 @@ public class PartyEditorController {
     }
 
 
+    @FXML
+    private void handleSkillsToggle() {
+        GUIManager.ConfirmationPrompt("Read Skills Individually?", "", "You will lose any unsaved changes.", 
+        () -> {
+            if (skillsToggleButton.isSelected()) {
+                PartyStream.restart(false, true);
+            } else {
+                PartyStream.restart(false, false);
+            }
+        });
+    }
+
+
     private void partyMemberButtonClick(int index) {
         EPartyMember partyMember = EPartyMember.values()[index];
 
@@ -94,10 +111,11 @@ public class PartyEditorController {
 
     private void personaButtonClick(EPartyMember partyMember, int index) {
         Persona registryPersona = PartyStream.getPersona(partyMember, index);
+        int skillPersonaIndex = (skillsToggleButton.isSelected()) ? index : 0;
 
         generalTab.setText(registryPersona.getName());
         PARTYEGeneralTabController.updateFields(registryPersona, index != 0);
-        PESkillsTabController.updateFields(PartyStream.getPartyMember(partyMember).personas[0]); // Party Persona with 32 Skills, not the registry one with only 16
+        PESkillsTabController.updateFields(PartyStream.getPartyMember(partyMember).personas[skillPersonaIndex], index != 0 && !skillsToggleButton.isSelected()); // Party Persona with 32 Skills, not the registry one with only 16
         PEAffinityTabController.updateFields(registryPersona);
     }
 }

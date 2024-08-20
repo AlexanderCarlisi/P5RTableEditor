@@ -124,19 +124,24 @@ public class GUIManager extends Application {
 
 
     public static void SavePrompt(Runnable saveFunction) {
+        ConfirmationPrompt("Save Changes", "Save Changes to Tables?", "Would you like to save the changes you made to the tables?", saveFunction);
+    }
+
+
+    public static void ConfirmationPrompt(String title, String header, String content, Runnable function) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Save Changes");
-        alert.setHeaderText("Do you want to save your changes?");
-        alert.setContentText("Any unsaved changes will be lost.");
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
 
-        ButtonType saveButton = new ButtonType("Save");
-        ButtonType dontSaveButton = new ButtonType("Don't Save");
+        ButtonType confirmButton = new ButtonType("Confirm");
+        ButtonType cancelButton = new ButtonType("Cancel");
 
-        alert.getButtonTypes().setAll(saveButton, dontSaveButton);
+        alert.getButtonTypes().setAll(confirmButton, cancelButton);
 
         alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType == saveButton) {
-                saveFunction.run();
+            if (buttonType == confirmButton) {
+                function.run();
             }
         });
     }

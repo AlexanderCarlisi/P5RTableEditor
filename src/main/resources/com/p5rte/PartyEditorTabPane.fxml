@@ -14,11 +14,18 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.p5rte.GUI.PartyEditorController">
     <top>
-        <Button text="Back to Main Menu" onAction="#handleBackToMainMenu">
-            <BorderPane.margin>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </BorderPane.margin>
-        </Button>
+        <HBox spacing="20">
+            <Button text="Back to Main Menu" onAction="#handleBackToMainMenu">
+                <BorderPane.margin>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </BorderPane.margin>
+            </Button>
+            <ToggleButton text="Edit Skills Individually" onAction="#handleSkillsToggle" fx:id="skillsToggleButton">
+                <BorderPane.margin>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </BorderPane.margin>
+            </ToggleButton>
+        </HBox>
     </top>
     <left>
         <VBox spacing="10">

@@ -1,7 +1,5 @@
 package com.p5rte.GUI;
 
-import com.p5rte.Classes.PartyMember;
-import com.p5rte.Classes.PartyMemberPersona;
 import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.Skill;
 import com.p5rte.Utils.Enums;
@@ -84,21 +82,7 @@ public class PESkillsTabController {
                 if (instance.currentPersona != null)
                     instance.currentPersona.setSkillLearnability(INDEX, newValue);
 
-                switch(newValue) {
-                    case Skill: 
-                        setToSkill();
-                        pendingLevels.setText(String.valueOf(INDEX)); 
-                        break;
-                    case Trait:
-                        setToTrait();
-                        pendingLevels.setText("0");
-                        break;
-                    default:
-                        setToNothing();
-                        skillID.setValue(ESkill.None); // also does traitID via Listener
-                        pendingLevels.setText("0");
-                        break;
-                }
+                enableHolder();
             };
 
             learnability.valueProperty().addListener(learnChangeListener);
@@ -163,6 +147,31 @@ public class PESkillsTabController {
             skillID.setDisable(true);
             traitID.setDisable(true);
             pendingLevels.setDisable(true);
+        }
+
+        private void disableHolder() {
+            learnability.setDisable(true);
+            skillID.setDisable(true);
+            traitID.setDisable(true);
+            pendingLevels.setDisable(true);
+        }
+
+        private void enableHolder() {
+            switch(learnability.getValue()) {
+                case Skill: 
+                    setToSkill();
+                    pendingLevels.setText(String.valueOf(INDEX)); 
+                    break;
+                case Trait:
+                    setToTrait();
+                    pendingLevels.setText("0");
+                    break;
+                default:
+                    setToNothing();
+                    skillID.setValue(ESkill.None); // also does traitID via Listener
+                    pendingLevels.setText("0");
+                    break;
+            }
         }
 
 
@@ -235,6 +244,10 @@ public class PESkillsTabController {
 
 
     public static void updateFields(Persona persona) {
+        updateFields(persona, false);
+    }
+
+    public static void updateFields(Persona persona, boolean setDisable) {
         if (instance == null) return;
 
         // Update Current Persona
@@ -252,15 +265,11 @@ public class PESkillsTabController {
                 instance.skillHolders[i].skillID.setValue(s.getESkill()); // updates Trait from Listener
                 instance.skillHolders[i].pendingLevels.setText(String.valueOf(s.getPendingLevels()));
 
+                if (setDisable) instance.skillHolders[i].disableHolder();
+                else instance.skillHolders[i].enableHolder();
+
             } else {
-                instance.skillHolders[i].learnability.setValue(SkillLearnability.Nothing);
-                instance.skillHolders[i].skillID.setValue(ESkill.None); // updates Trait from Listener
-                instance.skillHolders[i].pendingLevels.setText("0");
-                
-                instance.skillHolders[i].learnability.setDisable(true);
-                instance.skillHolders[i].skillID.setDisable(true);
-                instance.skillHolders[i].traitID.setDisable(true);
-                instance.skillHolders[i].pendingLevels.setDisable(true);
+                instance.skillHolders[i].disableHolder();
             }
         }
     }
