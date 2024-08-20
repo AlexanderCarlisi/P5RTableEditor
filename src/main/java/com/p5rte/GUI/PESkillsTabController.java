@@ -160,7 +160,7 @@ public class PESkillsTabController {
             switch(learnability.getValue()) {
                 case Skill: 
                     setToSkill();
-                    pendingLevels.setText(String.valueOf(INDEX)); 
+                    // pendingLevels.setText(String.valueOf(INDEX)); 
                     break;
                 case Trait:
                     setToTrait();
@@ -260,13 +260,13 @@ public class PESkillsTabController {
         Skill[] skills = persona.getSkills();
         for (int i = 0; i < 32; i++) {
             if (i < skills.length) {
+                if (setDisable) instance.skillHolders[i].disableHolder();
+                else instance.skillHolders[i].enableHolder();
+
                 Skill s = skills[i];
                 instance.skillHolders[i].learnability.setValue(s.getLearnability());
                 instance.skillHolders[i].skillID.setValue(s.getESkill()); // updates Trait from Listener
                 instance.skillHolders[i].pendingLevels.setText(String.valueOf(s.getPendingLevels()));
-
-                if (setDisable) instance.skillHolders[i].disableHolder();
-                else instance.skillHolders[i].enableHolder();
 
             } else {
                 instance.skillHolders[i].disableHolder();

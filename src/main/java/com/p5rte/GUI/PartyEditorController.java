@@ -90,6 +90,7 @@ public class PartyEditorController {
         () -> {
             if (skillsToggleButton.isSelected()) {
                 PartyStream.restart(false, true);
+                
             } else {
                 PartyStream.restart(false, false);
             }
