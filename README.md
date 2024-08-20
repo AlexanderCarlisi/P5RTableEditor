@@ -16,15 +16,15 @@ References:
 
 TODO: (in order of priority)
   - Party Members
-    ! Edit Starting Level, and Stats
-    ! Edit Skills and Levels Reqs
-    ! Edit Affinity
-    ! Save Data
-    - Mass editing of Stat Gains for a Party Member
-    - Mass editing of Level Thresholds for all Party Members
-    - Mass editing of Skills for a Party Member, currently implemented but feels wrong.
-    - GUI Cleanup
-    - v0.2.0 Release, and handling Bugs that pop up from that
+    - [x] Edit Starting Level, and Stats
+    - [x] Edit Skills and Levels Reqs
+    - [x] Edit Affinity
+    - [x] Save Data
+    - [ ] Mass editing of Stat Gains for a Party Member
+    - [ ] Mass editing of Level Thresholds for all Party Members
+    - [ ] Mass editing of Skills for a Party Member, currently implemented but feels wrong.
+    - [ ] GUI Cleanup
+    - [ ] v0.2.0 Release, and handling Bugs that pop up from that
   - Enemy Editing : Segments 1 and 2 of Unit.TBL
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
