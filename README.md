@@ -16,10 +16,10 @@ References:
 
 TODO: (in order of priority)
   - Party Members
-    = Edit Starting Level, and Stats
-    = Edit Skills and Levels Reqs
-    = Edit Affinity
-    = Save Data
+    ! Edit Starting Level, and Stats
+    ! Edit Skills and Levels Reqs
+    ! Edit Affinity
+    ! Save Data
     - Mass editing of Stat Gains for a Party Member
     - Mass editing of Level Thresholds for all Party Members
     - Mass editing of Skills for a Party Member, currently implemented but feels wrong.
