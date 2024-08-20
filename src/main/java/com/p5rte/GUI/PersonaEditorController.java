@@ -71,6 +71,7 @@ public class PersonaEditorController {
             // Clear Resources from Tabs
             PEGeneralTabController.releaseResources();
             PESkillsTabController.releaseResources();
+            PEAffinityTabController.releaseResources();
 
             // Ask to save changes before leaving
             GUIManager.SavePrompt(() -> PersonaStream.writeToTables());
