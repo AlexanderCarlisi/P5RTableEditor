@@ -2,6 +2,7 @@ package com.p5rte.GUI;
 
 import com.p5rte.Classes.PartyStream;
 import com.p5rte.Classes.Persona;
+import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.Enums.EPartyMember;
 
@@ -67,12 +68,15 @@ public class PartyEditorController {
             stage.setScene(mainMenuScene);
 
             // Clear Resources from Tabs
-            PEGeneralTabController.releaseResources();
+            PARTYEGeneralTabController.releaseResources();
             PESkillsTabController.releaseResources();
             PEAffinityTabController.releaseResources();
 
             // Ask to save changes before leaving
-            // GUIManager.SavePrompt(() -> PartyStream.writeToTables());
+            GUIManager.SavePrompt(() -> {
+                PersonaStream.writeToTables(); // Save Reg data
+                PartyStream.writeToTables(false, skillsToggleButton.isSelected()); // Save party data
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
