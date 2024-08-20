@@ -17,20 +17,23 @@
         <HBox spacing="20">
             <Button text="Back to Main Menu" onAction="#handleBackToMainMenu">
                 <BorderPane.margin>
-                    <Insets top="10" right="10" bottom="10" left="10"/>
+                    <Insets top="20" right="10" bottom="10" left="10"/> <!-- Increased top margin -->
                 </BorderPane.margin>
             </Button>
             <ToggleButton text="Edit Skills Individually" onAction="#handleSkillsToggle" fx:id="skillsToggleButton">
                 <BorderPane.margin>
-                    <Insets top="10" right="10" bottom="10" left="10"/>
+                    <Insets top="20" right="10" bottom="10" left="10"/> <!-- Increased top margin -->
                 </BorderPane.margin>
             </ToggleButton>
+            <BorderPane.margin>
+                <Insets top="20" right="10" bottom="10" left="10"/> <!-- Increased top margin -->
+            </BorderPane.margin>
         </HBox>
     </top>
     <left>
         <VBox spacing="10">
             <BorderPane.margin>
-                <Insets top="10" right="10" bottom="10" left="10"/>
+                <Insets top="10" right="10" bottom="10" left="20"/> <!-- Increased left margin -->
             </BorderPane.margin>
             <Label text="Party Members" />
         </VBox>
@@ -38,11 +41,18 @@
             <ScrollPane fitToWidth="true" fitToHeight="true">
                 <VBox fx:id="partyMemberContainer" spacing="5" />
             </ScrollPane>
-            <VBox spacing="7" fx:id="personaContainer" />
+            <VBox spacing="7" fx:id="personaContainer">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+            </VBox>
         </HBox>
     </left>
     <center>
         <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+            <BorderPane.margin>
+                <Insets top="20" right="10" bottom="10" left="10"/> <!-- Increased top and left margin -->
+            </BorderPane.margin>
             <tabs>
                 <Tab text="PersonaName" fx:id="generalTab">
                     <fx:include source="PartyEditorGeneral.fxml" />
