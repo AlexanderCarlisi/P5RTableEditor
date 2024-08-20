@@ -37,7 +37,7 @@
     <center>
         <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
             <tabs>
-                <Tab text="Starting Data" fx:id="generalTab">
+                <Tab text="PersonaName" fx:id="generalTab">
                     <fx:include source="PartyEditorGeneral.fxml" />
                 </Tab>
                 <Tab text="Skills">

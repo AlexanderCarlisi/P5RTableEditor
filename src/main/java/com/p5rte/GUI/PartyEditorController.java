@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -19,6 +20,9 @@ public class PartyEditorController {
 
     @FXML
     private VBox personaContainer;
+
+    @FXML
+    private Tab generalTab;
 
 
     private Stage stage;
@@ -84,18 +88,15 @@ public class PartyEditorController {
             personaContainer.getChildren().add(personaButton);
         }
 
-        Persona registryPersona = PartyStream.getPersona(partyMember, 0);
-
-        PARTYEGeneralTabController.updateFields(registryPersona, partyMember.name());
-        PESkillsTabController.updateFields(PartyStream.getPartyMember(partyMember).personas[0]); // Party Persona with 32 Skills, not the registry one with only 16
-        PEAffinityTabController.updateFields(registryPersona);
+        personaButtonClick(partyMember, 0);
     }
 
 
     private void personaButtonClick(EPartyMember partyMember, int index) {
         Persona registryPersona = PartyStream.getPersona(partyMember, index);
 
-        // SkillsController should only update with Individual set to true
+        generalTab.setText(registryPersona.getName());
+        PARTYEGeneralTabController.updateFields(registryPersona);
         PESkillsTabController.updateFields(PartyStream.getPartyMember(partyMember).personas[0]); // Party Persona with 32 Skills, not the registry one with only 16
         PEAffinityTabController.updateFields(registryPersona);
     }

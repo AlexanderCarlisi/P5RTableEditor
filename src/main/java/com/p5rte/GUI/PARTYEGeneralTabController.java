@@ -94,13 +94,13 @@ public class PARTYEGeneralTabController {
     }
 
 
-    public static void updateFields(Persona persona, String name) {
+    public static void updateFields(Persona persona) {
         if (instance == null) return;
 
         instance.currentPersona = persona;
 
         // Set Name
-        instance.partyMemberName.setText(name);
+        instance.partyMemberName.setText(persona.getName());
 
         // Set Arcana
         instance.arcanaComboBox.setValue(persona.getArcana());
