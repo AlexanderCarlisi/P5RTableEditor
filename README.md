@@ -24,6 +24,7 @@ TODO: (in order of priority)
     - [ ] Mass editing of Level Thresholds for all Party Members
     - [ ] Mass editing of Skills for a Party Member, currently implemented but feels wrong.
     - [ ] GUI Cleanup
+    - [ ] Overall Code Cleanup
     - [ ] v0.2.0 Release, and handling Bugs that pop up from that
   - Enemy Editing : Segments 1 and 2 of Unit.TBL
   - Skill Editing : Segments 1 and 2 of Skill.TBL
