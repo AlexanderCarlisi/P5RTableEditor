@@ -1,5 +1,6 @@
 package com.p5rte.GUI;
 
+import com.p5rte.Classes.PartyMemberPersona;
 import com.p5rte.Classes.PartyStream;
 import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.PersonaStream;
@@ -27,7 +28,7 @@ public class PartyEditorController {
     private Tab generalTab;
 
     @FXML
-    private ToggleButton skillsToggleButton;
+    private ToggleButton skillsToggleButton; // turn this into one button that makes everything Individually editable.
 
 
     private Stage stage;
@@ -116,11 +117,12 @@ public class PartyEditorController {
 
     private void personaButtonClick(EPartyMember partyMember, int index) {
         Persona registryPersona = PartyStream.getPersona(partyMember, index);
-        int skillPersonaIndex = (skillsToggleButton.isSelected()) ? index : 0;
+        PartyMemberPersona partyPersona = PartyStream.getPartyMember(partyMember).personas[(skillsToggleButton.isSelected()) ? index : 0];
 
         generalTab.setText(registryPersona.getName());
         PARTYEGeneralTabController.updateFields(registryPersona, index != 0);
-        PESkillsTabController.updateFields(PartyStream.getPartyMember(partyMember).personas[skillPersonaIndex], index != 0 && !skillsToggleButton.isSelected()); // Party Persona with 32 Skills, not the registry one with only 16
+        PESkillsTabController.updateFields(partyPersona, index != 0 && !skillsToggleButton.isSelected());
         PEAffinityTabController.updateFields(registryPersona);
+        PARTYEGainsController.updateFields(partyPersona, index != 0 && !skillsToggleButton.isSelected());
     }
 }
