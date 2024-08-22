@@ -23,6 +23,7 @@ TODO: (in order of priority)
     - [ ] Mass editing of Stat Gains for a Party Member
     - [ ] Mass editing of Level Thresholds for all Party Members
     - [ ] Mass editing of Skills for a Party Member, currently implemented but feels wrong.
+    - [ ] Fix Akechi's Robin Hood and Loki getting mixed up
     - [ ] GUI Cleanup
     - [ ] Overall Code Cleanup
     - [ ] v0.2.0 Release, and handling Bugs that pop up from that
