@@ -36,6 +36,7 @@
                     <Label text="Stats per Level Up" />
                     <TextField fx:id="statsPerLevelField" />
                     <Button text="Generate Stat Gains" fx:id="generateStatGainsButton" />
+                    <Label text="Odds Total: 0" fx:id="oddsTotalLabel" />
                 </HBox>
 
 
