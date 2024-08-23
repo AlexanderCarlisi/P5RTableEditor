@@ -102,7 +102,7 @@ public class PartyEditorController {
         PartyMemberPersona partyPersona = PartyStream.getPartyMember(partyMember).personas[index];
 
         generalTab.setText(registryPersona.getName());
-        PARTYEGeneralTabController.updateFields(registryPersona);
+        PARTYEGeneralTabController.updateFields(PartyStream.getPartyMember(partyMember), index, registryPersona);
         PESkillsTabController.updateFields(partyPersona);
         PEAffinityTabController.updateFields(registryPersona);
         PARTYEGainsController.updateFields(partyPersona);

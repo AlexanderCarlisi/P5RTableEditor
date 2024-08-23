@@ -39,6 +39,13 @@
                     <Label text="Arcana" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 16px;" />
                     <ComboBox fx:id="arcanaComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 </VBox>
+
+                <!-- Copy Box -->
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Copy of" />
+                    <ComboBox fx:id="copyOfComboBox" />
+                </VBox>
+                
             </GridPane>
         </ScrollPane>
     </center>
