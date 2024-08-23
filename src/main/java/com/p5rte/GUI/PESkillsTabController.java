@@ -75,7 +75,6 @@ public class PESkillsTabController {
             };
 
             skillID.valueProperty().addListener(idChangeListener);
-            traitID.valueProperty().addListener(idChangeListener);
 
             // Setup LearnChangeListener
             learnChangeListener = (__, oldValue, newValue) -> {
