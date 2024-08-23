@@ -49,14 +49,14 @@ public class PartyStream {
 
             int personaIndex = 0;
             for (int pm = 0; pm < m_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
-                m_partyMembers[pm].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex]);
+                m_partyMembers[pm].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 0);
                 personaIndex++;
             }
 
             personaInputStream.skip(1244); // 2 Blank PMs
 
             for (int pm = 0; pm < m_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
-                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex]);
+                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 1);
                 personaIndex++;
             }
 
@@ -64,13 +64,13 @@ public class PartyStream {
             personaInputStream.skip(1244); // Skip Akechi (I think this ones fake)
 
             // Kasumi's First 2 Personas, her index is 8
-            m_partyMembers[8].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon);
-            m_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis);
+            m_partyMembers[8].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon, 0);
+            m_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis, 1);
             personaIndex += 2;
 
             // 3rd Evolution personas
             for (int pm = 0; pm < m_partyMembers.length; pm++) {
-                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex]);
+                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 2);
                 personaIndex++;
             }
             
@@ -143,7 +143,7 @@ public class PartyStream {
      * Reads the next PartyMember Persona from the input stream.
      * @return
      */
-    private static PartyMemberPersona readPartyMemberPersona(FileInputStream personaInputStream, EPartyMemberPersona partyPersona) throws IOException {
+    private static PartyMemberPersona readPartyMemberPersona(FileInputStream personaInputStream, EPartyMemberPersona partyPersona, int personaIndex) throws IOException {
        
         // Skipping Character (because you shouldnt change that), Levels Available (because it doesnt do anything), and a blank byte
         personaInputStream.skip(4);
@@ -156,7 +156,7 @@ public class PartyStream {
             }
         }
 
-        return new PartyMemberPersona(partyPersona, skills, statGain);
+        return new PartyMemberPersona(partyPersona, skills, statGain, personaIndex);
     }
 
 
