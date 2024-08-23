@@ -20,11 +20,7 @@
                     <Insets top="20" right="10" bottom="10" left="10"/> <!-- Increased top margin -->
                 </BorderPane.margin>
             </Button>
-            <ToggleButton text="Edit Skills Individually" onAction="#handleSkillsToggle" fx:id="skillsToggleButton">
-                <BorderPane.margin>
-                    <Insets top="20" right="10" bottom="10" left="10"/> <!-- Increased top margin -->
-                </BorderPane.margin>
-            </ToggleButton>
+
             <BorderPane.margin>
                 <Insets top="20" right="10" bottom="10" left="10"/> <!-- Increased top margin -->
             </BorderPane.margin>

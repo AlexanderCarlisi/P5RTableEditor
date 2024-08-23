@@ -7,10 +7,10 @@ public class PartyMember {
     public int[] levelThreshold;
     public EPartyMember member;
     public PartyMemberPersona[] personas = new PartyMemberPersona[3];
+    public boolean readIndividualThreshold = false;
     
 
-    public PartyMember(int[] levelThreshold, EPartyMember member) {
-        this.levelThreshold = levelThreshold;
+    public PartyMember(EPartyMember member) {
         this.member = member;
     }
 }

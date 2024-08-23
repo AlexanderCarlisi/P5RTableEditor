@@ -5,6 +5,7 @@ import com.p5rte.Utils.Enums.EPartyMemberPersona;
 public class PartyMemberPersona extends Persona {
     public EPartyMemberPersona epartyPersona;
     public int[][] statGain;
+    public int copyOfPersona;
 
     public PartyMemberPersona(EPartyMemberPersona ePartyMemberPersona, Skill[] partySkills, int[][] statGain) {
         // The way i did inheritance with persona is really weird here, but its for the Skill Tab

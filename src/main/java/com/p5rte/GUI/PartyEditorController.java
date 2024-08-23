@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -26,9 +25,6 @@ public class PartyEditorController {
 
     @FXML
     private Tab generalTab;
-
-    @FXML
-    private ToggleButton skillsToggleButton; // turn this into one button that makes everything Individually editable.
 
 
     private Stage stage;
@@ -76,26 +72,12 @@ public class PartyEditorController {
             // Ask to save changes before leaving
             GUIManager.SavePrompt(() -> {
                 PersonaStream.writeToTables(); // Save Reg data
-                PartyStream.writeToTables(false, skillsToggleButton.isSelected()); // Save party data
+                PartyStream.writeToTables(); // Save party data
             });
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    @FXML
-    private void handleSkillsToggle() {
-        GUIManager.ConfirmationPrompt("Read Skills Individually?", "Toggle reading each Party Member's Persona evolution's skills individually.", "You will lose any unsaved changes.", 
-        () -> {
-            if (skillsToggleButton.isSelected()) {
-                PartyStream.restart(false, true);
-                
-            } else {
-                PartyStream.restart(false, false);
-            }
-        });
     }
 
 
@@ -117,12 +99,12 @@ public class PartyEditorController {
 
     private void personaButtonClick(EPartyMember partyMember, int index) {
         Persona registryPersona = PartyStream.getPersona(partyMember, index);
-        PartyMemberPersona partyPersona = PartyStream.getPartyMember(partyMember).personas[(skillsToggleButton.isSelected()) ? index : 0];
+        PartyMemberPersona partyPersona = PartyStream.getPartyMember(partyMember).personas[index];
 
         generalTab.setText(registryPersona.getName());
-        PARTYEGeneralTabController.updateFields(registryPersona, index != 0);
-        PESkillsTabController.updateFields(partyPersona, index != 0 && !skillsToggleButton.isSelected());
+        PARTYEGeneralTabController.updateFields(registryPersona);
+        PESkillsTabController.updateFields(partyPersona);
         PEAffinityTabController.updateFields(registryPersona);
-        PARTYEGainsController.updateFields(partyPersona, index != 0 && !skillsToggleButton.isSelected());
+        PARTYEGainsController.updateFields(partyPersona);
     }
 }

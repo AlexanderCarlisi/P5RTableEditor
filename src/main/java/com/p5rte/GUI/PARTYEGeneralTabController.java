@@ -94,7 +94,7 @@ public class PARTYEGeneralTabController {
     }
 
 
-    public static void updateFields(Persona persona, boolean disableStats) {
+    public static void updateFields(Persona persona) {
         if (instance == null) return;
 
         instance.currentPersona = persona;
@@ -113,10 +113,10 @@ public class PARTYEGeneralTabController {
             instance.statFields[i].setText(String.valueOf(stats[i]));
         }
         
-        instance.lvlField.setDisable(disableStats);
-        for (TextField field : instance.statFields) {
-            field.setDisable(disableStats);
-        }
+        // instance.lvlField.setDisable(disableStats);
+        // for (TextField field : instance.statFields) {
+        //     field.setDisable(disableStats);
+        // }
     }
 
 

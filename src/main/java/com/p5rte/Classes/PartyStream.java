@@ -16,8 +16,8 @@ public class PartyStream {
     private static PartyMember[] m_partyMembers;
 
 
-    public static void start(boolean readIndividualLevelThresholds, boolean readIndividualSkills) {
-        readPartyMembers(readIndividualLevelThresholds, readIndividualSkills);
+    public static void start() {
+        readPartyMembers();
     }
 
 
@@ -25,7 +25,7 @@ public class PartyStream {
      * Reads the party members from the input file
      * @param readIndividualLevelThresholds : If false, the level threshold is read only from the first pm, and set to the others.
      */
-    private static void readPartyMembers(boolean readIndividualLevelThresholds, boolean readIndividualSkills) {
+    private static void readPartyMembers() {
 
         m_partyMembers = new PartyMember[9];
 
@@ -33,22 +33,19 @@ public class PartyStream {
             // Persona TBL Segment 2 : Initialize party members
             personaInputStream.skip(39012);
 
-            int[] levelThreshold = null;
             for (int pm = 0; pm < m_partyMembers.length; pm++) {
+                m_partyMembers[pm] = new PartyMember(EPartyMember.values()[pm+1]); // Skip protagonist
 
-                if (levelThreshold == null || readIndividualLevelThresholds) {
-                    levelThreshold = new int[98];
-                    for (int i = 0; i < 98; i++) {
-                        levelThreshold[i] = FileStreamUtil.readInt(personaInputStream);
-                    }
+                int[] levelThreshold = new int[98];
+                for (int i = 0; i < 98; i++) {
+                    levelThreshold[i] = FileStreamUtil.readInt(personaInputStream);
                 }
-                
-                m_partyMembers[pm] = new PartyMember(levelThreshold, EPartyMember.values()[pm+1]); // Skip protagonist
+
+                m_partyMembers[pm].levelThreshold = levelThreshold;
             }
 
             // Persona TBL Segment 3 : Party Persona Data
-            int bytesToSegment3 = (readIndividualLevelThresholds) ? 8 : 3144;
-            personaInputStream.skip(bytesToSegment3);
+            personaInputStream.skip(8);
 
             int personaIndex = 0;
             for (int pm = 0; pm < m_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
@@ -59,7 +56,7 @@ public class PartyStream {
             personaInputStream.skip(1244); // 2 Blank PMs
 
             for (int pm = 0; pm < m_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
-                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], (readIndividualSkills) ? null : m_partyMembers[pm].personas[0].getSkills());
+                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex]);
                 personaIndex++;
             }
 
@@ -68,12 +65,12 @@ public class PartyStream {
 
             // Kasumi's First 2 Personas, her index is 8
             m_partyMembers[8].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon);
-            m_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis, (readIndividualSkills) ? null : m_partyMembers[8].personas[0].getSkills());
+            m_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis);
             personaIndex += 2;
 
             // 3rd Evolution personas
             for (int pm = 0; pm < m_partyMembers.length; pm++) {
-                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], (readIndividualSkills) ? null : m_partyMembers[pm].personas[0].getSkills());
+                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex]);
                 personaIndex++;
             }
             
@@ -83,7 +80,7 @@ public class PartyStream {
     }
 
 
-    public static void writeToTables(boolean readIndividualLevelThresholds, boolean readIndividualSkills) {
+    public static void writeToTables() {
         try(
             RandomAccessFile rafPersona = new RandomAccessFile(Constants.Path.OUTPUT_PERSONA_TABLE, "rw");
             ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
@@ -95,7 +92,8 @@ public class PartyStream {
             // Level Thresholds Seg 2
             for (int i = 0; i < 9; i++) {
                 for (int lvl = 0; lvl < 98; lvl++) {
-                    if (readIndividualLevelThresholds)
+                    // should probably flip the loop and ifs
+                    if (m_partyMembers[i].readIndividualThreshold)
                         dos.writeInt(m_partyMembers[i].levelThreshold[lvl]);
                     else
                         dos.writeInt(m_partyMembers[0].levelThreshold[lvl]);
@@ -108,25 +106,25 @@ public class PartyStream {
 
             // Seg 3, Personas
             for (int i = 0; i < 8; i++) {
-                serializePartyPersona(dos, i, 0, null);
+                serializePartyPersona(dos, i, 0);
             }
 
             dos.write(new byte[1244]); // 2 Blank PMs
 
             for (int i = 0; i < 8; i++) {
-                serializePartyPersona(dos, i, 1, (readIndividualSkills) ? null : m_partyMembers[i].personas[0].getSkills());
+                serializePartyPersona(dos, i, 1);
             }
 
             dos.write(new byte[11196]); // 18 Blank PMs
             dos.write(new byte[1244]); // Skip Akechi (I think this ones fake)
             
             // Kasumi's First 2 Personas
-            serializePartyPersona(dos, 8, 0, null);
-            serializePartyPersona(dos, 8, 1, (readIndividualSkills) ? null : m_partyMembers[8].personas[0].getSkills());
+            serializePartyPersona(dos, 8, 0);
+            serializePartyPersona(dos, 8, 1);
 
             // 3rd Evolution personas
             for (int i = 0; i < 9; i++) {
-                serializePartyPersona(dos, i, 2, (readIndividualSkills) ? null : m_partyMembers[i].personas[0].getSkills());
+                serializePartyPersona(dos, i, 2);
             }
 
             rafPersona.write(baos.toByteArray());
@@ -146,24 +144,12 @@ public class PartyStream {
      * @return
      */
     private static PartyMemberPersona readPartyMemberPersona(FileInputStream personaInputStream, EPartyMemberPersona partyPersona) throws IOException {
-        return readPartyMemberPersona(personaInputStream, partyPersona, null);
-    }
-
-    /**
-     * Reads the next PartyMember Persona from the input stream.
-     * @return
-     */
-    private static PartyMemberPersona readPartyMemberPersona(FileInputStream personaInputStream, EPartyMemberPersona partyPersona, Skill[] skills) throws IOException {
        
         // Skipping Character (because you shouldnt change that), Levels Available (because it doesnt do anything), and a blank byte
         personaInputStream.skip(4);
-
-        if (skills == null)
-            skills = FileStreamUtil.readSkills(personaInputStream, 32);
-        else personaInputStream.skip(32 * 4);
+        Skill[] skills = FileStreamUtil.readSkills(personaInputStream, 32);
 
         int[][] statGain = new int[98][5];
-        
         for (int lvl = 0; lvl < 98; lvl++) {
             for (int stat = 0; stat < 5; stat++) {
                 statGain[lvl][stat] = personaInputStream.read();
@@ -174,15 +160,16 @@ public class PartyStream {
     }
 
 
-    private static void serializePartyPersona(DataOutputStream dos, int pmIndex, int personaIndex, Skill[] skills) throws IOException {
+    private static void serializePartyPersona(DataOutputStream dos, int pmIndex, int personaIndex) throws IOException {
         PartyMemberPersona partyPersona = m_partyMembers[pmIndex].personas[personaIndex];
+        PartyMemberPersona persona = m_partyMembers[pmIndex].personas[partyPersona.copyOfPersona];
 
         dos.writeShort(pmIndex + 2); // character
         dos.writeByte(99); // levels available
         dos.writeByte(0); // blank byte
 
         // Skills
-        if (skills == null) skills = partyPersona.getSkills();
+        Skill[] skills = persona.getSkills();
         for (Skill skill : skills) {
             dos.writeByte(skill.getPendingLevels());
             dos.writeByte(skill.getLearnability().ID);
@@ -192,15 +179,15 @@ public class PartyStream {
         // Stat Gains
         for (int lvl = 0; lvl < 98; lvl++) {
             for (int stat = 0; stat < 5; stat++) {
-                dos.writeByte(partyPersona.statGain[lvl][stat]);
+                dos.writeByte(persona.statGain[lvl][stat]);
             }
         }
     }
 
 
-    public static void restart(boolean readIndividualLevelThresholds, boolean readIndividualSkills) {
+    public static void restart() {
         m_partyMembers = null;
-        start(readIndividualLevelThresholds, readIndividualSkills);
+        start();
     }
 
 

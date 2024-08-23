@@ -94,7 +94,7 @@ public class PARTYEGainsController {
     }
 
 
-    public static void updateFields(PartyMemberPersona persona, boolean disable) {
+    public static void updateFields(PartyMemberPersona persona) {
         if (instance == null) return;
 
         instance.currentPersona = persona;
@@ -105,14 +105,6 @@ public class PARTYEGainsController {
 
         updateViewStatsLabel();
         updateManualGains();
-
-        // for (int i = 0; i < 5; i++) {
-        //     instance.statOddsFields[i].setDisable(disable);
-        //     instance.manualStatsFields[i].setDisable(disable);
-        // }
-        // instance.statsPerLevelField.setDisable(disable);
-        // instance.generateStatGainsButton.setDisable(disable);
-        // instance.manualLevelField.setDisable(disable);
     }
 
 
@@ -254,7 +246,7 @@ public class PARTYEGainsController {
 
         updateViewStatsLabel();
     }
-    
+
 
     private static void updateManualGains() {
         if (instance == null) return;

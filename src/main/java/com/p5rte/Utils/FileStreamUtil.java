@@ -81,7 +81,7 @@ public class FileStreamUtil {
     public static void resetToInputs() {
         start();
         PersonaStream.restart();
-        PartyStream.restart(false, false);
+        PartyStream.restart();
     }
 
 
@@ -97,6 +97,6 @@ public class FileStreamUtil {
 
         start();
         PersonaStream.restart();
-        PartyStream.restart(false, false);
+        PartyStream.restart();
     }
 }
