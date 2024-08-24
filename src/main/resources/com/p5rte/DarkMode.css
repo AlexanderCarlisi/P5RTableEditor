@@ -68,3 +68,12 @@
     -fx-border-color: transparent;
     -fx-table-cell-border-color:transparent;
 }
+
+.toggle-button:selected {
+    -fx-background-color: #1e74c6; /* Set the background color to blue when pressed */
+    -fx-text-fill: white; /* Optional: change text color to white when pressed */
+}
+
+.toggle-button:selected:hover {
+    -fx-background-color: #1e74c6; /* Maintain the blue color even when hovered */
+}
