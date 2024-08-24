@@ -57,10 +57,10 @@ public class PESkillsTabController {
                         instance.currentPersona.setSkillID(INDEX, eskill.ordinal());
 
                     if (eskill.ordinal() < ETrait.values().length) {
-                        traitID.setValue(ETrait.values()[eskill.ordinal()]);
+                        setTraitBox(ETrait.values()[eskill.ordinal()]);
 
                     } else {
-                        traitID.setValue(ETrait.NoTrait);
+                        setTraitBox(ETrait.NoTrait);
                     }
 
                 } else if (newValue instanceof ETrait) {
@@ -70,11 +70,12 @@ public class PESkillsTabController {
                         instance.currentPersona.setSkillID(INDEX, etrait.ordinal());
 
                     // ESkill has more Values than ETrait
-                    skillID.setValue(ESkill.values()[etrait.ordinal()]);
+                    setSkillBox(ESkill.values()[etrait.ordinal()]);
                 }
             };
 
             skillID.valueProperty().addListener(idChangeListener);
+            traitID.valueProperty().addListener(idChangeListener);
 
             // Setup LearnChangeListener
             learnChangeListener = (__, oldValue, newValue) -> {
@@ -127,6 +128,19 @@ public class PESkillsTabController {
                         object.name().equals(string)).findFirst().orElse(null);
                 }
             });
+        }
+
+
+        private void setSkillBox(ESkill newValue) {
+            skillID.valueProperty().removeListener(idChangeListener);
+            skillID.setValue(newValue);
+            skillID.valueProperty().addListener(idChangeListener);
+        }
+
+        private void setTraitBox(ETrait newValue) {
+            traitID.valueProperty().removeListener(idChangeListener);
+            traitID.setValue(newValue);
+            traitID.valueProperty().addListener(idChangeListener);
         }
 
 
