@@ -14,6 +14,7 @@ import com.p5rte.Utils.FileStreamUtil;
 public class PartyStream {
     
     private static PartyMember[] m_partyMembers;
+    private static boolean m_writeThresholdsIndividually = true;
 
 
     public static void start() {
@@ -93,7 +94,7 @@ public class PartyStream {
             for (int i = 0; i < 9; i++) {
                 for (int lvl = 0; lvl < 98; lvl++) {
                     // should probably flip the loop and ifs
-                    if (m_partyMembers[i].readIndividualThreshold)
+                    if (m_writeThresholdsIndividually)
                         dos.writeInt(m_partyMembers[i].levelThreshold[lvl]);
                     else
                         dos.writeInt(m_partyMembers[0].levelThreshold[lvl]);
@@ -198,5 +199,14 @@ public class PartyStream {
 
     public static Persona getPersona(EPartyMember partyMember, int personaIndex) {
         return PersonaStream.getPersona(getPartyMember(partyMember).personas[personaIndex].epartyPersona.PERSONA_INDEX);
+    }
+
+
+    public static void setWriteThresholds(boolean writeThresholdsIndividually) {
+        m_writeThresholdsIndividually = writeThresholdsIndividually;
+    }
+
+    public static boolean getWriteThresholds() {
+        return m_writeThresholdsIndividually;
     }
 }

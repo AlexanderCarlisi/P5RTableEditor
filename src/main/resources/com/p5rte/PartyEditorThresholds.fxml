@@ -16,16 +16,16 @@
             <VBox fx:id="overallContainer" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Label text="Level Up Thresholds" style="-fx-font-size: 20px;" />
 
-                <HBox spacing="10">
-                    <ToggleButton text="Edit Range" fx:id="rangeToggleButton" />
-                    <TextField promptText="Lower Bound Inclusive" fx:id="rangeLowerTextField" />
-                    <TextField promptText="Upper Bound Inclusive" fx:id="rangeUpperTextField" />
-                </HBox>
+                <ToggleButton text="Edit Thresholds Individually" fx:id="individualToggleButton" />
 
-                <Label text="Mass Edit" />
+                <Label text="Mass Edit | Bounds [1, 98]" />
                 <HBox spacing="10">
                     <TextField promptText="Multiplier" fx:id="multiplierTextField" />
                     <Button text="Multiply" fx:id="multiplyButton" />
+                </HBox>
+                <HBox spacing="10">
+                    <TextField promptText="Lower Bound Inclusive" fx:id="rangeLowerTextField" />
+                    <TextField promptText="Upper Bound Inclusive" fx:id="rangeUpperTextField" />
                 </HBox>
 
                 <Label text="Manual Edit" />
