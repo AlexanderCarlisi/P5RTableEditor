@@ -21,7 +21,7 @@ TODO: (in order of priority)
     - [x] Edit Affinity
     - [x] Save Data
     - [x] Mass editing of Stat Gains for a Party Member
-    - [ ] Mass editing of Level Thresholds for all Party Members
+    - [x] Mass editing of Level Thresholds for all Party Members
     - [x] Mass editing of Skills for a Party Member, currently implemented but feels wrong.
     - [ ] GUI Cleanup
     - [ ] Overall Code Cleanup
