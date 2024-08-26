@@ -1,5 +1,6 @@
 package com.p5rte.GUI;
 
+import com.p5rte.Classes.PartyMember;
 import com.p5rte.Classes.PartyMemberPersona;
 import com.p5rte.Classes.PartyStream;
 import com.p5rte.Classes.Persona;
@@ -97,14 +98,16 @@ public class PartyEditorController {
     }
 
 
-    private void personaButtonClick(EPartyMember partyMember, int index) {
-        Persona registryPersona = PartyStream.getPersona(partyMember, index);
-        PartyMemberPersona partyPersona = PartyStream.getPartyMember(partyMember).personas[index];
+    private void personaButtonClick(EPartyMember ePartyMember, int index) {
+        Persona registryPersona = PartyStream.getPersona(ePartyMember, index);
+        PartyMemberPersona partyPersona = PartyStream.getPartyMember(ePartyMember).personas[index];
+        PartyMember partyMember = PartyStream.getPartyMember(ePartyMember);
 
         generalTab.setText(registryPersona.getName());
-        PARTYEGeneralTabController.updateFields(PartyStream.getPartyMember(partyMember), index, registryPersona);
+        PARTYEGeneralTabController.updateFields(PartyStream.getPartyMember(ePartyMember), index, registryPersona);
         PESkillsTabController.updateFields(partyPersona);
         PEAffinityTabController.updateFields(registryPersona);
         PARTYEGainsController.updateFields(partyPersona);
+        PARTYEThresholdsController.updateFields(partyMember);
     }
 }

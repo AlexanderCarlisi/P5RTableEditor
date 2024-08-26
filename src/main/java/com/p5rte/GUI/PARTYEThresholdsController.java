@@ -35,8 +35,6 @@ public class PARTYEThresholdsController {
     private Stage stage;
     private static PARTYEThresholdsController instance;
     private PartyMember currentPartyMember;
-    private PartyMember individualPartyMember = PartyStream.getPartyMember(EPartyMember.Ryuji);
-    private PartyMember selectedPartyMember;
 
     private TextField[] manualThresholds = new TextField[98];
     // private ChangeListener[] manualThresholdListeners = new ChangeListener[98];
@@ -75,6 +73,7 @@ public class PARTYEThresholdsController {
         individualToggleButton.setSelected(PartyStream.getWriteThresholds());
         individualToggleButton.selectedProperty().addListener((__, ___, selected) -> {
             PartyStream.setWriteThresholds(selected);
+            disableCheck();
         });
     }
 
@@ -83,6 +82,11 @@ public class PARTYEThresholdsController {
         if (instance == null) return;
 
         instance.currentPartyMember = partyMember;
+        disableCheck();
+
+        for (int i = 0; i < 98; i++) {
+            instance.manualThresholds[i].setText(String.valueOf(partyMember.levelThreshold[i]));
+        }
     }
    
 
@@ -101,6 +105,21 @@ public class PARTYEThresholdsController {
             return Math.min(Math.max(value, lower), upper);
         } catch (NumberFormatException e) {
             return lower;
+        }
+    }
+
+
+    private static void disableCheck() {
+        if (instance == null) return;
+
+        boolean value = !instance.individualToggleButton.isSelected() && instance.currentPartyMember.member != EPartyMember.Ryuji;
+
+        instance.rangeLowerTextField.setDisable(value);
+        instance.rangeUpperTextField.setDisable(value);
+        instance.multiplierTextField.setDisable(value);
+        instance.multiplyButton.setDisable(value);
+        for (TextField th : instance.manualThresholds) {
+            th.setDisable(value);
         }
     }
 }
