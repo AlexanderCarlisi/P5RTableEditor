@@ -75,6 +75,38 @@ public class PARTYEThresholdsController {
             PartyStream.setWriteThresholds(selected);
             disableCheck();
         });
+
+        // While the Table stores the Thresholds as an Unsigned Integer, Java doesn't do unsigned integers, 
+        // so the Integer Limit is halved (womp womp).
+        multiplyButton.pressedProperty().addListener((__, ___, newValue) -> {
+            if (!newValue) return;
+            
+            int start = parseInt(instance.rangeLowerTextField.getText(), 1, 98) - 1;
+            int end = parseInt(instance.rangeUpperTextField.getText(), start + 1, 98) - 1;
+            float mult = parseFloat(instance.multiplierTextField.getText(), 0, Integer.MAX_VALUE);
+            
+            for (int i = start; i <= end; i++) {
+                try {
+                    int value = instance.currentPartyMember.levelThreshold[i];
+
+                    // Convert float to int carefully, using long for intermediate calculation to prevent overflow
+                    long result = Math.round((float) value * mult);
+                    
+                    // Ensure the result fits into an int without overflow
+                    if (result > Integer.MAX_VALUE || result < Integer.MIN_VALUE) {
+                        throw new ArithmeticException("Overflow occurred");
+                    }
+                    
+                    instance.currentPartyMember.levelThreshold[i] = (int) result;
+                } catch (ArithmeticException ex) {
+                    instance.currentPartyMember.levelThreshold[i] = Integer.MAX_VALUE; // or some fallback value
+                }
+            }
+
+            for (int i = 0; i < 98; i++) {
+                instance.manualThresholds[i].setText(String.valueOf(instance.currentPartyMember.levelThreshold[i]));
+            }
+        });
     }
 
 
@@ -102,6 +134,15 @@ public class PARTYEThresholdsController {
     private static int parseInt(String text, int lower, int upper) {
         try {
             int value = Integer.parseInt(text);
+            return Math.min(Math.max(value, lower), upper);
+        } catch (NumberFormatException e) {
+            return lower;
+        }
+    }
+
+    private static float parseFloat(String text, float lower, float upper) {
+        try {
+            float value = Float.parseFloat(text);
             return Math.min(Math.max(value, lower), upper);
         } catch (NumberFormatException e) {
             return lower;
