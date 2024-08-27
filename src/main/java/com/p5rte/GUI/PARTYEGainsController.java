@@ -12,30 +12,21 @@ import javafx.stage.Stage;
 
 public class PARTYEGainsController {
 
-    @FXML 
-    private TextField viewLevelTextField;
-    @FXML
-    private Label viewStatsLabel;
-    @FXML
-    private HBox statOddsContainer;
-    @FXML
-    private TextField statsPerLevelField;
-    @FXML
-    private TextField manualLevelField;
-    @FXML
-    private HBox manualStatsContainer;
-    @FXML
-    private Button generateStatGainsButton;
-    @FXML
-    private Label oddsTotalLabel;
-
-
+    @FXML private TextField viewLevelTextField;
+    @FXML private Label viewStatsLabel;
+    @FXML private HBox statOddsContainer;
+    @FXML private TextField statsPerLevelField;
+    @FXML private TextField manualLevelField;
+    @FXML private HBox manualStatsContainer;
+    @FXML private Button generateStatGainsButton;
+    @FXML private Label oddsTotalLabel;
     private Stage stage;
 
-    private static PARTYEGainsController instance;
-    private final TextField[] statOddsFields = new TextField[5];
-    private final TextField[] manualStatsFields = new TextField[5];
-    private PartyMemberPersona currentPersona;
+
+    private final TextField[] ODDS_FIELDS = new TextField[5];
+    private final TextField[] MANUAL_FIELDS = new TextField[5];
+    private static PARTYEGainsController s_instance;
+    private PartyMemberPersona _currentPersona;
 
 
     public void setStage(Stage stage) {
@@ -45,18 +36,18 @@ public class PARTYEGainsController {
 
     @FXML
     public void initialize() {
-        instance = this;
+        s_instance = this;
 
         // Initialize Fields
         for (int i = 0; i < 5; i++) {
             TextField statOddsField = new TextField();
             statOddsContainer.getChildren().add(statOddsField);
-            statOddsFields[i] = statOddsField;
+            ODDS_FIELDS[i] = statOddsField;
             statOddsField.setText("20");
 
             TextField manualStatsField = new TextField();
             manualStatsContainer.getChildren().add(manualStatsField);
-            manualStatsFields[i] = manualStatsField;
+            MANUAL_FIELDS[i] = manualStatsField;
             manualStatsField.setText("0");
         }
 
@@ -76,16 +67,16 @@ public class PARTYEGainsController {
         });
         for (int i = 0; i < 5; i++) {
             final int INDEX = i;
-            manualStatsFields[i].textProperty().addListener((__, oldValue, newValue) -> {
+            MANUAL_FIELDS[i].textProperty().addListener((__, oldValue, newValue) -> {
                 if (getStatFromField(newValue.strip()) == getStatFromField(oldValue.strip())) return;
                 setManualGain(INDEX);
             });
 
-            statOddsFields[i].textProperty().addListener((__, oldValue, newValue) -> {
+            ODDS_FIELDS[i].textProperty().addListener((__, oldValue, newValue) -> {
                 if (getOddFromField(newValue.strip()) == getOddFromField(oldValue.strip())) return;
                 int total = 0;
                 for (int j = 0; j < 5; j++) {
-                    total += getOddFromField(statOddsFields[j].getText());
+                    total += getOddFromField(ODDS_FIELDS[j].getText());
                 }
                 oddsTotalLabel.setText("Total Odds: " + total);
             });
@@ -95,13 +86,13 @@ public class PARTYEGainsController {
 
 
     public static void updateFields(PartyMemberPersona persona) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        instance.currentPersona = persona;
+        s_instance._currentPersona = persona;
 
-        instance.viewLevelTextField.setText("1");
-        instance.statsPerLevelField.setText("3");
-        instance.manualLevelField.setText("1");
+        s_instance.viewLevelTextField.setText("1");
+        s_instance.statsPerLevelField.setText("3");
+        s_instance.manualLevelField.setText("1");
 
         updateViewStatsLabel();
         updateManualGains();
@@ -109,13 +100,13 @@ public class PARTYEGainsController {
 
 
     private static void randomizeStatGains() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
         int[] statOdds = new int[5];
         int total = 0;
         int numbers = 0;
         for (int i = 0; i < 5; i++) {
-            statOdds[i] = getOddFromField(instance.statOddsFields[i].getText());
+            statOdds[i] = getOddFromField(s_instance.ODDS_FIELDS[i].getText());
             total += statOdds[i];
             if (statOdds[i] != 0) numbers++;
         }
@@ -129,7 +120,7 @@ public class PARTYEGainsController {
             return;
         }
 
-        int statsPerLevel = getStatsPerLevelField(instance.statsPerLevelField.getText());
+        int statsPerLevel = getStatsPerLevelField(s_instance.statsPerLevelField.getText());
 
         if (numbers < statsPerLevel) {
             GUIManager.DisplayWarning (
@@ -172,7 +163,7 @@ public class PARTYEGainsController {
             }
         }
 
-        instance.currentPersona.statGain = statGain;
+        s_instance._currentPersona.statGain = statGain;
         updateManualGains();
         updateViewStatsLabel();
     }
@@ -183,7 +174,7 @@ public class PARTYEGainsController {
      * Should only be called when Returning to the Main Menu.
      */
     public static void releaseResources() {
-        if (instance == null) return;
+        if (s_instance == null) return;
     }
 
 
@@ -218,14 +209,14 @@ public class PARTYEGainsController {
 
 
     private static void updateViewStatsLabel() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        int level = getLevelFromField(instance.viewLevelTextField.getText());
+        int level = getLevelFromField(s_instance.viewLevelTextField.getText());
         int[] stats = new int[5];
 
         for (int l = 0; l < level; l++) {
             for (int i = 0; i < 5; i++) {
-                stats[i] += instance.currentPersona.statGain[l][i];
+                stats[i] += s_instance._currentPersona.statGain[l][i];
             }
         }
 
@@ -234,27 +225,27 @@ public class PARTYEGainsController {
             statsText += stats[i] + ", ";
         }
 
-        instance.viewStatsLabel.setText(statsText.substring(0, statsText.length() - 2));
+        s_instance.viewStatsLabel.setText(statsText.substring(0, statsText.length() - 2));
     }
 
 
     private static void setManualGain(int index) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        int level = getLevelFromField(instance.manualLevelField.getText());
-        instance.currentPersona.statGain[level - 1][index] = getStatFromField(instance.manualStatsFields[index].getText());
+        int level = getLevelFromField(s_instance.manualLevelField.getText());
+        s_instance._currentPersona.statGain[level - 1][index] = getStatFromField(s_instance.MANUAL_FIELDS[index].getText());
 
         updateViewStatsLabel();
     }
 
 
     private static void updateManualGains() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        int level = getLevelFromField(instance.manualLevelField.getText());
+        int level = getLevelFromField(s_instance.manualLevelField.getText());
 
         for (int i = 0; i < 5; i++) {
-            instance.manualStatsFields[i].setText(String.valueOf(instance.currentPersona.statGain[level - 1][i]));
+            s_instance.MANUAL_FIELDS[i].setText(String.valueOf(s_instance._currentPersona.statGain[level - 1][i]));
         }
 
         updateViewStatsLabel();

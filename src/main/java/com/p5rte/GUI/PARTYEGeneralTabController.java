@@ -32,44 +32,31 @@ public class PARTYEGeneralTabController {
     }
 
 
-    // General Tab Fields
-    @FXML
-    private Label partyMemberName;
-    @FXML
-    private ComboBox<Enums.Arcana> arcanaComboBox;
-    @FXML
-    private ComboBox<CopyHolder> copyOfComboBox;
-
-    // Stat Fields
-    @FXML
-    private TextField lvlField;
-    @FXML
-    private TextField strengthField;
-    @FXML
-    private TextField magicField;
-    @FXML
-    private TextField enduranceField;
-    @FXML
-    private TextField agilityField;
-    @FXML
-    private TextField luckField;
-
+    // FXML Elements
+    @FXML private Label partyMemberName;
+    @FXML private ComboBox<Enums.Arcana> arcanaComboBox;
+    @FXML private ComboBox<CopyHolder> copyOfComboBox;
+    @FXML private TextField lvlField;
+    @FXML private TextField strengthField;
+    @FXML private TextField magicField;
+    @FXML private TextField enduranceField;
+    @FXML private TextField agilityField;
+    @FXML private TextField luckField;
     private Stage stage;
 
-    private Persona currentPersona;
+
+    @SuppressWarnings ("unchecked")
+    private final ChangeListener<String>[] STAT_LISTENERS = new ChangeListener[6];
+    private final TextField[] STAT_FIELDS = new TextField[5];
+
+    private static PARTYEGeneralTabController s_instance;
+
+    private Persona _currentPersona;
     private PartyMember _partyMember;
     private int _partyMemberPersonaIndex;
 
-    private ChangeListener<Arcana> arcanaListener;
-
-    @SuppressWarnings ("unchecked")
-    private final ChangeListener<String>[] statListeners = new ChangeListener[6];
-
-    private ChangeListener<CopyHolder> copyOfListener;
-
-    private final TextField[] statFields = new TextField[5];
-
-    private static PARTYEGeneralTabController instance;
+    private ChangeListener<Arcana> _arcanaListener;
+    private ChangeListener<CopyHolder> _copyListener;
 
 
     public void setStage(Stage stage) {
@@ -78,87 +65,82 @@ public class PARTYEGeneralTabController {
 
     @FXML
     public void initialize() {
-        instance = this;
+        s_instance = this;
 
         // Arcana Box Setup
         arcanaComboBox.getItems().addAll(Enums.Arcana.values());
-        arcanaListener = (__, ___, newArcana) -> {
-            if (currentPersona != null) {
-                currentPersona.setArcana(newArcana);
+        _arcanaListener = (__, ___, newArcana) -> {
+            if (_currentPersona != null) {
+                _currentPersona.setArcana(newArcana);
             }
         };
-        arcanaComboBox.valueProperty().addListener(arcanaListener);
+        arcanaComboBox.valueProperty().addListener(_arcanaListener);
 
         // Stat Fields Setup 
-        statFields[0] = strengthField;
-        statFields[1] = magicField;
-        statFields[2] = enduranceField;
-        statFields[3] = agilityField;
-        statFields[4] = luckField;
+        STAT_FIELDS[0] = strengthField;
+        STAT_FIELDS[1] = magicField;
+        STAT_FIELDS[2] = enduranceField;
+        STAT_FIELDS[3] = agilityField;
+        STAT_FIELDS[4] = luckField;
 
         // Field Listeners
-        for (int i = 0; i < statFields.length; i++) {
+        for (int i = 0; i < STAT_FIELDS.length; i++) {
             final int INDEX = i;
 
             // Stat Listeners
-            statListeners[i] = (__, ___, newVal) -> {
+            STAT_LISTENERS[i] = (__, ___, newVal) -> {
                 setStat(newVal, INDEX);
             };
-            statFields[i].textProperty().addListener(statListeners[i]);
+            STAT_FIELDS[i].textProperty().addListener(STAT_LISTENERS[i]);
         }
 
         // Level Field Listener
-        statListeners[5] = (__, ___, newVal) -> {
-            if (instance == null) return;
+        STAT_LISTENERS[5] = (__, ___, newVal) -> {
+            if (s_instance == null) return;
 
             int value = getStatFromField(newVal);
-            instance.currentPersona.setLevel(value);
+            s_instance._currentPersona.setLevel(value);
         };
-        lvlField.textProperty().addListener(statListeners[5]);
+        lvlField.textProperty().addListener(STAT_LISTENERS[5]);
 
         // CopyOf ComboBox Setup
-        copyOfListener = (__, ___, newValue) -> {
+        _copyListener = (__, ___, newValue) -> {
             if (_partyMember != null && newValue != null) {
                 _partyMember.personas[_partyMemberPersonaIndex].copyOfPersona = newValue.indexInPersonas;
             }
         };
-        copyOfComboBox.valueProperty().addListener(copyOfListener);
+        copyOfComboBox.valueProperty().addListener(_copyListener);
     }
 
 
     public static void updateFields(PartyMember partyMember, int partyPersonaIndex, Persona persona) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        instance.currentPersona = persona;
+        s_instance._currentPersona = persona;
 
         // Set Name
-        instance.partyMemberName.setText(persona.getName());
+        s_instance.partyMemberName.setText(persona.getName());
 
         // Set Arcana
-        instance.arcanaComboBox.setValue(persona.getArcana());
+        s_instance.arcanaComboBox.setValue(persona.getArcana());
 
         // Set Stats
-        instance.lvlField.setText(String.valueOf(persona.getLevel()));
+        s_instance.lvlField.setText(String.valueOf(persona.getLevel()));
         int[] stats = persona.getStats();
         for (int i = 0; i < stats.length; i++) {
-            instance.statFields[i].setText(String.valueOf(stats[i]));
+            s_instance.STAT_FIELDS[i].setText(String.valueOf(stats[i]));
         }
 
         // Update CopyOf ComboBox
         CopyHolder[] copyHolders = new CopyHolder[3];
-        instance.copyOfComboBox.getItems().clear();
+        s_instance.copyOfComboBox.getItems().clear();
         for (int i = 0; i < 3; i++) {
             copyHolders[i] = new CopyHolder(partyMember.personas[i].epartyPersona, i);
-            instance.copyOfComboBox.getItems().add(copyHolders[i]);
+            s_instance.copyOfComboBox.getItems().add(copyHolders[i]);
         }
-        instance._partyMember = partyMember;
-        instance._partyMemberPersonaIndex = partyPersonaIndex;
-        instance.copyOfComboBox.setValue(copyHolders[partyMember.personas[partyPersonaIndex].copyOfPersona]);
-        
-        // instance.lvlField.setDisable(disableStats);
-        // for (TextField field : instance.statFields) {
-        //     field.setDisable(disableStats);
-        // }
+        s_instance._partyMember = partyMember;
+        s_instance._partyMemberPersonaIndex = partyPersonaIndex;
+        s_instance.copyOfComboBox.setValue(copyHolders[partyMember.personas[partyPersonaIndex].copyOfPersona]);
     }
 
 
@@ -177,10 +159,10 @@ public class PARTYEGeneralTabController {
 
 
     private static void setStat(String newText, int index) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
         int value = getStatFromField(newText);
-        instance.currentPersona.setStat(index, value);
+        s_instance._currentPersona.setStat(index, value);
     }
 
 
@@ -189,13 +171,13 @@ public class PARTYEGeneralTabController {
      * Should only be called when Returning to the Main Menu.
      */
     public static void releaseResources() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
         // Clear Listeners
-        instance.arcanaComboBox.valueProperty().removeListener(instance.arcanaListener);
-        for (int i = 0; i < instance.statFields.length; i++) {
-            instance.statFields[i].textProperty().removeListener(instance.statListeners[i]);
+        s_instance.arcanaComboBox.valueProperty().removeListener(s_instance._arcanaListener);
+        for (int i = 0; i < s_instance.STAT_FIELDS.length; i++) {
+            s_instance.STAT_FIELDS[i].textProperty().removeListener(s_instance.STAT_LISTENERS[i]);
         }
-        instance.lvlField.textProperty().removeListener(instance.statListeners[5]);
+        s_instance.lvlField.textProperty().removeListener(s_instance.STAT_LISTENERS[5]);
     }
 }

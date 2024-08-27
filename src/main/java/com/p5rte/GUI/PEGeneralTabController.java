@@ -16,74 +16,50 @@ import javafx.stage.Stage;
 
 public class PEGeneralTabController {
 
-    // General Tab Fields
-    @FXML
-    private Label personaNameLabel;
-    @FXML
-    private ComboBox<Enums.Arcana> arcanaComboBox;
+    // FXML Elements
+    @FXML private Label personaNameLabel;
+    @FXML private ComboBox<Enums.Arcana> arcanaComboBox;
 
-    // Stat Fields
-    @FXML
-    private TextField lvlField;
-    @FXML
-    private TextField strengthField;
-    @FXML
-    private TextField magicField;
-    @FXML
-    private TextField enduranceField;
-    @FXML
-    private TextField agilityField;
-    @FXML
-    private TextField luckField;
+    @FXML private TextField lvlField;
+    @FXML private TextField strengthField;
+    @FXML private TextField magicField;
+    @FXML private TextField enduranceField;
+    @FXML private TextField agilityField;
+    @FXML private TextField luckField;
 
-    // Bit Flag Toggle Buttons
-    @FXML
-    private ToggleButton DLCFlag;
-    @FXML
-    private ToggleButton treasureFlag;
-    @FXML
-    private ToggleButton partyFlag;
-    @FXML
-    private ToggleButton storyFlag;
-    @FXML
-    private ToggleButton nRegFlag;
-    @FXML
-    private ToggleButton fusionFlag;
-    @FXML
-    private ToggleButton evolvedFlag;
+    @FXML private ToggleButton DLCFlag;
+    @FXML private ToggleButton treasureFlag;
+    @FXML private ToggleButton partyFlag;
+    @FXML private ToggleButton storyFlag;
+    @FXML private ToggleButton nRegFlag;
+    @FXML private ToggleButton fusionFlag;
+    @FXML private ToggleButton evolvedFlag;
 
-    // Stat Weight Fields
-    @FXML
-    private TextField strWeightField;
-    @FXML
-    private TextField magWeightField;
-    @FXML
-    private TextField endWeightField;
-    @FXML
-    private TextField agiWeightField;
-    @FXML
-    private TextField lukWeightField;
-
+    @FXML private TextField strWeightField;
+    @FXML private TextField magWeightField;
+    @FXML private TextField endWeightField;
+    @FXML private TextField agiWeightField;
+    @FXML private TextField lukWeightField;
     private Stage stage;
 
-    private Persona currentPersona;
-
-    private ChangeListener<Arcana> arcanaListener;
 
     @SuppressWarnings ("unchecked")
-    private final ChangeListener<String>[] statListeners = new ChangeListener[6];
+    private final ChangeListener<String>[] STAT_LISTENERS = new ChangeListener[6];
 
     @SuppressWarnings ("unchecked")
-    private final ChangeListener<String>[] statWeightListeners = new ChangeListener[5];
+    private final ChangeListener<String>[] STAT_WEIGHT_LISTENERS = new ChangeListener[5];
 
     @SuppressWarnings ("unchecked")
-    private final ChangeListener<Boolean>[] bitFlagListeners = new ChangeListener[7];
+    private final ChangeListener<Boolean>[] FLAG_LISTENERS = new ChangeListener[7];
 
-    private final TextField[] statFields = new TextField[5];
-    private final TextField[] statWeightFields = new TextField[5];
-    private final ToggleButton[] bitFlagButtons = new ToggleButton[7];
+    private final TextField[] STAT_FIELDS = new TextField[5];
+    private final TextField[] WEIGHT_FIELDS = new TextField[5];
+    private final ToggleButton[] FLAG_BUTTONS = new ToggleButton[7];
 
-    private static PEGeneralTabController instance;
+
+    private static PEGeneralTabController s_instance;
+    private Persona _currentPersona;
+    private ChangeListener<Arcana> _arcanaListener;
 
 
     public void setStage(Stage stage) {
@@ -92,105 +68,105 @@ public class PEGeneralTabController {
 
     @FXML
     public void initialize() {
-        instance = this;
+        s_instance = this;
 
         // Arcana Box Setup
         arcanaComboBox.getItems().addAll(Enums.Arcana.values());
-        arcanaListener = (__, ___, newArcana) -> {
-            if (currentPersona != null) {
-                currentPersona.setArcana(newArcana);
+        _arcanaListener = (__, ___, newArcana) -> {
+            if (_currentPersona != null) {
+                _currentPersona.setArcana(newArcana);
             }
         };
-        arcanaComboBox.valueProperty().addListener(arcanaListener);
+        arcanaComboBox.valueProperty().addListener(_arcanaListener);
 
         // Stat Fields Setup 
-        statFields[0] = strengthField;
-        statFields[1] = magicField;
-        statFields[2] = enduranceField;
-        statFields[3] = agilityField;
-        statFields[4] = luckField;
+        STAT_FIELDS[0] = strengthField;
+        STAT_FIELDS[1] = magicField;
+        STAT_FIELDS[2] = enduranceField;
+        STAT_FIELDS[3] = agilityField;
+        STAT_FIELDS[4] = luckField;
 
-        statWeightFields[0] = strWeightField;
-        statWeightFields[1] = magWeightField;
-        statWeightFields[2] = endWeightField;
-        statWeightFields[3] = agiWeightField;
-        statWeightFields[4] = lukWeightField;
+        WEIGHT_FIELDS[0] = strWeightField;
+        WEIGHT_FIELDS[1] = magWeightField;
+        WEIGHT_FIELDS[2] = endWeightField;
+        WEIGHT_FIELDS[3] = agiWeightField;
+        WEIGHT_FIELDS[4] = lukWeightField;
 
         // Field Listeners
-        for (int i = 0; i < statFields.length; i++) {
+        for (int i = 0; i < STAT_FIELDS.length; i++) {
             final int INDEX = i;
 
             // Stat Listeners
-            statListeners[i] = (__, ___, newVal) -> {
+            STAT_LISTENERS[i] = (__, ___, newVal) -> {
                 setStat(newVal, INDEX);
             };
-            statFields[i].textProperty().addListener(statListeners[i]);
+            STAT_FIELDS[i].textProperty().addListener(STAT_LISTENERS[i]);
 
             // Stat Weight Listeners
-            statWeightListeners[i] = (__, ___, newVal) -> {
+            STAT_WEIGHT_LISTENERS[i] = (__, ___, newVal) -> {
                 setWeightedStat(newVal, INDEX);
             };
-            statWeightFields[i].textProperty().addListener(statWeightListeners[i]);
+            WEIGHT_FIELDS[i].textProperty().addListener(STAT_WEIGHT_LISTENERS[i]);
         }
 
         // Level Field Listener
-        statListeners[5] = (__, ___, newVal) -> {
-            if (instance == null) return;
+        STAT_LISTENERS[5] = (__, ___, newVal) -> {
+            if (s_instance == null) return;
 
             int value = getStatFromField(newVal);
-            instance.currentPersona.setLevel(value);
+            s_instance._currentPersona.setLevel(value);
         };
-        lvlField.textProperty().addListener(statListeners[5]);
+        lvlField.textProperty().addListener(STAT_LISTENERS[5]);
 
         // Bit Flags Setup
-        bitFlagButtons[0] = DLCFlag;
-        bitFlagButtons[1] = treasureFlag;
-        bitFlagButtons[2] = partyFlag;
-        bitFlagButtons[3] = storyFlag;
-        bitFlagButtons[4] = nRegFlag;
-        bitFlagButtons[5] = fusionFlag;
-        bitFlagButtons[6] = evolvedFlag;
+        FLAG_BUTTONS[0] = DLCFlag;
+        FLAG_BUTTONS[1] = treasureFlag;
+        FLAG_BUTTONS[2] = partyFlag;
+        FLAG_BUTTONS[3] = storyFlag;
+        FLAG_BUTTONS[4] = nRegFlag;
+        FLAG_BUTTONS[5] = fusionFlag;
+        FLAG_BUTTONS[6] = evolvedFlag;
 
         // Bitflag Listeners
-        for (int i = 0; i < bitFlagButtons.length; i++) {
+        for (int i = 0; i < FLAG_BUTTONS.length; i++) {
             final int INDEX = i;
-            bitFlagListeners[i] = (__, ___, newVal) -> {
-                if (currentPersona != null) 
-                    instance.currentPersona.setBitFlag(BitFlag.values()[INDEX].INDEX, newVal);
+            FLAG_LISTENERS[i] = (__, ___, newVal) -> {
+                if (_currentPersona != null) 
+                    s_instance._currentPersona.setBitFlag(BitFlag.values()[INDEX].INDEX, newVal);
             };
-            bitFlagButtons[i].selectedProperty().addListener(bitFlagListeners[i]);
+            FLAG_BUTTONS[i].selectedProperty().addListener(FLAG_LISTENERS[i]);
         }
     }
 
 
     public static void updateFields(Persona persona) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        instance.currentPersona = persona;
+        s_instance._currentPersona = persona;
 
         // Set Name
-        instance.personaNameLabel.setText(persona.getName());
+        s_instance.personaNameLabel.setText(persona.getName());
 
         // Set Arcana
-        instance.arcanaComboBox.setValue(persona.getArcana());
+        s_instance.arcanaComboBox.setValue(persona.getArcana());
 
         // Set Stats
-        instance.lvlField.setText(String.valueOf(persona.getLevel()));
+        s_instance.lvlField.setText(String.valueOf(persona.getLevel()));
         int[] stats = persona.getStats();
         for (int i = 0; i < stats.length; i++) {
-            instance.statFields[i].setText(String.valueOf(stats[i]));
+            s_instance.STAT_FIELDS[i].setText(String.valueOf(stats[i]));
         }
 
         // Set Bit Flags
         boolean[] flags = persona.getBitFlags();
         for (BitFlag flag : BitFlag.values()) {
-            instance.bitFlagButtons[flag.ordinal()].setSelected(flags[flag.INDEX]);
+            s_instance.FLAG_BUTTONS[flag.ordinal()].setSelected(flags[flag.INDEX]);
         }
 
         // Set Stat Weights
         int[] statWeights = persona.getStatWeights();
         for (int i = 0; i < statWeights.length; i++) {
-            instance.statWeightFields[i].setText(String.valueOf(statWeights[i]));
+            s_instance.WEIGHT_FIELDS[i].setText(String.valueOf(statWeights[i]));
         }
     }
 
@@ -210,16 +186,16 @@ public class PEGeneralTabController {
 
 
     private static void setStat(String newText, int index) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
         int value = getStatFromField(newText);
-        instance.currentPersona.setStat(index, value);
+        s_instance._currentPersona.setStat(index, value);
     }
     private static void setWeightedStat(String newText, int index) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
         int value = getStatFromField(newText);
-        instance.currentPersona.setStatWeight(index, value);
+        s_instance._currentPersona.setStatWeight(index, value);
     }
 
 
@@ -228,19 +204,19 @@ public class PEGeneralTabController {
      * Should only be called when Returning to the Main Menu.
      */
     public static void releaseResources() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
         // Clear Listeners
-        instance.arcanaComboBox.valueProperty().removeListener(instance.arcanaListener);
-        for (int i = 0; i < instance.statFields.length; i++) {
-            instance.statFields[i].textProperty().removeListener(instance.statListeners[i]);
+        s_instance.arcanaComboBox.valueProperty().removeListener(s_instance._arcanaListener);
+        for (int i = 0; i < s_instance.STAT_FIELDS.length; i++) {
+            s_instance.STAT_FIELDS[i].textProperty().removeListener(s_instance.STAT_LISTENERS[i]);
         }
-        instance.lvlField.textProperty().removeListener(instance.statListeners[5]);
-        for (int i = 0; i < instance.statWeightListeners.length; i++) {
-            instance.statWeightFields[i].textProperty().removeListener(instance.statWeightListeners[i]);
+        s_instance.lvlField.textProperty().removeListener(s_instance.STAT_LISTENERS[5]);
+        for (int i = 0; i < s_instance.STAT_WEIGHT_LISTENERS.length; i++) {
+            s_instance.WEIGHT_FIELDS[i].textProperty().removeListener(s_instance.STAT_WEIGHT_LISTENERS[i]);
         }
-        for (int i = 0; i < instance.bitFlagListeners.length; i++) {
-            instance.bitFlagButtons[i].selectedProperty().removeListener(instance.bitFlagListeners[i]);
+        for (int i = 0; i < s_instance.FLAG_LISTENERS.length; i++) {
+            s_instance.FLAG_BUTTONS[i].selectedProperty().removeListener(s_instance.FLAG_LISTENERS[i]);
         }
     }
 }

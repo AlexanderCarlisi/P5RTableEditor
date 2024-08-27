@@ -15,7 +15,7 @@ import com.p5rte.Utils.FileStreamUtil;
 
 public class PersonaStream {
     
-    private static Persona[] m_personas;
+    private static Persona[] s_personas;
 
 
     public static void start() {
@@ -24,7 +24,7 @@ public class PersonaStream {
 
 
     private static void readPersonas() {
-        m_personas = new Persona[464];
+        s_personas = new Persona[464];
 
         // Segment 1 of Persona Table | BitFlags, ArcanaID, Level, Stats, SkillInheritanceID
         try (FileInputStream personaInputStream = new FileInputStream(Constants.Path.INPUT_PERSONA_TABLE);
@@ -32,7 +32,7 @@ public class PersonaStream {
             
             personaInputStream.skip(0x4); // start of bitflags for first persona
 
-            for (int p = 0; p < m_personas.length; p++) {
+            for (int p = 0; p < s_personas.length; p++) {
                 boolean[] bitFlags = new boolean[10];
                 int arcanaID;
                 int level;
@@ -71,13 +71,13 @@ public class PersonaStream {
                 skillInheritanceID = personaInputStream.read();
                 personaInputStream.skip(0x2); // Skip Unkown Bytes
 
-                m_personas[p] = new Persona(bitFlags, arcanaID, level, stats, skillInheritanceID, Constants.personaIDtoName[p]);
+                s_personas[p] = new Persona(bitFlags, arcanaID, level, stats, skillInheritanceID, Constants.personaIDtoName[p]);
             }
 
             // Segment 2 of Persona Table | Stat Growth Weights, Skills, and Traits
             personaInputStream.skip(0x10); // Skip 10 Empty Bytes between Segments, it should be 16, but its 10.
 
-            for (Persona m_persona : m_personas) {
+            for (Persona m_persona : s_personas) {
                 int[] statWeights = new int[5];
                 Skill[] skills;
             
@@ -100,8 +100,8 @@ public class PersonaStream {
             // Segment 3 of Unit Table | Affinities
             unitInputStream.skip(84580); // Skip 84580 Bytes to reach beginning of affinity data
         
-            for (Persona m_persona : m_personas) {
-                HashMap<AffinityIndex, AffinityElement> elements = new HashMap<>();
+            for (Persona m_persona : s_personas) {
+                HashMap<AffinityIndex, Affinity> elements = new HashMap<>();
                 for (AffinityIndex ai : AffinityIndex.values()) {
                     elements.put(ai, readAffinityElement(unitInputStream));
                 }
@@ -118,14 +118,14 @@ public class PersonaStream {
     }
 
 
-    private static AffinityElement readAffinityElement(FileInputStream unitInputStream) throws IOException{
+    private static Affinity readAffinityElement(FileInputStream unitInputStream) throws IOException{
         HashMap<AffinityDataIndex, Boolean> data = new HashMap<>();
         byte[] bytes = unitInputStream.readNBytes(2);
         for (int shift = 0; shift < 8; shift++) {
             // Shift through the bits and set boolean values
             data.put(AffinityDataIndex.values()[7 - shift], (bytes[0] >> shift & 1) == 1);
         }
-        return new AffinityElement(bytes[1], data);
+        return new Affinity(bytes[1], data);
     }
 
 
@@ -144,7 +144,7 @@ public class PersonaStream {
          DataOutputStream dos = new DataOutputStream(baos)) {
 
             // Segment 1 Data Serialization
-            for (Persona persona : m_personas) {
+            for (Persona persona : s_personas) {
                 // Serialize bitFlags into two bytes
                 boolean[] bitFlags = persona.getBitFlags();
                 int firstByte = 0;
@@ -192,7 +192,7 @@ public class PersonaStream {
             dos.write(new byte[12]); // 16 Blank Bytes between Segments
             dos.writeInt(32480); // Write Segment2 Size
 
-            for (Persona persona : m_personas) {
+            for (Persona persona : s_personas) {
                 // Serialize statWeights
                 int[] statWeights = persona.getStatWeights();
                 for (int statWeight : statWeights) {
@@ -216,11 +216,11 @@ public class PersonaStream {
 
             // Serialize Unit Table Data Segement 3
 
-            for (Persona persona : m_personas) {
+            for (Persona persona : s_personas) {
                 // Serialize Affinities
-                HashMap<AffinityIndex, AffinityElement> affinities = persona.getAffinities();
+                HashMap<AffinityIndex, Affinity> affinities = persona.getAffinities();
                 for (AffinityIndex ai : AffinityIndex.values()) {
-                    AffinityElement element = affinities.get(ai);
+                    Affinity element = affinities.get(ai);
                     int boolByte = 0;
                     for (int i = 0; i < 8; i++) {
                         if (element.data.get(AffinityDataIndex.values()[7 - i])) {
@@ -244,7 +244,7 @@ public class PersonaStream {
 
 
     public static void writeToTables() {
-        if (m_personas == null) {
+        if (s_personas == null) {
             readPersonas();
         }
 
@@ -269,15 +269,15 @@ public class PersonaStream {
 
 
     public static Persona getPersona(int index) {
-        if (m_personas == null) {
+        if (s_personas == null) {
             readPersonas();
         }
-        return m_personas[index];
+        return s_personas[index];
     }
 
 
     public static void restart() {
-        m_personas = null;
+        s_personas = null;
         start();
     }
 }

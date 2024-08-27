@@ -16,28 +16,21 @@ import javafx.stage.Stage;
 
 public class PARTYEThresholdsController {
 
-    @FXML
-    private ToggleButton individualToggleButton;
-    @FXML
-    private TextField rangeLowerTextField;
-    @FXML
-    private TextField rangeUpperTextField;
-
-    @FXML
-    private TextField multiplierTextField;
-    @FXML
-    private Button multiplyButton;
-
-    @FXML
-    private VBox thresholdContainer;
-
-
+    // FXML Elements
+    @FXML private ToggleButton individualToggleButton;
+    @FXML private TextField rangeLowerTextField;
+    @FXML private TextField rangeUpperTextField;
+    @FXML private TextField multiplierTextField;
+    @FXML private Button multiplyButton;
+    @FXML private VBox thresholdContainer;
     private Stage stage;
-    private static PARTYEThresholdsController instance;
-    private PartyMember currentPartyMember;
 
-    private TextField[] manualThresholds = new TextField[98];
+
+    private final TextField[] MANUAL_FIELDS = new TextField[98];
     // private ChangeListener[] manualThresholdListeners = new ChangeListener[98];
+    
+    private static PARTYEThresholdsController s_instance;
+    private PartyMember _currentPartyMember;
 
 
     public void setStage(Stage stage) {
@@ -47,7 +40,7 @@ public class PARTYEThresholdsController {
 
     @FXML
     public void initialize() {
-        instance = this;
+        s_instance = this;
 
         // Initialize Manual Thresholds
         for (int i = 0; i < 98; i++) {
@@ -56,7 +49,7 @@ public class PARTYEThresholdsController {
 
             TextField textField = new TextField();
             textField.setPromptText("0");
-            manualThresholds[i] = textField;
+            MANUAL_FIELDS[i] = textField;
 
             Label levelLabel = new Label("Level: " + (i+1));
             hbox.getChildren().add(levelLabel);
@@ -66,7 +59,7 @@ public class PARTYEThresholdsController {
 
             final int index = i;
             textField.textProperty().addListener((__, ___, newValue) -> {
-                currentPartyMember.levelThreshold[index] = parseInt(newValue, 0, Integer.MAX_VALUE);
+                _currentPartyMember.levelThreshold[index] = parseInt(newValue, 0, Integer.MAX_VALUE);
             });
         }
 
@@ -81,13 +74,13 @@ public class PARTYEThresholdsController {
         multiplyButton.pressedProperty().addListener((__, ___, newValue) -> {
             if (!newValue) return;
             
-            int start = parseInt(instance.rangeLowerTextField.getText(), 1, 98) - 1;
-            int end = parseInt(instance.rangeUpperTextField.getText(), start + 1, 98) - 1;
-            float mult = parseFloat(instance.multiplierTextField.getText(), 0, Integer.MAX_VALUE);
+            int start = parseInt(s_instance.rangeLowerTextField.getText(), 1, 98) - 1;
+            int end = parseInt(s_instance.rangeUpperTextField.getText(), start + 1, 98) - 1;
+            float mult = parseFloat(s_instance.multiplierTextField.getText(), 0, Integer.MAX_VALUE);
             
             for (int i = start; i <= end; i++) {
                 try {
-                    int value = instance.currentPartyMember.levelThreshold[i];
+                    int value = s_instance._currentPartyMember.levelThreshold[i];
 
                     // Convert float to int carefully, using long for intermediate calculation to prevent overflow
                     long result = Math.round((float) value * mult);
@@ -97,27 +90,27 @@ public class PARTYEThresholdsController {
                         throw new ArithmeticException("Overflow occurred");
                     }
                     
-                    instance.currentPartyMember.levelThreshold[i] = (int) result;
+                    s_instance._currentPartyMember.levelThreshold[i] = (int) result;
                 } catch (ArithmeticException ex) {
-                    instance.currentPartyMember.levelThreshold[i] = Integer.MAX_VALUE; // or some fallback value
+                    s_instance._currentPartyMember.levelThreshold[i] = Integer.MAX_VALUE; // or some fallback value
                 }
             }
 
             for (int i = 0; i < 98; i++) {
-                instance.manualThresholds[i].setText(String.valueOf(instance.currentPartyMember.levelThreshold[i]));
+                s_instance.MANUAL_FIELDS[i].setText(String.valueOf(s_instance._currentPartyMember.levelThreshold[i]));
             }
         });
     }
 
 
     public static void updateFields(PartyMember partyMember) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        instance.currentPartyMember = partyMember;
+        s_instance._currentPartyMember = partyMember;
         disableCheck();
 
         for (int i = 0; i < 98; i++) {
-            instance.manualThresholds[i].setText(String.valueOf(partyMember.levelThreshold[i]));
+            s_instance.MANUAL_FIELDS[i].setText(String.valueOf(partyMember.levelThreshold[i]));
         }
     }
    
@@ -127,7 +120,7 @@ public class PARTYEThresholdsController {
      * Should only be called when Returning to the Main Menu.
      */
     public static void releaseResources() {
-        if (instance == null) return;
+        if (s_instance == null) return;
     }
 
 
@@ -151,15 +144,15 @@ public class PARTYEThresholdsController {
 
 
     private static void disableCheck() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        boolean value = !instance.individualToggleButton.isSelected() && instance.currentPartyMember.member != EPartyMember.Ryuji;
+        boolean value = !s_instance.individualToggleButton.isSelected() && s_instance._currentPartyMember.member != EPartyMember.Ryuji;
 
-        instance.rangeLowerTextField.setDisable(value);
-        instance.rangeUpperTextField.setDisable(value);
-        instance.multiplierTextField.setDisable(value);
-        instance.multiplyButton.setDisable(value);
-        for (TextField th : instance.manualThresholds) {
+        s_instance.rangeLowerTextField.setDisable(value);
+        s_instance.rangeUpperTextField.setDisable(value);
+        s_instance.multiplierTextField.setDisable(value);
+        s_instance.multiplyButton.setDisable(value);
+        for (TextField th : s_instance.MANUAL_FIELDS) {
             th.setDisable(value);
         }
     }

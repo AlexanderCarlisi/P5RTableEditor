@@ -18,17 +18,12 @@ import javafx.stage.Stage;
 
 public class PartyEditorController {
 
-    @FXML
-    private VBox partyMemberContainer;
-
-    @FXML
-    private VBox personaContainer;
-
-    @FXML
-    private Tab generalTab;
-
-
+    @FXML private VBox partyMemberContainer;
+    @FXML private VBox personaContainer;
+    @FXML private Tab generalTab;
     private Stage stage;
+
+    
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -69,6 +64,8 @@ public class PartyEditorController {
             PARTYEGeneralTabController.releaseResources();
             PESkillsTabController.releaseResources();
             PEAffinityTabController.releaseResources();
+            PARTYEGainsController.releaseResources();
+            PARTYEThresholdsController.releaseResources();
 
             // Ask to save changes before leaving
             GUIManager.SavePrompt(() -> {
