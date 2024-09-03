@@ -179,5 +179,6 @@ public class PARTYEGeneralTabController {
             s_instance.STAT_FIELDS[i].textProperty().removeListener(s_instance.STAT_LISTENERS[i]);
         }
         s_instance.lvlField.textProperty().removeListener(s_instance.STAT_LISTENERS[5]);
+        s_instance.copyOfComboBox.valueProperty().removeListener(s_instance._copyListener);
     }
 }
