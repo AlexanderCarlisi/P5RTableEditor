@@ -2,6 +2,7 @@ module com.p5rte {
     requires javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.graphics;
+    requires javafx.base;
 
     opens com.p5rte to javafx.fxml;
     exports com.p5rte;

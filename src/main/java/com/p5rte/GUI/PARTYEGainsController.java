@@ -2,6 +2,7 @@ package com.p5rte.GUI;
 
 import com.p5rte.Classes.PartyMemberPersona;
 
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,8 +26,18 @@ public class PARTYEGainsController {
 
     private final TextField[] ODDS_FIELDS = new TextField[5];
     private final TextField[] MANUAL_FIELDS = new TextField[5];
+
+    @SuppressWarnings ("unchecked")
+    private final ChangeListener<String>[] ODDS_LISTENERS = new ChangeListener[5];
+
+    @SuppressWarnings ("unchecked")
+    private final ChangeListener<String>[] MANUAL_LISTENERS = new ChangeListener[5];
+
     private static PARTYEGainsController s_instance;
     private PartyMemberPersona _currentPersona;
+
+    private ChangeListener<String> _viewLevelListener;
+    private ChangeListener<String> _manualLevelListener;
 
 
     public void setStage(Stage stage) {
@@ -52,9 +63,10 @@ public class PARTYEGainsController {
         }
 
         // Add Listeners
-        viewLevelTextField.textProperty().addListener((__, ___, ____) -> {
+        _viewLevelListener = (__, ___, ____) -> {
             updateViewStatsLabel();
-        });
+        };
+        viewLevelTextField.textProperty().addListener(_viewLevelListener);
 
         // Randomizer Fields
         generateStatGainsButton.setOnAction(e -> {
@@ -62,24 +74,27 @@ public class PARTYEGainsController {
         });
 
         // Manual Gain Fields
-        manualLevelField.textProperty().addListener((__, ___, ____) -> {
+        _manualLevelListener = (__, ___, ____) -> {
             updateManualGains();
-        });
+        };
+        manualLevelField.textProperty().addListener(_manualLevelListener);
         for (int i = 0; i < 5; i++) {
             final int INDEX = i;
-            MANUAL_FIELDS[i].textProperty().addListener((__, oldValue, newValue) -> {
+            MANUAL_LISTENERS[i] = (__, oldValue, newValue) -> {
                 if (getStatFromField(newValue.strip()) == getStatFromField(oldValue.strip())) return;
                 setManualGain(INDEX);
-            });
+            };
+            MANUAL_FIELDS[i].textProperty().addListener(MANUAL_LISTENERS[i]);
 
-            ODDS_FIELDS[i].textProperty().addListener((__, oldValue, newValue) -> {
+            ODDS_LISTENERS[i] = (__, oldValue, newValue) -> {
                 if (getOddFromField(newValue.strip()) == getOddFromField(oldValue.strip())) return;
                 int total = 0;
                 for (int j = 0; j < 5; j++) {
                     total += getOddFromField(ODDS_FIELDS[j].getText());
                 }
                 oddsTotalLabel.setText("Total Odds: " + total);
-            });
+            };
+            ODDS_FIELDS[i].textProperty().addListener(ODDS_LISTENERS[i]);
         }
 
     }
@@ -175,6 +190,15 @@ public class PARTYEGainsController {
      */
     public static void releaseResources() {
         if (s_instance == null) return;
+
+        s_instance.viewLevelTextField.textProperty().removeListener(s_instance._viewLevelListener);
+        s_instance.statsPerLevelField.textProperty().removeListener(s_instance._viewLevelListener);
+        s_instance.manualLevelField.textProperty().removeListener(s_instance._manualLevelListener);
+
+        for (int i = 0; i < 5; i++) {
+            s_instance.ODDS_FIELDS[i].textProperty().removeListener(s_instance.ODDS_LISTENERS[i]);
+            s_instance.MANUAL_FIELDS[i].textProperty().removeListener(s_instance.MANUAL_LISTENERS[i]);
+        }
     }
 
 

@@ -4,6 +4,7 @@ import com.p5rte.Classes.PartyMember;
 import com.p5rte.Classes.PartyStream;
 import com.p5rte.Utils.Enums.EPartyMember;
 
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,10 +28,15 @@ public class PARTYEThresholdsController {
 
 
     private final TextField[] MANUAL_FIELDS = new TextField[98];
-    // private ChangeListener[] manualThresholdListeners = new ChangeListener[98];
+
+    @SuppressWarnings ("unchecked")
+    private final ChangeListener<String>[] MANUAL_LISTENERS = new ChangeListener[98];
     
     private static PARTYEThresholdsController s_instance;
     private PartyMember _currentPartyMember;
+
+    private ChangeListener<Boolean> _individualToggleListener;
+    private ChangeListener<Boolean> _multiplyListener;
 
 
     public void setStage(Stage stage) {
@@ -57,21 +63,25 @@ public class PARTYEThresholdsController {
 
             thresholdContainer.getChildren().add(hbox);
 
+            // Text Field Listener
             final int index = i;
-            textField.textProperty().addListener((__, ___, newValue) -> {
+            MANUAL_LISTENERS[i] = (__, ___, newValue) -> {
                 _currentPartyMember.levelThreshold[index] = parseInt(newValue, 0, Integer.MAX_VALUE);
-            });
+            };
+            textField.textProperty().addListener(MANUAL_LISTENERS[i]);
         }
 
+        // Individual Toggle Button
         individualToggleButton.setSelected(PartyStream.getWriteThresholds());
-        individualToggleButton.selectedProperty().addListener((__, ___, selected) -> {
-            PartyStream.setWriteThresholds(selected);
+        _individualToggleListener = (__, ___, newValue) -> {
+            PartyStream.setWriteThresholds(newValue);
             disableCheck();
-        });
+        };
+        individualToggleButton.selectedProperty().addListener(_individualToggleListener);
 
         // While the Table stores the Thresholds as an Unsigned Integer, Java doesn't do unsigned integers, 
         // so the Integer Limit is halved (womp womp).
-        multiplyButton.pressedProperty().addListener((__, ___, newValue) -> {
+        _multiplyListener = (__, ___, newValue) -> {
             if (!newValue) return;
             
             int start = parseInt(s_instance.rangeLowerTextField.getText(), 1, 98) - 1;
@@ -99,7 +109,8 @@ public class PARTYEThresholdsController {
             for (int i = 0; i < 98; i++) {
                 s_instance.MANUAL_FIELDS[i].setText(String.valueOf(s_instance._currentPartyMember.levelThreshold[i]));
             }
-        });
+        };
+        multiplyButton.pressedProperty().addListener(_multiplyListener);
     }
 
 
@@ -121,6 +132,13 @@ public class PARTYEThresholdsController {
      */
     public static void releaseResources() {
         if (s_instance == null) return;
+
+        for (int i = 0; i < s_instance.MANUAL_LISTENERS.length; i++) {
+            s_instance.MANUAL_FIELDS[i].textProperty().removeListener(s_instance.MANUAL_LISTENERS[i]);
+        }
+
+        s_instance.individualToggleButton.selectedProperty().removeListener(s_instance._individualToggleListener);
+        s_instance.multiplyButton.pressedProperty().removeListener(s_instance._multiplyListener);
     }
 
 
