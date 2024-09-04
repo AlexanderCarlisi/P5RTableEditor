@@ -4,6 +4,7 @@ import com.p5rte.Classes.Persona;
 import com.p5rte.Utils.Enums;
 import com.p5rte.Utils.Enums.Arcana;
 import com.p5rte.Utils.Enums.BitFlag;
+import com.p5rte.Utils.Enums.EPartyMemberPersona;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -40,6 +41,8 @@ public class PEGeneralTabController {
     @FXML private TextField endWeightField;
     @FXML private TextField agiWeightField;
     @FXML private TextField lukWeightField;
+
+    @FXML private Label warningLabel;
     private Stage stage;
 
 
@@ -136,10 +139,12 @@ public class PEGeneralTabController {
             };
             FLAG_BUTTONS[i].selectedProperty().addListener(FLAG_LISTENERS[i]);
         }
+
+        warningLabel.setText("");
     }
 
 
-    public static void updateFields(Persona persona) {
+    public static void updateFields(Persona persona, int personaIndex) {
         if (s_instance == null) return;
 
         s_instance._currentPersona = persona;
@@ -168,6 +173,16 @@ public class PEGeneralTabController {
         for (int i = 0; i < statWeights.length; i++) {
             s_instance.WEIGHT_FIELDS[i].setText(String.valueOf(statWeights[i]));
         }
+
+        // Warn user if the Persona is a PartyPersona
+        boolean caught = false;
+        for (EPartyMemberPersona partyPersona : EPartyMemberPersona.values()) {
+            if (partyPersona.PERSONA_INDEX == personaIndex) {
+                s_instance.warningLabel.setText("Warning: This is a Party Member Persona.\nEdit skills in PartyEditor for it to take effect.");
+                caught = true;
+            }
+        }
+        if (!caught) s_instance.warningLabel.setText("");
     }
 
 

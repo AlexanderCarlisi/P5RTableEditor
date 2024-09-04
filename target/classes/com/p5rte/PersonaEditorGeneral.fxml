@@ -74,7 +74,10 @@
                     <Label text="Evolved" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                 </GridPane>
 
-
+                <!-- Warning Label -->
+                <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label  fx:id="warningLabel" style="-fx-font-size: 16px;" />
+                </VBox>
             </GridPane>
         </ScrollPane>
     </center>

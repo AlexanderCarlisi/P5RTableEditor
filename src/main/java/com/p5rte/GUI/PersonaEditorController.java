@@ -124,7 +124,7 @@ public class PersonaEditorController {
         generalTab.setText(persona.getName());
 
         // Update Tabs
-        PEGeneralTabController.updateFields(persona);
+        PEGeneralTabController.updateFields(persona, index);
         PESkillsTabController.updateFields(persona);
         PEAffinityTabController.updateFields(persona);
     }
