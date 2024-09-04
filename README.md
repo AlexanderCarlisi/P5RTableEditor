@@ -24,8 +24,8 @@ TODO: (in order of priority)
     - [x] Mass editing of Level Thresholds for all Party Members
     - [x] Mass editing of Skills for a Party Member, currently implemented but feels wrong.
     - [ ] Redirect RegistryPersonas that corespond to PartyMemberPersonas
-    - [ ] GUI Cleanup
-    - [ ] Overall Code Cleanup
+    - [x] GUI Cleanup | Disables Editor Fields that won't update anything   
+    - [x] Overall Code Cleanup | It's good enough for now, I'm sure I'll refactor it again at some point
     - [ ] v0.2.0 Release, and handling Bugs that pop up from that
   - Enemy Editing : Segments 1 and 2 of Unit.TBL
   - Skill Editing : Segments 1 and 2 of Skill.TBL
