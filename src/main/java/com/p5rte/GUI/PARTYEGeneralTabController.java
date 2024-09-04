@@ -107,6 +107,8 @@ public class PARTYEGeneralTabController {
         _copyListener = (__, ___, newValue) -> {
             if (_partyMember != null && newValue != null) {
                 _partyMember.personas[_partyMemberPersonaIndex].copyOfPersona = newValue.indexInPersonas;
+                // This is really ugly :)
+                disableEditor();
             }
         };
         copyOfComboBox.valueProperty().addListener(_copyListener);
@@ -141,6 +143,8 @@ public class PARTYEGeneralTabController {
         s_instance._partyMember = partyMember;
         s_instance._partyMemberPersonaIndex = partyPersonaIndex;
         s_instance.copyOfComboBox.setValue(copyHolders[partyMember.personas[partyPersonaIndex].copyOfPersona]);
+
+        // disableEditor(); // If the value doesn't change, re-disable/enable since SkillsEditor will reset
     }
 
 
@@ -163,6 +167,18 @@ public class PARTYEGeneralTabController {
 
         int value = getStatFromField(newText);
         s_instance._currentPersona.setStat(index, value);
+    }
+
+
+    private static void disableEditor() {
+        boolean disable = (s_instance._partyMemberPersonaIndex != s_instance._partyMember.personas[s_instance._partyMemberPersonaIndex].copyOfPersona);
+        s_instance.arcanaComboBox.setDisable(disable);
+        s_instance.lvlField.setDisable(disable);
+        for (TextField field : s_instance.STAT_FIELDS) {
+            field.setDisable(disable);
+        }
+        
+        PESkillsTabController.disableEditor(disable);
     }
 
 

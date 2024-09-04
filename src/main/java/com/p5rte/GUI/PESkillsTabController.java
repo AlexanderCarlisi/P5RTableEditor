@@ -319,4 +319,15 @@ public class PESkillsTabController {
             s_instance.overallContainer.getChildren().add(s_instance.inheritanceHBox);
         }
     }
+
+
+    public static void disableEditor(boolean disable) {
+        if (s_instance == null) return;
+
+        s_instance.inheritanceComboBox.setDisable(disable);
+        for (SkillHolder sh : s_instance.SKILL_HOLDERS) {
+            if (disable) sh.disableHolder();
+            else sh.enableHolder();
+        }
+    }
 }

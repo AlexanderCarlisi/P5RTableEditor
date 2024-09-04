@@ -101,10 +101,10 @@ public class PartyEditorController {
         PartyMember partyMember = PartyStream.getPartyMember(ePartyMember);
 
         generalTab.setText(registryPersona.getName());
-        PARTYEGeneralTabController.updateFields(PartyStream.getPartyMember(ePartyMember), index, registryPersona);
         PESkillsTabController.updateFields(partyPersona);
         PEAffinityTabController.updateFields(registryPersona);
         PARTYEGainsController.updateFields(partyPersona);
         PARTYEThresholdsController.updateFields(partyMember);
+        PARTYEGeneralTabController.updateFields(PartyStream.getPartyMember(ePartyMember), index, registryPersona); // Goes last to Disable Editor
     }
 }
