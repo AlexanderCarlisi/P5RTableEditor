@@ -123,4 +123,11 @@ public class PEAffinityTabController {
             s_instance.TOGGLE_BUTTONS[i].selectedProperty().removeListener(s_instance.toggleChangeListeners[i]);
         }
     }
+
+
+    public static void disableEditor(boolean disable) {
+        for (ToggleButton tb : s_instance.TOGGLE_BUTTONS) {
+            tb.setDisable(disable);
+        }
+    }
 }
