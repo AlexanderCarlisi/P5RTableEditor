@@ -180,6 +180,7 @@ public class PARTYEGeneralTabController {
         
         PESkillsTabController.disableEditor(disable);
         PEAffinityTabController.disableEditor(disable);
+        PARTYEGainsController.disableEditor(disable);
     }
 
 

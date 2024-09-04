@@ -274,4 +274,16 @@ public class PARTYEGainsController {
 
         updateViewStatsLabel();
     }
+
+
+    public static void disableEditor(boolean disable) {
+        s_instance.viewLevelTextField.setDisable(disable);
+        s_instance.viewStatsLabel.setDisable(disable);
+        s_instance.statOddsContainer.setDisable(disable);
+        s_instance.statsPerLevelField.setDisable(disable);
+        s_instance.manualLevelField.setDisable(disable);
+        s_instance.manualStatsContainer.setDisable(disable);
+        s_instance.generateStatGainsButton.setDisable(disable);
+        s_instance.oddsTotalLabel.setDisable(disable);
+    }
 }
