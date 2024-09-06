@@ -4,41 +4,41 @@ import com.p5rte.Utils.Enums.ESkill;
 import com.p5rte.Utils.Enums.SkillLearnability;
 
 public class Skill {
-    private int m_pendingLevels;
-    private SkillLearnability m_learnability;
-    private int m_id;
+    private int _pendingLevels;
+    private SkillLearnability _learnability;
+    private int _id;
 
     public Skill(int pendingLevels, int learnability, int id) {
-        m_id = id;
-        m_pendingLevels = pendingLevels;
-        m_learnability = SkillLearnability.getSkillLearnability(learnability);
+        _id = id;
+        _pendingLevels = pendingLevels;
+        _learnability = SkillLearnability.getSkillLearnability(learnability);
     }
 
     public int getPendingLevels() {
-        return m_pendingLevels;
+        return _pendingLevels;
     }
 
     public SkillLearnability getLearnability() {
-        return m_learnability;
+        return _learnability;
     }
 
     public int getID() {
-        return m_id;
+        return _id;
     }
 
     public ESkill getESkill() {
-        return ESkill.getAt(m_id);
+        return ESkill.getAt(_id);
     }
 
     public void setPendingLevels(int pendingLevels) {
-        m_pendingLevels = pendingLevels;
+        _pendingLevels = pendingLevels;
     }
 
     public void setLearnability(SkillLearnability learnability) {
-        m_learnability = learnability;
+        _learnability = learnability;
     }
 
     public void setID(int id) {
-        m_id = id;
+        _id = id;
     }
 }

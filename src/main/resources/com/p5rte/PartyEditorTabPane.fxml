@@ -62,9 +62,9 @@
                 <Tab text="Stat Gains">
                     <fx:include source="PartyEditorGains.fxml" />
                 </Tab>
-                <!-- <Tab text="Level Thresholds">
+                <Tab text="Level Thresholds">
                     <fx:include source="PartyEditorThresholds.fxml" />
-                </Tab> -->
+                </Tab>
             </tabs>
         </TabPane>
     </center>

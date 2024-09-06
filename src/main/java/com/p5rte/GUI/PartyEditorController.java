@@ -1,5 +1,6 @@
 package com.p5rte.GUI;
 
+import com.p5rte.Classes.PartyMember;
 import com.p5rte.Classes.PartyMemberPersona;
 import com.p5rte.Classes.PartyStream;
 import com.p5rte.Classes.Persona;
@@ -17,17 +18,12 @@ import javafx.stage.Stage;
 
 public class PartyEditorController {
 
-    @FXML
-    private VBox partyMemberContainer;
-
-    @FXML
-    private VBox personaContainer;
-
-    @FXML
-    private Tab generalTab;
-
-
+    @FXML private VBox partyMemberContainer;
+    @FXML private VBox personaContainer;
+    @FXML private Tab generalTab;
     private Stage stage;
+
+    
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -68,6 +64,8 @@ public class PartyEditorController {
             PARTYEGeneralTabController.releaseResources();
             PESkillsTabController.releaseResources();
             PEAffinityTabController.releaseResources();
+            PARTYEGainsController.releaseResources();
+            PARTYEThresholdsController.releaseResources();
 
             // Ask to save changes before leaving
             GUIManager.SavePrompt(() -> {
@@ -97,14 +95,16 @@ public class PartyEditorController {
     }
 
 
-    private void personaButtonClick(EPartyMember partyMember, int index) {
-        Persona registryPersona = PartyStream.getPersona(partyMember, index);
-        PartyMemberPersona partyPersona = PartyStream.getPartyMember(partyMember).personas[index];
+    private void personaButtonClick(EPartyMember ePartyMember, int index) {
+        Persona registryPersona = PartyStream.getPersona(ePartyMember, index);
+        PartyMemberPersona partyPersona = PartyStream.getPartyMember(ePartyMember).personas[index];
+        PartyMember partyMember = PartyStream.getPartyMember(ePartyMember);
 
         generalTab.setText(registryPersona.getName());
-        PARTYEGeneralTabController.updateFields(PartyStream.getPartyMember(partyMember), index, registryPersona);
         PESkillsTabController.updateFields(partyPersona);
         PEAffinityTabController.updateFields(registryPersona);
         PARTYEGainsController.updateFields(partyPersona);
+        PARTYEThresholdsController.updateFields(partyMember);
+        PARTYEGeneralTabController.updateFields(PartyStream.getPartyMember(ePartyMember), index, registryPersona); // Goes last to Disable Editor
     }
 }

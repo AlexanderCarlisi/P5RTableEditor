@@ -20,16 +20,17 @@ import javafx.util.StringConverter;
 
 public class PESkillsTabController {
 
+
     public class SkillHolder {
         public final ComboBox<SkillLearnability> learnability;
         public final ComboBox<ESkill> skillID;
         public final ComboBox<ETrait> traitID;
         public final TextField pendingLevels;
 
-        private final int INDEX; // Skill index for currentPersona
-        private final ChangeListener<Object> idChangeListener;
-        private final ChangeListener<SkillLearnability> learnChangeListener;
-        private final ChangeListener<String> pendingLevelsListener;
+        private final int INDEX; // Skill index for _currentPersona
+        private final ChangeListener<Object> SKILLID_LISTENER;
+        private final ChangeListener<SkillLearnability> LEARN_LISTENER;
+        private final ChangeListener<String> PENDING_LISTENER;
 
     
         public SkillHolder(int index) {
@@ -47,14 +48,14 @@ public class PESkillsTabController {
             traitID.getItems().addAll(ETrait.values());
 
             // Setup SkillID and TraitID Listeners
-            idChangeListener = (__, ___, newValue) -> {
+            SKILLID_LISTENER = (__, ___, newValue) -> {
                 // ESkill has more Values than ETrait,
                 // So we can safely set ESkill to ETrait, but not ViseVersa
                 if (newValue instanceof ESkill) {
                     ESkill eskill = (ESkill) newValue;
 
-                    if (instance.currentPersona != null)
-                        instance.currentPersona.setSkillID(INDEX, eskill.ordinal());
+                    if (s_instance._currentPersona != null)
+                        s_instance._currentPersona.setSkillID(INDEX, eskill.ordinal());
 
                     if (eskill.ordinal() < ETrait.values().length) {
                         setTraitBox(ETrait.values()[eskill.ordinal()]);
@@ -66,34 +67,34 @@ public class PESkillsTabController {
                 } else if (newValue instanceof ETrait) {
                     ETrait etrait = (ETrait) newValue;
 
-                    if (instance.currentPersona != null)
-                        instance.currentPersona.setSkillID(INDEX, etrait.ordinal());
+                    if (s_instance._currentPersona != null)
+                        s_instance._currentPersona.setSkillID(INDEX, etrait.ordinal());
 
                     // ESkill has more Values than ETrait
                     setSkillBox(ESkill.values()[etrait.ordinal()]);
                 }
             };
 
-            skillID.valueProperty().addListener(idChangeListener);
-            traitID.valueProperty().addListener(idChangeListener);
+            skillID.valueProperty().addListener(SKILLID_LISTENER);
+            traitID.valueProperty().addListener(SKILLID_LISTENER);
 
             // Setup LearnChangeListener
-            learnChangeListener = (__, oldValue, newValue) -> {
-                if (instance.currentPersona != null)
-                    instance.currentPersona.setSkillLearnability(INDEX, newValue);
+            LEARN_LISTENER = (__, oldValue, newValue) -> {
+                if (s_instance._currentPersona != null)
+                    s_instance._currentPersona.setSkillLearnability(INDEX, newValue);
 
                 enableHolder();
             };
 
-            learnability.valueProperty().addListener(learnChangeListener);
+            learnability.valueProperty().addListener(LEARN_LISTENER);
 
             // Setup PendingLevels Listener
-            pendingLevelsListener = (__, ___, newValue) -> {
-                if (instance.currentPersona != null)
-                    instance.currentPersona.setSkillPendingLevel(INDEX, readPendingLevels(newValue));
+            PENDING_LISTENER = (__, ___, newValue) -> {
+                if (s_instance._currentPersona != null)
+                    s_instance._currentPersona.setSkillPendingLevel(INDEX, readPendingLevels(newValue));
             };
 
-            pendingLevels.textProperty().addListener(pendingLevelsListener);
+            pendingLevels.textProperty().addListener(PENDING_LISTENER);
 
             // Set starting values
             learnability.setValue(SkillLearnability.Nothing);
@@ -132,15 +133,15 @@ public class PESkillsTabController {
 
 
         private void setSkillBox(ESkill newValue) {
-            skillID.valueProperty().removeListener(idChangeListener);
+            skillID.valueProperty().removeListener(SKILLID_LISTENER);
             skillID.setValue(newValue);
-            skillID.valueProperty().addListener(idChangeListener);
+            skillID.valueProperty().addListener(SKILLID_LISTENER);
         }
 
         private void setTraitBox(ETrait newValue) {
-            traitID.valueProperty().removeListener(idChangeListener);
+            traitID.valueProperty().removeListener(SKILLID_LISTENER);
             traitID.setValue(newValue);
-            traitID.valueProperty().addListener(idChangeListener);
+            traitID.valueProperty().addListener(SKILLID_LISTENER);
         }
 
 
@@ -190,53 +191,43 @@ public class PESkillsTabController {
 
         public void clearListeners() {
             // Leaving the Listener on the ComboBoxes will cause a memory leak
-            skillID.valueProperty().removeListener(idChangeListener);
-            traitID.valueProperty().removeListener(idChangeListener);
-            learnability.valueProperty().removeListener(learnChangeListener);
-            pendingLevels.textProperty().removeListener(pendingLevelsListener);
+            skillID.valueProperty().removeListener(SKILLID_LISTENER);
+            traitID.valueProperty().removeListener(SKILLID_LISTENER);
+            learnability.valueProperty().removeListener(LEARN_LISTENER);
+            pendingLevels.textProperty().removeListener(PENDING_LISTENER);
         }
     }    
 
-    // Skills Tab Fields
-    @FXML
-    private ComboBox<Enums.SkillInheritance> inheritanceComboBox;
 
-    @FXML
-    private VBox skillContainer;
 
-    @FXML
-    private VBox overallContainer;
-
-    @FXML
-    private HBox inheritanceHBox;
-
-    /** Stores Skill Fields for Persona Skills */
-    private final SkillHolder[] skillHolders = new SkillHolder[32];
-
+    // FXML Elements
+    @FXML private ComboBox<Enums.SkillInheritance> inheritanceComboBox;
+    @FXML private VBox skillContainer;
+    @FXML private VBox overallContainer;
+    @FXML private HBox inheritanceHBox;
     private Stage stage;
 
-    private static PESkillsTabController instance;
-
-    private Persona currentPersona;
-    private ChangeListener<Enums.SkillInheritance> inheritanceListener;
+    private final SkillHolder[] SKILL_HOLDERS = new SkillHolder[32];
+    private static PESkillsTabController s_instance;
+    private Persona _currentPersona;
+    private ChangeListener<Enums.SkillInheritance> _inheritanceListener;
 
 
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
-
     @FXML
     public void initialize() {
-        instance = this;
+        s_instance = this;
         populateSkillContainer();
         inheritanceComboBox.getItems().addAll(Enums.SkillInheritance.values());
-        inheritanceListener = (__, ___, newValue) -> {
-            if (currentPersona != null) {
-                currentPersona.setSkillInheritance(newValue);
+        _inheritanceListener = (__, ___, newValue) -> {
+            if (_currentPersona != null) {
+                _currentPersona.setSkillInheritance(newValue);
             }
         };
-        inheritanceComboBox.valueProperty().addListener(inheritanceListener);
+        inheritanceComboBox.valueProperty().addListener(_inheritanceListener);
 
         setToRegistryEditor();
     }
@@ -246,11 +237,11 @@ public class PESkillsTabController {
         // Clear the Container
         skillContainer.getChildren().clear();
 
-        for (int i = 0; i < skillHolders.length; i++) {
+        for (int i = 0; i < SKILL_HOLDERS.length; i++) {
             // Generate Skill Row elements, and add them to the container
-            skillHolders[i] = new SkillHolder(i);
+            SKILL_HOLDERS[i] = new SkillHolder(i);
             HBox skillRow = new HBox();
-            skillRow.getChildren().addAll(skillHolders[i].learnability, skillHolders[i].skillID, skillHolders[i].traitID, skillHolders[i].pendingLevels);
+            skillRow.getChildren().addAll(SKILL_HOLDERS[i].learnability, SKILL_HOLDERS[i].skillID, SKILL_HOLDERS[i].traitID, SKILL_HOLDERS[i].pendingLevels);
             skillContainer.getChildren().add(skillRow);
         }
     }
@@ -261,28 +252,28 @@ public class PESkillsTabController {
     }
 
     public static void updateFields(Persona persona, boolean setDisable) {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
         // Update Current Persona
-        instance.currentPersona = persona;
+        s_instance._currentPersona = persona;
 
         // Set Skill Inheritance
-        instance.inheritanceComboBox.setValue(persona.getSkillInheritance());
+        s_instance.inheritanceComboBox.setValue(persona.getSkillInheritance());
 
         // Set Skills
         Skill[] skills = persona.getSkills();
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < s_instance.SKILL_HOLDERS.length; i++) {
             if (i < skills.length) {
-                if (setDisable) instance.skillHolders[i].disableHolder();
-                else instance.skillHolders[i].enableHolder();
+                if (setDisable) s_instance.SKILL_HOLDERS[i].disableHolder();
+                else s_instance.SKILL_HOLDERS[i].enableHolder();
 
                 Skill s = skills[i];
-                instance.skillHolders[i].learnability.setValue(s.getLearnability());
-                instance.skillHolders[i].skillID.setValue(s.getESkill()); // updates Trait from Listener
-                instance.skillHolders[i].pendingLevels.setText(String.valueOf(s.getPendingLevels()));
+                s_instance.SKILL_HOLDERS[i].learnability.setValue(s.getLearnability());
+                s_instance.SKILL_HOLDERS[i].skillID.setValue(s.getESkill()); // updates Trait from Listener
+                s_instance.SKILL_HOLDERS[i].pendingLevels.setText(String.valueOf(s.getPendingLevels()));
 
             } else {
-                instance.skillHolders[i].disableHolder();
+                s_instance.SKILL_HOLDERS[i].disableHolder();
             }
         }
     }
@@ -303,29 +294,40 @@ public class PESkillsTabController {
      * Should only be called when Returning to the Main Menu.
      */
     public static void releaseResources() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        instance.inheritanceComboBox.valueProperty().removeListener(instance.inheritanceListener);
-        for (SkillHolder holder : instance.skillHolders) {
+        s_instance.inheritanceComboBox.valueProperty().removeListener(s_instance._inheritanceListener);
+        for (SkillHolder holder : s_instance.SKILL_HOLDERS) {
             holder.clearListeners();
         }
     }
 
 
     public static void setToPartyEditor() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        if(instance.overallContainer.getChildren().contains(instance.inheritanceHBox)) {
-            instance.overallContainer.getChildren().remove(instance.inheritanceHBox);
+        if(s_instance.overallContainer.getChildren().contains(s_instance.inheritanceHBox)) {
+            s_instance.overallContainer.getChildren().remove(s_instance.inheritanceHBox);
         }
     }
 
 
     public static void setToRegistryEditor() {
-        if (instance == null) return;
+        if (s_instance == null) return;
 
-        if(!instance.overallContainer.getChildren().contains(instance.inheritanceHBox)) {
-            instance.overallContainer.getChildren().add(instance.inheritanceHBox);
+        if(!s_instance.overallContainer.getChildren().contains(s_instance.inheritanceHBox)) {
+            s_instance.overallContainer.getChildren().add(s_instance.inheritanceHBox);
+        }
+    }
+
+
+    public static void disableEditor(boolean disable) {
+        if (s_instance == null) return;
+
+        s_instance.inheritanceComboBox.setDisable(disable);
+        for (SkillHolder sh : s_instance.SKILL_HOLDERS) {
+            if (disable) sh.disableHolder();
+            else sh.enableHolder();
         }
     }
 }

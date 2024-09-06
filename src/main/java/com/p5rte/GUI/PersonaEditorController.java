@@ -19,20 +19,15 @@ import javafx.stage.Stage;
 
 public class PersonaEditorController {
 
-    // Tab Fields
-    @FXML
-    private TextField searchField;
-    @FXML
-    private VBox catalogueContainer;
-
-    @FXML
-    private Tab generalTab;
+    // FXML Elements
+    @FXML private TextField searchField;
+    @FXML private VBox catalogueContainer;
+    @FXML private Tab generalTab;
+    private Stage stage;
 
 
     /** Stores Buttons for Search and Filtering */
-    private final List<Button> personaButtons = new ArrayList<>();
-
-    private Stage stage;
+    private final List<Button> PERSONA_BUTTONS = new ArrayList<>();
 
 
     public void setStage(Stage stage) {
@@ -84,14 +79,14 @@ public class PersonaEditorController {
 
     private void createButtons(String[] personas) {
         catalogueContainer.getChildren().clear();
-        personaButtons.clear();
+        PERSONA_BUTTONS.clear();
         
         for (int i = 0; i < personas.length; i++) {
             Button personaButton = new Button(personas[i]);
             final int index = i;
             personaButton.setOnAction(e -> handlePersonaButtonClick(index));
             catalogueContainer.getChildren().add(personaButton);
-            personaButtons.add(personaButton);
+            PERSONA_BUTTONS.add(personaButton);
         }
     }
 
@@ -101,10 +96,10 @@ public class PersonaEditorController {
         if (query.length() > 0 && Character.isDigit(query.charAt(0))) {
             // Check is Index is within bounds of Persona List
             int index = Integer.parseInt(query);
-            if (index < 0 || index >= personaButtons.size()) return;
+            if (index < 0 || index >= PERSONA_BUTTONS.size()) return;
 
             // Make button visible
-            Button indexButton = personaButtons.get(Integer.parseInt(query));
+            Button indexButton = PERSONA_BUTTONS.get(Integer.parseInt(query));
             catalogueContainer.getChildren().clear();
             catalogueContainer.getChildren().add(indexButton);
             return;
@@ -112,7 +107,7 @@ public class PersonaEditorController {
 
         // Filter by Text
         List<Button> visibleButtons = new ArrayList<>();
-        for (Button button : personaButtons) {
+        for (Button button : PERSONA_BUTTONS) {
             boolean visible = button.getText().toLowerCase().contains(query.toLowerCase());
             button.setVisible(visible);
             if (visible) visibleButtons.add(button);
@@ -129,7 +124,7 @@ public class PersonaEditorController {
         generalTab.setText(persona.getName());
 
         // Update Tabs
-        PEGeneralTabController.updateFields(persona);
+        PEGeneralTabController.updateFields(persona, index);
         PESkillsTabController.updateFields(persona);
         PEAffinityTabController.updateFields(persona);
     }

@@ -13,7 +13,8 @@ import com.p5rte.Utils.FileStreamUtil;
 
 public class PartyStream {
     
-    private static PartyMember[] m_partyMembers;
+    private static PartyMember[] s_partyMembers;
+    private static boolean s_writeThresholdsIndividually = true;
 
 
     public static void start() {
@@ -27,36 +28,36 @@ public class PartyStream {
      */
     private static void readPartyMembers() {
 
-        m_partyMembers = new PartyMember[9];
+        s_partyMembers = new PartyMember[9];
 
         try (FileInputStream personaInputStream = new FileInputStream(Constants.Path.INPUT_PERSONA_TABLE)) {
             // Persona TBL Segment 2 : Initialize party members
             personaInputStream.skip(39012);
 
-            for (int pm = 0; pm < m_partyMembers.length; pm++) {
-                m_partyMembers[pm] = new PartyMember(EPartyMember.values()[pm+1]); // Skip protagonist
+            for (int pm = 0; pm < s_partyMembers.length; pm++) {
+                s_partyMembers[pm] = new PartyMember(EPartyMember.values()[pm+1]); // Skip protagonist
 
                 int[] levelThreshold = new int[98];
                 for (int i = 0; i < 98; i++) {
                     levelThreshold[i] = FileStreamUtil.readInt(personaInputStream);
                 }
 
-                m_partyMembers[pm].levelThreshold = levelThreshold;
+                s_partyMembers[pm].levelThreshold = levelThreshold;
             }
 
             // Persona TBL Segment 3 : Party Persona Data
             personaInputStream.skip(8);
 
             int personaIndex = 0;
-            for (int pm = 0; pm < m_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
-                m_partyMembers[pm].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 0);
+            for (int pm = 0; pm < s_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
+                s_partyMembers[pm].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 0);
                 personaIndex++;
             }
 
             personaInputStream.skip(1244); // 2 Blank PMs
 
-            for (int pm = 0; pm < m_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
-                m_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 1);
+            for (int pm = 0; pm < s_partyMembers.length - 1; pm++) { // Kasumi not included here (-1)
+                s_partyMembers[pm].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 1);
                 personaIndex++;
             }
 
@@ -64,13 +65,13 @@ public class PartyStream {
             personaInputStream.skip(1244); // Skip Akechi (I think this ones fake)
 
             // Kasumi's First 2 Personas, her index is 8
-            m_partyMembers[8].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon, 0);
-            m_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis, 1);
+            s_partyMembers[8].personas[0] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Cendrillon, 0);
+            s_partyMembers[8].personas[1] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.Vanadis, 1);
             personaIndex += 2;
 
             // 3rd Evolution personas
-            for (int pm = 0; pm < m_partyMembers.length; pm++) {
-                m_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 2);
+            for (int pm = 0; pm < s_partyMembers.length; pm++) {
+                s_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 2);
                 personaIndex++;
             }
             
@@ -93,10 +94,10 @@ public class PartyStream {
             for (int i = 0; i < 9; i++) {
                 for (int lvl = 0; lvl < 98; lvl++) {
                     // should probably flip the loop and ifs
-                    if (m_partyMembers[i].readIndividualThreshold)
-                        dos.writeInt(m_partyMembers[i].levelThreshold[lvl]);
+                    if (s_writeThresholdsIndividually)
+                        dos.writeInt(s_partyMembers[i].levelThreshold[lvl]);
                     else
-                        dos.writeInt(m_partyMembers[0].levelThreshold[lvl]);
+                        dos.writeInt(s_partyMembers[0].levelThreshold[lvl]);
                 }
             }
 
@@ -161,8 +162,8 @@ public class PartyStream {
 
 
     private static void serializePartyPersona(DataOutputStream dos, int pmIndex, int personaIndex) throws IOException {
-        PartyMemberPersona partyPersona = m_partyMembers[pmIndex].personas[personaIndex];
-        PartyMemberPersona persona = m_partyMembers[pmIndex].personas[partyPersona.copyOfPersona];
+        PartyMemberPersona partyPersona = s_partyMembers[pmIndex].personas[personaIndex];
+        PartyMemberPersona persona = s_partyMembers[pmIndex].personas[partyPersona.copyOfPersona];
 
         dos.writeShort(pmIndex + 2); // character
         dos.writeByte(99); // levels available
@@ -186,17 +187,26 @@ public class PartyStream {
 
 
     public static void restart() {
-        m_partyMembers = null;
+        s_partyMembers = null;
         start();
     }
 
 
     public static PartyMember getPartyMember(EPartyMember partyMember) {
-        return m_partyMembers[partyMember.getPMIndex()];
+        return s_partyMembers[partyMember.getPMIndex()];
     }
 
 
     public static Persona getPersona(EPartyMember partyMember, int personaIndex) {
         return PersonaStream.getPersona(getPartyMember(partyMember).personas[personaIndex].epartyPersona.PERSONA_INDEX);
+    }
+
+
+    public static void setWriteThresholds(boolean writeThresholdsIndividually) {
+        s_writeThresholdsIndividually = writeThresholdsIndividually;
+    }
+
+    public static boolean getWriteThresholds() {
+        return s_writeThresholdsIndividually;
     }
 }
