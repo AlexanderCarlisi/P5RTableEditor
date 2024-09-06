@@ -15,19 +15,9 @@ References:
   - This whole project wouldn't have been possible without this : https://github.com/tge-was-taken/010-Editor-Templates
 
 TODO: (in order of priority)
-  - Party Members
-    - [x] Edit Starting Level, and Stats
-    - [x] Edit Skills and Levels Reqs
-    - [x] Edit Affinity
-    - [x] Save Data
-    - [x] Mass editing of Stat Gains for a Party Member
-    - [x] Mass editing of Level Thresholds for all Party Members
-    - [x] Mass editing of Skills for a Party Member, currently implemented but feels wrong.
-    - [x] Redirect RegistryPersonas that corespond to PartyMemberPersonas
-    - [x] GUI Cleanup | Disables Editor Fields that won't update anything   
-    - [x] Overall Code Cleanup | It's good enough for now, I'm sure I'll refactor it again at some point
-    - [ ] v0.2.0 Release, and handling Bugs that pop up from that
+  [ ] Giving the v0.2.0 some time for Bugs to pop up and to handle them
   - Enemy Editing : Segments 1 and 2 of Unit.TBL
+    [ ] TODO coming soon...
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
   - ITEM TBL, NAME TBL
