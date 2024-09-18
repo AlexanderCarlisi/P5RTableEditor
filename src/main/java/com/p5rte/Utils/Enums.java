@@ -107,9 +107,13 @@ public final class Enums {
         Sleep,
         Rage,
         Despair,
-        Brainwash;
+        Brainwash,
+        Healing,
+        Support,
+        Passive; // really 255 (thanks Altus, and Java)
 
         public static AffinityIndex getAt(int index) {
+            if (index == 255) return AffinityIndex.Passive;
             return AffinityIndex.values()[index];
         }
     }
