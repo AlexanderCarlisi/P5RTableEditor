@@ -15,9 +15,12 @@ References:
   - This whole project wouldn't have been possible without this : https://github.com/tge-was-taken/010-Editor-Templates
 
 TODO: (in order of priority)
-  - [ ] Giving the v0.2.0 some time for Bugs to pop up and to handle them
-  - Enemy Editing : Segments 1 and 2 of Unit.TBL
-    - [ ] TODO coming soon...
+  - Enemy Editing : Segments 0 and 1 of Unit.TBL
+    - [ ] Read from Seg 0
+    - [ ] Read from Seg 1
+    - [ ] Properly initialize Enemy instances
+    - [ ] Add GUI to edit Enemy Data
+      - More for GUI soon...
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
   - ITEM TBL, NAME TBL
