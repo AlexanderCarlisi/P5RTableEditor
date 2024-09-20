@@ -22,7 +22,7 @@ public class Enemy {
         }
     }
 
-    private byte[] flagBytes = new byte[4];
+    private int flagBits;
 
     public short arcanaID;
     public short level;
@@ -36,31 +36,17 @@ public class Enemy {
     public short moneyReward;
     public ItemDrop[] itemDrops = new ItemDrop[4];
 
-    public AffinityIndex elementalAttribute;
+    public AffinityIndex attackAttribute;
     public byte attackAccuracy;
     public short attackDamage;
 
 
-    // I need to relearn bitwise operations :(
-    // public void setBegging(boolean value) { // 17th bit
-    //     if (value) {
-    //         flagBytes[2] |= (1); // Set the bit
-    //     } else {
-    //         flagBytes[2] &= ~(1); // Clear the bit
-    //     }   
-    // }
-    // public boolean getBegging() {
-    //     return (flagBytes[2] & 1) == 1;
-    // }
-
-    // public void setHiding(boolean value) { // 18th bit
-    //     if (value) {
-    //         flagBytes[2] |= (1 << 1); // Set the bit
-    //     } else {
-    //         flagBytes[2] &= ~(1 << 1); // Clear the bit
-    //     }
-    // }
-    // public boolean getHiding() {
-    //     return (flagBytes[2] & (1 << 1)) == 1;
-    // }
+    public void flipFlag(int position) {
+        position--; // get shift amount from Bit position
+        flagBits = flagBits ^ (1 << position);
+    }
+    public boolean getFlagAsBoolean(int position) {
+        position--; // get shift amount from Bit position
+        return (flagBits & (1 << position)) != 0;
+    }
 }
