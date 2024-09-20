@@ -135,6 +135,21 @@ public final class Enums {
         }
     }
 
+    public enum EnemyBitFlag {
+        NoBeggingShadows(16),
+        HideStatus(15),
+        GuaranteePersonaMask(12),
+        NotNegotiable(11),
+        HideStatus2(3),
+        InfiniteSp(2);
+
+        public final int BITPOSE;
+
+        private EnemyBitFlag(int bitpose) {
+            this.BITPOSE = bitpose;
+        }
+    }
+
 
     public enum EPartyMember {
         Protagonist,
