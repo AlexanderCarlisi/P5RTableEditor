@@ -49,7 +49,10 @@
                     <fx:include source="EnemyGeneralTab.fxml" />
                 </Tab>
                 <Tab text="Skills">
-                    <fx:include source="EnemySkillsTab.fxml" />
+                    <fx:include source="PersonaEditorSkills.fxml" />
+                </Tab>
+                <Tab text="Affinity">
+                    <fx:include source="PersonaEditorSkills.fxml" />
                 </Tab>
                 <Tab text="Drops">
                     <fx:include source="EnemyDropsTab.fxml" />
