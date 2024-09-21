@@ -19,7 +19,11 @@ TODO: (in order of priority)
     - [x] Read from Seg 0
     - [x] Read from Seg 1
     - [x] Properly initialize Enemy instances
-    - [ ] Add GUI to edit Enemy Data
+    - Add GUI to edit Enemy Data
+    - [x] General Tab
+    - [ ] Skills Tab 
+    - [ ] Affinities Tab
+    - [ ] Drops Tab 
     - [ ] Write EnemyData to Unit Table
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
