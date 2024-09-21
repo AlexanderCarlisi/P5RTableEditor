@@ -1,5 +1,7 @@
 package com.p5rte.Classes;
 
+import java.util.HashMap;
+
 import com.p5rte.Utils.Enums.AffinityIndex;
 
 public class Enemy {
@@ -22,7 +24,7 @@ public class Enemy {
         }
     }
 
-    private int flagBits;
+    public int flagBits;
 
     public short arcanaID;
     public short level;
@@ -40,6 +42,8 @@ public class Enemy {
     public AffinityIndex attackAttribute;
     public byte attackAccuracy;
     public short attackDamage;
+
+    public HashMap<AffinityIndex, Affinity> affinities = new HashMap<>();
 
     public String name;
 
