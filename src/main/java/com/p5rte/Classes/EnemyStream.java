@@ -12,23 +12,23 @@ import com.p5rte.Utils.FileStreamUtil;
 
 public class EnemyStream {
 
-    private static Enemy[] m_enemies;
+    private static Enemy[] s_enemies;
 
     public static void start() {
         readEnemies();
     }
 
     public static void restart() {
-        m_enemies = null;
+        s_enemies = null;
         start();
     }
 
     public static void releaseResources() {
-        m_enemies = null;
+        s_enemies = null;
     }
 
     private static void readEnemies() {
-        m_enemies = new Enemy[783];
+        s_enemies = new Enemy[783];
 
         try (FileInputStream unitStream = new FileInputStream(Constants.Path.INPUT_UNIT_TABLE);) {
             unitStream.skip(0x4); // Skip Array Size
@@ -61,7 +61,7 @@ public class EnemyStream {
                 enemy.attackAccuracy = enemyBytes[65];
                 enemy.attackDamage = FileStreamUtil.getShort(enemyBytes[66], enemyBytes[67]);
 
-                m_enemies[e] = enemy;
+                s_enemies[e] = enemy;
             }
 
             // Segment 1 | Affinities
@@ -69,14 +69,14 @@ public class EnemyStream {
             byte[] affinityBytes = unitStream.readNBytes(313210); // Each affinity is 40 bytes for 783 enemies
             for (int i = 0; i < 783; i++) {
                 for (int afi = 0; afi < 20; afi++) {
-                    m_enemies[i].affinities.put(Enums.AffinityIndex.getAt(afi), new Affinity(affinityBytes[i * 40 + 1], new HashMap<>()));
+                    s_enemies[i].affinities.put(Enums.AffinityIndex.getAt(afi), new Affinity(affinityBytes[i * 40 + 1], new HashMap<>()));
                 
                     HashMap<Enums.AffinityDataIndex, Boolean> data = new HashMap<>();
                     byte dataByte = affinityBytes[i * 40];
                     for (int shift = 0; shift < 8; shift++) {
                         data.put(AffinityDataIndex.values()[7 - shift], (dataByte >> shift & 1) == 1);
                     }
-                    m_enemies[i].affinities.put(Enums.AffinityIndex.getAt(afi), new Affinity(affinityBytes[i * 40 + 1], data));
+                    s_enemies[i].affinities.put(Enums.AffinityIndex.getAt(afi), new Affinity(affinityBytes[i * 40 + 1], data));
                 }
             }
             
@@ -88,7 +88,7 @@ public class EnemyStream {
 
 
     public static Enemy getEnemy(int index) {
-        return m_enemies[index];
+        return s_enemies[index];
     }
     
 }
