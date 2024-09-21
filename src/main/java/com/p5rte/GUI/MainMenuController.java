@@ -63,6 +63,28 @@ public class MainMenuController {
     }
 
     @FXML
+    private void handleEditEnemies() {
+        // Load the EnemyEditor scene
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.Path.ENEMY_TABPANE));
+            Scene partyEditorScene = new Scene(loader.load(), stage.getWidth(), stage.getHeight());
+            partyEditorScene.getStylesheets().add(getClass().getResource(Constants.Path.DARK_MODE_CSS).toExternalForm());
+
+            EnemyEditorController controller = loader.getController();
+            if (controller == null) {
+                throw new IllegalStateException("Failed to load EnemyEditorController.");
+            }
+            controller.setStage(stage);
+
+            stage.setScene(partyEditorScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @FXML
     private void handleResetToInputs() {
         FileStreamUtil.resetToInputs();
     }
