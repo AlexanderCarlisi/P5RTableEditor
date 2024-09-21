@@ -37,7 +37,8 @@ public class EnemyStream {
             for (int e = 0; e < 783; e++) {
                 Enemy enemy = new Enemy();
                 byte[] enemyBytes = unitStream.readNBytes(68);
-
+                
+                enemy.name = Constants.enemyIDtoName[e];
                 enemy.flagBits = FileStreamUtil.getInt(enemyBytes[0], enemyBytes[1], enemyBytes[2], enemyBytes[3]);
                 enemy.arcanaID = enemyBytes[4];
                 enemy.level = FileStreamUtil.getShort(enemyBytes[6], enemyBytes[7]);
