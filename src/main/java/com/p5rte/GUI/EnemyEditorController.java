@@ -71,7 +71,7 @@ public class EnemyEditorController {
             // GUIManager.SavePrompt(() -> EnemyStream.writeToTables());
 
             // Clear Resources
-            // PEGeneralTabController.releaseResources();
+            EnemyGeneralController.releaseResources();
             // PESkillsTabController.releaseResources();
             // PEAffinityTabController.releaseResources();
             EnemyStream.releaseResources();
@@ -129,7 +129,7 @@ public class EnemyEditorController {
         generalTab.setText(enemy.name);
 
         // Update Tabs
-        // PEGeneralTabController.updateFields(persona, index);
+        EnemyGeneralController.updateFields(enemy);
         // PESkillsTabController.updateFields(persona);
         // PEAffinityTabController.updateFields(persona);
     }

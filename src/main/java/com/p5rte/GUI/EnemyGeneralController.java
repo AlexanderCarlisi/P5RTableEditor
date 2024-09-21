@@ -169,7 +169,7 @@ public class EnemyGeneralController {
     }
 
 
-    public static void updateFields(Enemy enemy, int personaIndex) {
+    public static void updateFields(Enemy enemy) {
         if (s_instance == null) return;
 
         s_instance._currentEnemy = enemy;
