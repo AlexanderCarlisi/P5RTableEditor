@@ -52,7 +52,7 @@
                     <Label text="Attack Data" style="-fx-font-size: 16px;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
                     <Label text="ElementalAttribute" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="attributeField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="attributeComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <Label text="Accuracy" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <TextField fx:id="accuracyField" GridPane.columnIndex="1" GridPane.rowIndex="2" />

@@ -36,6 +36,10 @@ public class EnemyGeneralController {
     @FXML private ToggleButton hideFlag2;
     @FXML private ToggleButton spFlag;
 
+    @FXML private ComboBox<Enums.AttackAttribute> attributeField;
+    @FXML private TextField accuracyField;
+    @FXML private TextField damageField;
+
     private Stage stage;
 
 
@@ -50,6 +54,9 @@ public class EnemyGeneralController {
     private ChangeListener<String> _hpListener;
     private ChangeListener<String> _spListener;
     private ChangeListener<String> _lvlListener;
+    private ChangeListener<Enums.AttackAttribute> _attributeListener;
+    private ChangeListener<String> _accuracyListener;
+    private ChangeListener<String> _damageListener;
 
     // Arrays
     private final TextField[] STAT_FIELDS = new TextField[5];
@@ -71,10 +78,19 @@ public class EnemyGeneralController {
         arcanaComboBox.getItems().addAll(Enums.Arcana.values());
         _arcanaListener = (__, ___, newArcana) -> {
             if (_currentEnemy != null) {
-                _currentEnemy.arcanaID = (short) newArcana.ID;
+                _currentEnemy.arcanaID = (byte) newArcana.ID;
             }
         };
         arcanaComboBox.valueProperty().addListener(_arcanaListener);
+
+        // Attack Attribute Box Setup
+        attributeField.getItems().addAll(Enums.AttackAttribute.values());
+        _attributeListener = (__, ___, newAttr) -> {
+            if (_currentEnemy != null) {
+                _currentEnemy.attackAttribute = newAttr;
+            }
+        };
+        attributeField.valueProperty().addListener(_attributeListener);
 
         // Stat Fields Setup 
         STAT_FIELDS[0] = strengthField;
@@ -124,18 +140,32 @@ public class EnemyGeneralController {
         // HP Field Listener
         _hpListener = (__, ___, newVal) -> {
             if (s_instance == null) return;
-            s_instance._currentEnemy.hp = getPointFromField(newVal);
+            s_instance._currentEnemy.hp = getNumberFromField(newVal);
         };
 
         // SP Field Listener
         _spListener = (__, ___, newVal) -> {
             if (s_instance == null) return;
-            s_instance._currentEnemy.sp = getPointFromField(newVal);
+            s_instance._currentEnemy.sp = getNumberFromField(newVal);
+        };
+
+        // Accuracy Field Listener
+        _accuracyListener = (__, ___, newVal) -> {
+            if (s_instance == null) return;
+            s_instance._currentEnemy.attackAccuracy = (byte) getNumberFromField(newVal);
+        };
+
+        // Damage Field Listener
+        _damageListener = (__, ___, newVal) -> {
+            if (s_instance == null) return;
+            s_instance._currentEnemy.attackDamage = (short) getNumberFromField(newVal);
         };
 
         // Set Listeners
         hpField.textProperty().addListener(_hpListener);
         spField.textProperty().addListener(_spListener);
+        accuracyField.textProperty().addListener(_accuracyListener);
+        damageField.textProperty().addListener(_damageListener);
     }
 
 
@@ -150,12 +180,17 @@ public class EnemyGeneralController {
         // Set Arcana
         s_instance.arcanaComboBox.setValue(Arcana.getArcana(enemy.arcanaID));
 
-        // Set Stats
+        // Set Attack Attribute
+        s_instance.attributeField.setValue(enemy.attackAttribute);
+
+        // Set Stats | *conversion to int to avoid showing negative values when last bit is set
         s_instance.hpField.setText(String.valueOf(enemy.hp));
         s_instance.spField.setText(String.valueOf(enemy.sp));
-        s_instance.lvlField.setText(String.valueOf(enemy.level));
+        s_instance.accuracyField.setText(String.valueOf((int) enemy.attackAccuracy)); // *
+        s_instance.damageField.setText(String.valueOf((int) enemy.attackDamage)); // *
+        s_instance.lvlField.setText(String.valueOf((int) enemy.level)); // *
         for (int i = 0; i < enemy.stats.length; i++) {
-            s_instance.STAT_FIELDS[i].setText(String.valueOf(enemy.stats[i]));
+            s_instance.STAT_FIELDS[i].setText(String.valueOf((int) enemy.stats[i])); // *
         }
 
         // Set Bit Flags
@@ -179,7 +214,7 @@ public class EnemyGeneralController {
     }
 
 
-    private static int getPointFromField(String newText) {
+    private static int getNumberFromField(String newText) {
         final int defaultReturn = 0;
         if (newText.length() == 0) return defaultReturn;
 
@@ -203,6 +238,9 @@ public class EnemyGeneralController {
         s_instance.hpField.textProperty().removeListener(s_instance._hpListener);
         s_instance.spField.textProperty().removeListener(s_instance._spListener);
         s_instance.lvlField.textProperty().removeListener(s_instance._lvlListener);
+        s_instance.attributeField.valueProperty().removeListener(s_instance._attributeListener);
+        s_instance.accuracyField.textProperty().removeListener(s_instance._accuracyListener);
+        s_instance.damageField.textProperty().removeListener(s_instance._damageListener);
         for (int i = 0; i < s_instance.STAT_FIELDS.length; i++) {
             s_instance.STAT_FIELDS[i].textProperty().removeListener(s_instance.STAT_LISTENERS[i]);
         }
