@@ -77,6 +77,14 @@ public class FileStreamUtil {
         return ((intBytes[0] & 0xFF) << 24) | ((intBytes[1] & 0xFF) << 16) | ((intBytes[2] & 0xFF) << 8) | (intBytes[3] & 0xFF);
     }
 
+    public static short getShort(byte byte1, byte byte2) {
+        return (short) (((byte1 & 0xFF) << 8) | (byte2 & 0xFF));
+    }
+
+    public static int getInt(byte byte1, byte byte2, byte byte3, byte byte4) {
+        return ((byte1 & 0xFF) << 24) | ((byte2 & 0xFF) << 16) | ((byte3 & 0xFF) << 8) | (byte4 & 0xFF);
+    }
+
 
     public static void resetToInputs() {
         start();
