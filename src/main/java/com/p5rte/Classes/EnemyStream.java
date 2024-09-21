@@ -23,6 +23,10 @@ public class EnemyStream {
         start();
     }
 
+    public static void releaseResources() {
+        m_enemies = null;
+    }
+
     private static void readEnemies() {
         m_enemies = new Enemy[783];
 

@@ -22,6 +22,10 @@ public class PersonaStream {
         readPersonas();
     }
 
+    public static void releaseResources() {
+        s_personas = null;
+    }
+
 
     private static void readPersonas() {
         s_personas = new Persona[464];

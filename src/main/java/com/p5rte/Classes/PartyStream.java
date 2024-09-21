@@ -21,6 +21,10 @@ public class PartyStream {
         readPartyMembers();
     }
 
+    public static void releaseResources() {
+        s_partyMembers = null;
+    }
+
 
     /**
      * Reads the party members from the input file

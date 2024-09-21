@@ -31,6 +31,9 @@ public class PartyEditorController {
 
     @FXML
     public void initialize() {
+        // Start Loading Data from Tables
+        PartyStream.start();
+
         // Generate Party Member Buttons
         for (int i = 0; i < 9; i++) {
             Button partyMemberButton = new Button();
@@ -60,18 +63,19 @@ public class PartyEditorController {
             // Set the main menu scene
             stage.setScene(mainMenuScene);
 
+            // Ask to save changes before leaving
+            GUIManager.SavePrompt(() -> {
+                PersonaStream.writeToTables(); // Save Reg data
+                PartyStream.writeToTables(); // Save party data
+            });
+
             // Clear Resources from Tabs
             PARTYEGeneralTabController.releaseResources();
             PESkillsTabController.releaseResources();
             PEAffinityTabController.releaseResources();
             PARTYEGainsController.releaseResources();
             PARTYEThresholdsController.releaseResources();
-
-            // Ask to save changes before leaving
-            GUIManager.SavePrompt(() -> {
-                PersonaStream.writeToTables(); // Save Reg data
-                PartyStream.writeToTables(); // Save party data
-            });
+            PartyStream.releaseResources();
 
         } catch (Exception e) {
             e.printStackTrace();

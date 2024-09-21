@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com.p5rte.Classes.EnemyStream;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.FileStreamUtil;
 
@@ -56,23 +55,6 @@ public class GUIManager extends Application {
 
         // Start Loading Data from Tables
         FileStreamUtil.start();
-        // PersonaStream.start();
-        // PartyStream.start();
-        EnemyStream.start();
-
-        // Debugging
-        // Enemy enemy = EnemyStream.getEnemy(726);
-        // System.out.println(enemy.getFlagAsBoolean(EnemyBitFlag.InfiniteSp.BITPOSE));
-        
-        // Persona persona = PersonaStream.getPersona(0);
-        // // AffinityElement ele = persona.getAffinity(AffinityIndex.Nuke);
-        // // for (AffinityDataIndex index : AffinityDataIndex.values()) {
-        // //     System.out.println(index + " : " + ele.data.get(index));
-        // // }
-        // // System.out.println("multiplier : " + ele.multiplier);
-        // Skill[] skills = persona.getSkills();
-        // System.out.println(skills[0].getLearnability());
-        // System.out.println(persona.getBitFlags()[9]);
     }
 
 

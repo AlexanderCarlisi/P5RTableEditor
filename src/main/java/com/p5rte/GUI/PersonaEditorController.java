@@ -37,6 +37,9 @@ public class PersonaEditorController {
 
     @FXML
     public void initialize() {
+        // Start Loading Data from Tables
+        PersonaStream.start();
+
         // Create and store Persona Catalogue Buttons
         createButtons(Constants.personaIDtoName);
 
@@ -63,13 +66,14 @@ public class PersonaEditorController {
             // Set the main menu scene
             stage.setScene(mainMenuScene);
 
-            // Clear Resources from Tabs
+            // Ask to save changes before leaving
+            GUIManager.SavePrompt(() -> PersonaStream.writeToTables());
+
+            // Clear Resources
             PEGeneralTabController.releaseResources();
             PESkillsTabController.releaseResources();
             PEAffinityTabController.releaseResources();
-
-            // Ask to save changes before leaving
-            GUIManager.SavePrompt(() -> PersonaStream.writeToTables());
+            PersonaStream.releaseResources();
 
         } catch (Exception e) {
             e.printStackTrace();

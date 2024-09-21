@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.p5rte.Classes.Enemy;
 import com.p5rte.Classes.EnemyStream;
-import com.p5rte.Classes.Persona;
-import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Utils.Constants;
 
 import javafx.fxml.FXML;
@@ -40,6 +38,9 @@ public class EnemyEditorController {
 
     @FXML
     public void initialize() {
+        // Start Loading Data from Tables
+        EnemyStream.start();
+
         // Create and store Persona Catalogue Buttons
         createButtons(Constants.personaIDtoName);
 
@@ -66,13 +67,14 @@ public class EnemyEditorController {
             // Set the main menu scene
             stage.setScene(mainMenuScene);
 
-            // Clear Resources from Tabs
+            // Ask to save changes before leaving
+            // GUIManager.SavePrompt(() -> EnemyStream.writeToTables());
+
+            // Clear Resources
             // PEGeneralTabController.releaseResources();
             // PESkillsTabController.releaseResources();
             // PEAffinityTabController.releaseResources();
-
-            // Ask to save changes before leaving
-            // GUIManager.SavePrompt(() -> EnemyStream.writeToTables());
+            EnemyStream.releaseResources();
 
         } catch (IOException e) {
             e.printStackTrace();
