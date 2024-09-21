@@ -28,7 +28,7 @@ public class Enemy {
 
     public int flagBits;
 
-    public short arcanaID;
+    public byte arcanaID;
     public short level;
     public int hp;
     public int sp;
