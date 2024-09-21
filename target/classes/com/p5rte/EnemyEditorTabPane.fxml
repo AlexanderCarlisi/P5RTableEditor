@@ -33,11 +33,15 @@
             </BorderPane.margin>
             <Label text="Enemies" />
         </VBox>
-        <HBox>
+        <VBox spacing="10">
+            <BorderPane.margin>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </BorderPane.margin>
+            <TextField fx:id="searchField" promptText="Search Enemies" />
             <ScrollPane fitToWidth="true" fitToHeight="true">
-                <VBox fx:id="enemyContainer" spacing="5" />
+                <VBox fx:id="catalogueContainer" spacing="5" />
             </ScrollPane>
-        </HBox>
+        </VBox>
     </left>
     <center>
         <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
@@ -54,9 +58,9 @@
                 <Tab text="Affinity">
                     <fx:include source="PersonaEditorSkills.fxml" />
                 </Tab>
-                <Tab text="Drops">
+                <!-- <Tab text="Drops">
                     <fx:include source="EnemyDropsTab.fxml" />
-                </Tab>
+                </Tab> -->
             </tabs>
         </TabPane>
     </center>

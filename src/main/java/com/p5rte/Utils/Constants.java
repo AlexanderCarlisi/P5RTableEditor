@@ -1,5 +1,6 @@
 package com.p5rte.Utils;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
@@ -34,8 +35,8 @@ public final class Constants {
         public static final String DARK_MODE_CSS = RESOURCE_FOLDER + "DarkMode.css";
 
         // Names
-        public static final String PERSONA_NAME_FILE = RESOURCE_FOLDER + "PersonaNames.txt";
-        public static final String ENEMY_NAME_FILE = RESOURCE_FOLDER + "EnemyNames.txt";
+        public static final String PERSONA_NAME_FILE = ROOT_DIR + "/src/main/resources/com/p5rte/PersonaNames.txt";
+        public static final String ENEMY_NAME_FILE = ROOT_DIR + "/src/main/resources/com/p5rte/EnemyNames.txt";
     }
     
 
@@ -47,7 +48,7 @@ public final class Constants {
 
 
     private static String[] readNamesFromFile(String path, int size) {
-        try (Scanner scanner = new Scanner(path)) {
+        try (Scanner scanner = new Scanner(new File(path))) {
             String[] names = new String[size];
             int index = 0;
             while (scanner.hasNextLine()) {

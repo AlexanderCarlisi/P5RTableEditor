@@ -42,7 +42,7 @@ public class EnemyEditorController {
         EnemyStream.start();
 
         // Create and store Persona Catalogue Buttons
-        createButtons(Constants.personaIDtoName);
+        createButtons(Constants.enemyIDtoName);
 
         // Set up a listener to filter the catalogue in real-time
         searchField.textProperty().addListener((obs, oldText, newText) -> filterCatalogue(newText));
