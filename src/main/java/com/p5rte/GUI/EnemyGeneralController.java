@@ -36,7 +36,7 @@ public class EnemyGeneralController {
     @FXML private ToggleButton hideFlag2;
     @FXML private ToggleButton spFlag;
 
-    @FXML private ComboBox<Enums.AttackAttribute> attributeField;
+    @FXML private ComboBox<Enums.AttackAttribute> attributeBox;
     @FXML private TextField accuracyField;
     @FXML private TextField damageField;
 
@@ -84,13 +84,13 @@ public class EnemyGeneralController {
         arcanaComboBox.valueProperty().addListener(_arcanaListener);
 
         // Attack Attribute Box Setup
-        attributeField.getItems().addAll(Enums.AttackAttribute.values());
+        attributeBox.getItems().addAll(Enums.AttackAttribute.values());
         _attributeListener = (__, ___, newAttr) -> {
             if (_currentEnemy != null) {
                 _currentEnemy.attackAttribute = newAttr;
             }
         };
-        attributeField.valueProperty().addListener(_attributeListener);
+        attributeBox.valueProperty().addListener(_attributeListener);
 
         // Stat Fields Setup 
         STAT_FIELDS[0] = strengthField;
@@ -181,7 +181,7 @@ public class EnemyGeneralController {
         s_instance.arcanaComboBox.setValue(Arcana.getArcana(enemy.arcanaID));
 
         // Set Attack Attribute
-        s_instance.attributeField.setValue(enemy.attackAttribute);
+        s_instance.attributeBox.setValue(enemy.attackAttribute);
 
         // Set Stats | *conversion to int to avoid showing negative values when last bit is set
         s_instance.hpField.setText(String.valueOf(enemy.hp));
@@ -238,7 +238,7 @@ public class EnemyGeneralController {
         s_instance.hpField.textProperty().removeListener(s_instance._hpListener);
         s_instance.spField.textProperty().removeListener(s_instance._spListener);
         s_instance.lvlField.textProperty().removeListener(s_instance._lvlListener);
-        s_instance.attributeField.valueProperty().removeListener(s_instance._attributeListener);
+        s_instance.attributeBox.valueProperty().removeListener(s_instance._attributeListener);
         s_instance.accuracyField.textProperty().removeListener(s_instance._accuracyListener);
         s_instance.damageField.textProperty().removeListener(s_instance._damageListener);
         for (int i = 0; i < s_instance.STAT_FIELDS.length; i++) {
