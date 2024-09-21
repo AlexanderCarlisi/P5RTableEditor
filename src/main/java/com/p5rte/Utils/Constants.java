@@ -34,28 +34,31 @@ public final class Constants {
         public static final String DARK_MODE_CSS = RESOURCE_FOLDER + "DarkMode.css";
 
         // Names
-        public static final String PERSONA_NAME_FILE = Paths.get(RESOURCE_FOLDER, "PersonaNames.txt").toString();
+        public static final String PERSONA_NAME_FILE = RESOURCE_FOLDER + "PersonaNames.txt";
+        public static final String ENEMY_NAME_FILE = RESOURCE_FOLDER + "EnemyNames.txt";
     }
-
-
-    // Called at the start of Main
-    public static void init() {
-        readPersonaNames();
-    }
-
+    
 
     // https://amicitia.miraheze.org/wiki/Persona_5_Royal/Personas
-    public static final String[] personaIDtoName = new String[464];
-    public static void readPersonaNames() {
-        try (Scanner scanner = new Scanner(Path.PERSONA_NAME_FILE)) {
+    public static final String[] personaIDtoName = readNamesFromFile(Path.PERSONA_NAME_FILE, 464);
+
+    // https://amicitia.miraheze.org/wiki/Persona_5_Royal/Enemies
+    public static final String[] enemyIDtoName = readNamesFromFile(Path.ENEMY_NAME_FILE, 783);
+
+
+    private static String[] readNamesFromFile(String path, int size) {
+        try (Scanner scanner = new Scanner(path)) {
+            String[] names = new String[size];
             int index = 0;
             while (scanner.hasNextLine()) {
                 String name = scanner.nextLine();
-                personaIDtoName[index] = name;
+                names[index] = name;
                 index++;
             }
+            return names;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
