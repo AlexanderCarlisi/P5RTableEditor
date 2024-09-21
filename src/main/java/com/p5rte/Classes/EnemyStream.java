@@ -58,7 +58,7 @@ public class EnemyStream {
                 }
                 enemy.eventDrop = enemy.new EventDrop(FileStreamUtil.getShort(enemyBytes[58], enemyBytes[59]),
                         FileStreamUtil.getShort(enemyBytes[60], enemyBytes[61]), FileStreamUtil.getShort(enemyBytes[62], enemyBytes[63]));
-                enemy.attackAttribute = Enums.AffinityIndex.getAt(enemyBytes[64]);
+                enemy.attackAttribute = Enums.AttackAttribute.getAt(enemyBytes[64]);
                 enemy.attackAccuracy = enemyBytes[65];
                 enemy.attackDamage = FileStreamUtil.getShort(enemyBytes[66], enemyBytes[67]);
 
@@ -70,14 +70,14 @@ public class EnemyStream {
             byte[] affinityBytes = unitStream.readNBytes(313210); // Each affinity is 40 bytes for 783 enemies
             for (int i = 0; i < 783; i++) {
                 for (int afi = 0; afi < 20; afi++) {
-                    s_enemies[i].affinities.put(Enums.AffinityIndex.getAt(afi), new Affinity(affinityBytes[i * 40 + 1], new HashMap<>()));
+                    s_enemies[i].affinities.put(Enums.AffinityIndex.values()[afi], new Affinity(affinityBytes[i * 40 + 1], new HashMap<>()));
                 
                     HashMap<Enums.AffinityDataIndex, Boolean> data = new HashMap<>();
                     byte dataByte = affinityBytes[i * 40];
                     for (int shift = 0; shift < 8; shift++) {
                         data.put(AffinityDataIndex.values()[7 - shift], (dataByte >> shift & 1) == 1);
                     }
-                    s_enemies[i].affinities.put(Enums.AffinityIndex.getAt(afi), new Affinity(affinityBytes[i * 40 + 1], data));
+                    s_enemies[i].affinities.put(Enums.AffinityIndex.values()[afi], new Affinity(affinityBytes[i * 40 + 1], data));
                 }
             }
             

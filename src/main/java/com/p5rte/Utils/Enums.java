@@ -107,14 +107,38 @@ public final class Enums {
         Sleep,
         Rage,
         Despair,
+        Brainwash;
+    }
+
+
+    public enum AttackAttribute {
+        Physical,
+        Gun,
+        Fire,
+        Ice,
+        Electric,
+        Wind,
+        Psy,
+        Nuke,
+        Bless,
+        Curse,
+        Almighty,
+        Dizzy,
+        Confuse,
+        Fear,
+        Forget,
+        Hunger,
+        Sleep,
+        Rage,
+        Despair,
         Brainwash,
         Healing,
         Support,
-        Passive; // really 255 (thanks Altus, and Java)
+        Passive;
 
-        public static AffinityIndex getAt(int index) {
-            if (index == 255) return AffinityIndex.Passive;
-            return AffinityIndex.values()[index];
+        public static AttackAttribute getAt(int index) {
+            if (index == 255) return AttackAttribute.Passive;
+            return AttackAttribute.values()[index];
         }
     }
 

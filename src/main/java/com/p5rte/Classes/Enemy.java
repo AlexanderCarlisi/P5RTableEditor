@@ -2,7 +2,9 @@ package com.p5rte.Classes;
 
 import java.util.HashMap;
 
+import com.p5rte.Utils.Enums;
 import com.p5rte.Utils.Enums.AffinityIndex;
+import com.p5rte.Utils.Enums.AttackAttribute;
 
 public class Enemy {
 
@@ -39,7 +41,7 @@ public class Enemy {
     public ItemDrop[] itemDrops = new ItemDrop[4];
     public EventDrop eventDrop;
 
-    public AffinityIndex attackAttribute;
+    public AttackAttribute attackAttribute;
     public byte attackAccuracy;
     public short attackDamage;
 
