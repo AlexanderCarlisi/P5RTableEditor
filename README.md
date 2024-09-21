@@ -16,12 +16,14 @@ References:
 
 TODO: (in order of priority)
   - Enemy Editing : Segments 0 and 1 of Unit.TBL
-    - [ ] Read from Seg 0
-    - [ ] Read from Seg 1
-    - [ ] Properly initialize Enemy instances
+    - [x] Read from Seg 0
+    - [x] Read from Seg 1
+    - [x] Properly initialize Enemy instances
     - [ ] Add GUI to edit Enemy Data
-      - More for GUI soon...
+    - [ ] Write EnemyData to Unit Table
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
-  - ITEM TBL, NAME TBL
+  - ITEM TBL
+  - NAME TBL
+    - The more I look into Name.TBL the less I want to do it
   - More to come...
