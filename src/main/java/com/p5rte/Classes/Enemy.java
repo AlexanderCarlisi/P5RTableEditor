@@ -35,10 +35,13 @@ public class Enemy {
     public short expReward;
     public short moneyReward;
     public ItemDrop[] itemDrops = new ItemDrop[4];
+    public EventDrop eventDrop;
 
     public AffinityIndex attackAttribute;
     public byte attackAccuracy;
     public short attackDamage;
+
+    public String name;
 
 
     public void flipFlag(int position) {
