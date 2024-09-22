@@ -2,11 +2,15 @@ package com.p5rte.GUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 import com.p5rte.Classes.Enemy;
 import com.p5rte.Classes.EnemyStream;
 import com.p5rte.Utils.Constants;
+import com.p5rte.Utils.Enums.EnemyMassEditableStat;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,6 +82,36 @@ public class EnemyEditorController {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    private void handleMassEdit() {
+        // result[0] = stat, result[1] = multiplier
+        String[] result = GUIManager.showComboBoxTextFieldPopup("Mass Edit Enemies", EnemyMassEditableStat.class, "Stat:", "Multiplier:");
+
+        EnemyMassEditableStat stat = EnemyMassEditableStat.valueOf(result[0]);
+        double multiplier = Double.parseDouble(result[1]);
+
+        // Create a map to define actions for each stat type
+        Map<EnemyMassEditableStat, BiConsumer<Enemy, Double>> statActions = new HashMap<>();
+        statActions.put(EnemyMassEditableStat.Hp, (enemy, mult) -> enemy.hp *= mult);
+        statActions.put(EnemyMassEditableStat.Sp, (enemy, mult) -> enemy.sp *= mult);
+        statActions.put(EnemyMassEditableStat.Level, (enemy, mult) -> enemy.level *= mult);
+        statActions.put(EnemyMassEditableStat.Strength, (enemy, mult) -> enemy.stats[0] *= mult);
+        statActions.put(EnemyMassEditableStat.Magic, (enemy, mult) -> enemy.stats[1] *= mult);
+        statActions.put(EnemyMassEditableStat.Endurance, (enemy, mult) -> enemy.stats[2] *= mult);
+        statActions.put(EnemyMassEditableStat.Agility, (enemy, mult) -> enemy.stats[3] *= mult);
+        statActions.put(EnemyMassEditableStat.Luck, (enemy, mult) -> enemy.stats[4] *= mult);
+        statActions.put(EnemyMassEditableStat.AttackDamage, (enemy, mult) -> enemy.attackDamage *= mult);
+        statActions.put(EnemyMassEditableStat.AttackAccuracy, (enemy, mult) -> enemy.attackAccuracy *= mult);
+
+        // Apply the selected action to each enemy in the stream
+        if (statActions.containsKey(stat)) {
+            for (Enemy enemy : EnemyStream.getEnemies()) {
+                statActions.get(stat).accept(enemy, multiplier);
+            }
         }
     }
 

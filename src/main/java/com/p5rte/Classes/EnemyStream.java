@@ -86,7 +86,7 @@ public class EnemyStream {
             }
             
         } catch(IOException e) {
-            System.err.println("You done goofed");
+            System.err.println("Error reading EnemyStream");
             e.printStackTrace();
         }
     }
@@ -147,6 +147,7 @@ public class EnemyStream {
             rafUnit.write(baos.toByteArray());
 
         } catch (IOException e) {
+            System.err.println("Error writing to Unit Table");
             e.printStackTrace();
         }
     }
@@ -154,6 +155,10 @@ public class EnemyStream {
 
     public static Enemy getEnemy(int index) {
         return s_enemies[index];
+    }
+
+    public static Enemy[] getEnemies() {
+        return s_enemies;
     }
     
 }

@@ -242,6 +242,29 @@ public final class Enums {
     }
 
 
+    public enum EnemyMassEditableStat {
+        Hp,
+        Sp,
+        Level,
+        Strength,
+        Magic,
+        Endurance,
+        Agility,
+        Luck,
+        AttackDamage,
+        AttackAccuracy;
+
+        public static EnemyMassEditableStat getFrom(String name) {
+            for (EnemyMassEditableStat stat : EnemyMassEditableStat.values()) {
+                if (stat.name().equalsIgnoreCase(name)) {
+                    return stat;
+                }
+            }
+            return null;
+        }
+    }
+
+
     public enum ETrait {
         NoTrait, RESERVE148, RESERVE149, RESERVE150, RESERVE151, RESERVE152, Relentless, RESERVE153, RESERVE154, SaviorBloodline, GraceOfMother, RESERVE155, RESERVE156, RESERVE157, ReliefBloodline, AveMaria, RESERVE158, FoulStench, RESERVE159, RESERVE160, RESERVE161, RESERVE162, StaticElectricity1, GhostNest, ColdBlooded, RESERVE163, RESERVE164, RESERVE165, RESERVE166, RESERVE167, AllureOfWisdom, RESERVE168, RESERVE169, RESERVE170, RESERVE171, RESERVE172, RESERVE173, RESERVE174, FrenziedBull, RESERVE175, RESERVE176, RESERVE177, RESERVE178, RESERVE179, RESERVE180, RESERVE181, IntenseFocus, RESERVE182, RESERVE183, RESERVE184, RESERVE185, RESERVE186, RESERVE187, RESERVE188, MightyGaze, RESERVE189, RESERVE190, StrikingWeight, UndyingFury, RESERVE191, RESERVE192, RESERVE193, RetaliatingBody, InviolableBeauty, RESERVE194, PaganAllure, RESERVE195, RESERVE196, RESERVE197, RESERVE198, RareAntibody, Immunity, RESERVE199, SkillfulCombo, LinkedBloodline, RESERVE200, RESERVE201, RESERVE202, FoulOdor, ThermalConduct, RESERVE203, RESERVE204, RESERVE205, RESERVE206, RESERVE207, RESERVE208, PinchAnchor, VitalityOfTheTree, GloomyChild, RESERVE209, RESERVE210, RESERVE211, RESERVE212, RESERVE213, SinfulTechnique, UniversalLaw, RESERVE214, AilmentHunter, HollowJester, RESERVE215, RESERVE216, RESERVE217, DeathlyIllness, Omen, RESERVE218, RESERVE219, RESERVE220, RESERVE221, RESERVE222, RESERVE223, RESERVE224, RESERVE225, RESERVE226, RESERVE227, RESERVE228, RESERVE229, RESERVE230, RESERVE231, RESERVE232, RESERVE233, RESERVE234, RESERVE235, RESERVE236, RESERVE237, RESERVE238, RESERVE239, RESERVE240, RESERVE241, RESERVE242, ExplosiveScheme, RESERVE243, InfiniteScheme, RagingTemper, EccentricTemper, RESERVE244, ProudPresence, MajesticPresence, RESERVE245, MasteryOfMagic, PinnacleOfMagic, RESERVE246, ScoundrelEyes, UnparalleledEyes, RESERVE247, GaiaPact, GaiaBlessing, RESERVE248, IcyGlare, CoolCustomer, RESERVE249, TacticalSpirit, IngeniousSpirit, FlawlessSpirit, VeilOfMidnight, VeilOfSunrise, RESERVE250, HeatedBloodline, DrunkenPassion, FrigidBloodline, Cocytus, ElectricBloodline, BargainBolts, WindBloodline, VahanasWings, PsychicBloodline, ChiYousBlessing, AtomicBloodline, AtomicHellscape, BlessBloodline, MartyrsGift, CursedBloodline, MothersLament, RESERVE251, Gluttonmouth, DemonsBite, MouthofSavoring, Naranari, HallowedSpirit, PotentHypnosis, WealthOfLotus, InternalHypnosis, PositiveThoughts, DrainingMouth, RESERVE252, TagTeam, IronHeart, CrisisControl, BloodstainedEyes, WillOfTheSword, RESERVE253, CircleOfSadness, BolsteringForce, GodMaker, HazyPresence, CountryMaker, GraceOfOlive, JustDie, BlessSpirit, RESERVE254, RESERVE255, RESERVE256, RESERVE257, RESERVE258, RESERVE259, RESERVE260, RESERVE261, RESERVE262, RESERVE263, RESERVE264, RESERVE265, RESERVE266, RESERVE267, RESERVE268, RESERVE269, RESERVE270, RESERVE271, RESERVE272, RESERVE273, RESERVE274, RESERVE275, RESERVE276, RESERVE277, RESERVE278, RESERVE279, RESERVE280, RESERVE281, RESERVE282, RESERVE283, RESERVE284, RESERVE285, RESERVE286, RESERVE287, RESERVE288, RESERVE289, RESERVE290, RESERVE291, RESERVE292, RESERVE293, RESERVE294, RESERVE295, RESERVE296, RESERVE297, RESERVE298, RESERVE299, RESERVE300, RESERVE301, RESERVE302, RESERVE303, RESERVE304, RESERVE305, RESERVE306, RESERVE307, RESERVE308, RESERVE309, RESERVE310, RESERVE311, RESERVE312, RESERVE313, RESERVE314, RESERVE315, RESERVE316, RESERVE317, RESERVE318, RESERVE319, RESERVE320, RESERVE321, RESERVE322, RESERVE323, RESERVE324, RESERVE325, RESERVE326, RESERVE327, RESERVE328, RESERVE329, RESERVE330, RESERVE331, RESERVE332, RESERVE333, RESERVE334, RESERVE335, RESERVE336, UltimateVessel, UltimateVessel2, UltimateVessel3, UltimateVessel4, UltimateVessel5, UltimateVessel6, UltimateVessel7, UltimateVessel8, UltimateVessel9, RESERVE337, RESERVE338, RESERVE339, RESERVE340, RESERVE341, RESERVE342, RESERVE343, RESERVE344, RESERVE345, RESERVE346;
 

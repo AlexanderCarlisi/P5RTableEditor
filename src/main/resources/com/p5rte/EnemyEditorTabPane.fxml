@@ -21,6 +21,8 @@
                 </BorderPane.margin>
             </Button>
 
+            <Button text="Mass Edit Stats" onAction="#handleMassEdit" />
+
             <BorderPane.margin>
                 <Insets top="20" right="10" bottom="10" left="10"/> <!-- Increased top margin -->
             </BorderPane.margin>

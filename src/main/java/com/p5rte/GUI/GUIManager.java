@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.FileStreamUtil;
@@ -13,7 +14,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GUIManager extends Application {
@@ -129,4 +136,45 @@ public class GUIManager extends Application {
             }
         });
     }
+
+
+    public static <T extends Enum<T>> String[] showComboBoxTextFieldPopup(String title, Class<T> enumClass, String comboPrompt, String fieldPrompt) {
+        // Create a dialog
+        Dialog<String[]> dialog = new Dialog<>();
+        dialog.setTitle(title);
+    
+        // Set the button types (OK and Cancel)
+        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
+    
+        // Create a ComboBox and a TextField
+        ComboBox<String> statBox = new ComboBox<>();
+        // Populate the ComboBox with enum values
+        for (T value : enumClass.getEnumConstants()) {
+            statBox.getItems().add(value.name());  // Add enum name to the ComboBox
+        }
+    
+        TextField multiplierField = new TextField();
+        multiplierField.setPromptText(fieldPrompt);
+    
+        // Layout for ComboBox and TextField
+        VBox vbox = new VBox(10);
+        vbox.getChildren().addAll(new Label(comboPrompt), statBox, new Label(fieldPrompt), multiplierField);
+    
+        // Add the layout to the dialog
+        dialog.getDialogPane().setContent(vbox);
+    
+        // Set the result converter to get the user's input when the OK button is pressed
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == okButtonType) {
+                return new String[] {statBox.getValue(), multiplierField.getText()};
+            }
+            return null;
+        });
+    
+        // Show the dialog and capture the result
+        Optional<String[]> result = dialog.showAndWait();
+        return result.orElse(null);
+    }
+    
 }
