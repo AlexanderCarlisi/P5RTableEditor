@@ -22,9 +22,16 @@ TODO: (in order of priority)
     - Add GUI to edit Enemy Data
     - [x] General Tab
     - [x] Skills Tab 
-    - [ ] Affinities Tab
-    - [ ] Drops Tab 
-    - [ ] Write EnemyData to Unit Table
+    - [X] Affinities Tab
+    - [X] Write EnemyData to Unit Table
+
+    - [ ] Enemy Drops Tab
+      - I haven't found any resources on Item IDs, so before I spend time figuring them out, I want to get the rest of this done
+      - Will contain : Money Drops, Exp Drops, (4) Item Drops, and Event Drop
+
+    - [ ] Mass Editing of Enemy Data
+      - Manipulate Stats by percentage, and whatever else
+
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
   - ITEM TBL

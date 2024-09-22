@@ -55,8 +55,6 @@ public class EnemySkillsController {
 
 
     public static void releaseResources() {
-        s_instance = null;
-
         for (int i = 0; i < 8; i++) {
             s_instance.SKILL_BOXES[i].valueProperty().removeListener(s_instance.SKILL_LISTENERS[i]);
         }

@@ -68,7 +68,7 @@ public class EnemyEditorController {
             stage.setScene(mainMenuScene);
 
             // Ask to save changes before leaving
-            // GUIManager.SavePrompt(() -> EnemyStream.writeToTables());
+            GUIManager.SavePrompt(() -> EnemyStream.writeToTables());
 
             // Clear Resources
             EnemyGeneralController.releaseResources();

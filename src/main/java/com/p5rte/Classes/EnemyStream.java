@@ -1,12 +1,16 @@
 package com.p5rte.Classes;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.HashMap;
 
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.Enums;
 import com.p5rte.Utils.Enums.AffinityDataIndex;
+import com.p5rte.Utils.Enums.AffinityIndex;
 import com.p5rte.Utils.FileStreamUtil;
 
 
@@ -83,6 +87,66 @@ public class EnemyStream {
             
         } catch(IOException e) {
             System.err.println("You done goofed");
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void writeToTables() {
+        try(
+            RandomAccessFile rafUnit = new RandomAccessFile(Constants.Path.OUTPUT_UNIT_TABLE, "rw");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+            DataOutputStream dos = new DataOutputStream(baos)) 
+        {
+            rafUnit.seek(0x4); // Skip Array Size Seg 0 start
+            for (Enemy enemy : s_enemies) {
+                dos.writeInt(enemy.flagBits);
+                dos.writeByte(enemy.arcanaID);
+                dos.writeByte(0);
+                dos.writeShort(enemy.level);
+                dos.writeInt(enemy.hp);
+                dos.writeInt(enemy.sp);
+                for (int i = 0; i < 5; i++) {
+                    dos.writeByte(enemy.stats[i]);
+                }
+                dos.writeByte(0);
+                for (int i = 0; i < 8; i++) {
+                    dos.writeShort(enemy.skillIDs[i]);
+                }
+                dos.writeShort(enemy.expReward);
+                dos.writeShort(enemy.moneyReward);
+                for (int i = 0; i < 4; i++) {
+                    dos.writeShort(enemy.itemDrops[i].itemID);
+                    dos.writeShort(enemy.itemDrops[i].dropRate);
+                }
+                dos.writeShort(enemy.eventDrop.eventID);
+                dos.writeShort(enemy.eventDrop.itemID);
+                dos.writeShort(enemy.eventDrop.dropRate);
+                dos.writeByte((enemy.attackAttribute.ordinal() == 22) ? (byte) 255 : (byte) enemy.attackAttribute.ordinal());
+                dos.writeByte(enemy.attackAccuracy);
+                dos.writeShort(enemy.attackDamage);
+            }
+
+            dos.writeInt(31320); // Write Array Size Seg 1 start
+
+            for (Enemy enemy : s_enemies) {
+                // Serialize Affinities
+                for (AffinityIndex ai : AffinityIndex.values()) {
+                    Affinity element = enemy.affinities.get(ai);
+                    int boolByte = 0;
+                    for (int i = 0; i < 8; i++) {
+                        if (element.data.get(AffinityDataIndex.values()[7 - i])) {
+                            boolByte |= (1 << i);
+                        }
+                    }
+                    dos.writeByte(boolByte);
+                    dos.writeByte(element.multiplier);
+                }
+            }
+
+            rafUnit.write(baos.toByteArray());
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
