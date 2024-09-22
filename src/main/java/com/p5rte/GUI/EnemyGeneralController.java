@@ -183,14 +183,14 @@ public class EnemyGeneralController {
         // Set Attack Attribute
         s_instance.attributeBox.setValue(enemy.attackAttribute);
 
-        // Set Stats | *conversion to int to avoid showing negative values when last bit is set
+        // Set Stats | *Bit Conversion to Unsigned Byte
         s_instance.hpField.setText(String.valueOf(enemy.hp));
         s_instance.spField.setText(String.valueOf(enemy.sp));
-        s_instance.accuracyField.setText(String.valueOf((int) enemy.attackAccuracy)); // *
-        s_instance.damageField.setText(String.valueOf((int) enemy.attackDamage)); // *
-        s_instance.lvlField.setText(String.valueOf((int) enemy.level)); // *
+        s_instance.accuracyField.setText(String.valueOf((int) (enemy.attackAccuracy & 0xFF))); // *
+        s_instance.damageField.setText(String.valueOf(enemy.attackDamage));
+        s_instance.lvlField.setText(String.valueOf(enemy.level));
         for (int i = 0; i < enemy.stats.length; i++) {
-            s_instance.STAT_FIELDS[i].setText(String.valueOf((int) enemy.stats[i])); // *
+            s_instance.STAT_FIELDS[i].setText(String.valueOf((int) (enemy.stats[i] & 0xFF))); // *
         }
 
         // Set Bit Flags
