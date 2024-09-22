@@ -28,8 +28,6 @@ public final class Constants {
         // FXML Paths
         public static final String MAIN_MENU = RESOURCE_FOLDER+"MainMenu.fxml";
         public static final String PERSONA_TABPANE = RESOURCE_FOLDER + "PersonaEditorTabPane.fxml";
-        public static final String PERSONA_GENERAL = RESOURCE_FOLDER + "PersonaEditorGeneral.fxml";
-        public static final String PERSONA_SKILLS = RESOURCE_FOLDER + "PersonaEditorSkills.fxml";
         public static final String PARTY_TABPANE = RESOURCE_FOLDER + "PartyEditorTabPane.fxml";
         public static final String ENEMY_TABPANE = RESOURCE_FOLDER + "EnemyEditorTabPane.fxml";
         public static final String DARK_MODE_CSS = RESOURCE_FOLDER + "DarkMode.css";

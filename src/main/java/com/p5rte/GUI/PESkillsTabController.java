@@ -1,5 +1,6 @@
 package com.p5rte.GUI;
 
+import com.p5rte.Classes.Enemy;
 import com.p5rte.Classes.Persona;
 import com.p5rte.Classes.Skill;
 import com.p5rte.Utils.Enums;
@@ -9,6 +10,7 @@ import com.p5rte.Utils.Enums.SkillLearnability;
 import com.p5rte.Utils.FxUtil;
 
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.WeakChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -228,8 +230,6 @@ public class PESkillsTabController {
             }
         };
         inheritanceComboBox.valueProperty().addListener(_inheritanceListener);
-
-        setToRegistryEditor();
     }
 
 

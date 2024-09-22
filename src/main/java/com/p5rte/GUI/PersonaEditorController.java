@@ -48,6 +48,7 @@ public class PersonaEditorController {
 
         // Set the first Persona as the default selection
         handlePersonaButtonClick(0);
+        PESkillsTabController.setToRegistryEditor();
     }
 
 

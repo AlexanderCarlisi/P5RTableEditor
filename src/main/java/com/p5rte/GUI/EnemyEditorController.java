@@ -72,7 +72,7 @@ public class EnemyEditorController {
 
             // Clear Resources
             EnemyGeneralController.releaseResources();
-            // PESkillsTabController.releaseResources();
+            EnemySkillsController.releaseResources();
             // PEAffinityTabController.releaseResources();
             EnemyStream.releaseResources();
 
@@ -130,7 +130,7 @@ public class EnemyEditorController {
 
         // Update Tabs
         EnemyGeneralController.updateFields(enemy);
-        // PESkillsTabController.updateFields(persona);
+        EnemySkillsController.updateFields(enemy);
         // PEAffinityTabController.updateFields(persona);
     }
 }
