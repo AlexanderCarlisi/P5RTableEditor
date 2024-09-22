@@ -21,7 +21,7 @@ TODO: (in order of priority)
     - [x] Properly initialize Enemy instances
     - Add GUI to edit Enemy Data
     - [x] General Tab
-    - [ ] Skills Tab 
+    - [x] Skills Tab 
     - [ ] Affinities Tab
     - [ ] Drops Tab 
     - [ ] Write EnemyData to Unit Table
