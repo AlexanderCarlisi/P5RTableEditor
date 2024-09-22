@@ -29,7 +29,7 @@ TODO: (in order of priority)
       - I haven't found any resources on Item IDs, so before I spend time figuring them out, I want to get the rest of this done
       - Will contain : Money Drops, Exp Drops, (4) Item Drops, and Event Drop
 
-    - [ ] Mass Editing of Enemy Data
+    - [X] Mass Editing of Enemy Data
       - Manipulate Stats by percentage, and whatever else
 
   - Skill Editing : Segments 1 and 2 of Skill.TBL

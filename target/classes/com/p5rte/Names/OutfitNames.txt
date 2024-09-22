@@ -1,0 +1,286 @@
+Starter Clothes
+Shujin Uniform	All
+BLANK	All
+BLANK	All
+BLANK	All
+BLANK	All
+BLANK	All
+BLANK	All
+BLANK	All
+BLANK	All
+BLANK	All
+BLANK	All
+BLANK	All
+Dark Suit	Akechi
+BLANK	All
+BLANK	All
+Phantom Suit	Joker
+Pirate Armor	Ryuji
+Morgana Classic	Morgana
+Red Latex Suit	Ann
+Outlaw's Attire	Yusuke
+Metal Rider	Makoto
+Musketeer Suit	Haru
+Cyber Gear	Futaba
+Prince Suit	Akechi
+Black Leotard	Yoshizawa
+Summer Uniform	Joker
+Summer Uniform	Ryuji
+Summer Uniform
+Summer Uniform	Ann
+Summer Uniform	Yusuke
+Summer Uniform	Makoto
+Summer Uniform	Haru
+Summer Uniform	Futaba
+Summer Uniform
+Summer Uniform	Yoshizawa
+Winter Uniform	Joker
+Winter Uniform	Ryuji
+Winter Uniform
+Winter Uniform	Ann
+Winter Uniform	Yusuke
+Winter Uniform	Makoto
+Winter Uniform	Haru
+Winter Uniform	Futaba
+Winter Uniform	Akechi
+Winter Uniform	Yoshizawa
+Summer Clothes	Joker
+Summer Clothes	Ryuji
+Summer Clothes
+Summer Clothes	Ann
+Summer Clothes	Yusuke
+Summer Clothes	Makoto
+Summer Clothes	Haru
+Summer Clothes	Futaba
+Summer Clothes
+Summer Clothes	Yoshizawa
+Winter Clothes	Joker
+Winter Clothes	Ryuji
+Winter Clothes
+Winter Clothes	Ann
+Winter Clothes	Yusuke
+Winter Clothes	Makoto
+Winter Clothes	Haru
+Winter Clothes	Futaba
+Winter Clothes	Akechi
+Winter Clothes	Yoshizawa
+Tracksuit	Joker
+Tracksuit	Ryuji
+Tracksuit
+Tracksuit	Ann
+Tracksuit	Yusuke
+Tracksuit	Makoto
+Tracksuit	Haru
+Tracksuit	Futaba
+Tracksuit	Akechi
+Tracksuit	Yoshizawa
+Swimsuit	Joker
+Swimsuit	Ryuji
+Swimsuit
+Swimsuit	Ann
+Swimsuit	Yusuke
+Swimsuit	Makoto
+Swimsuit	Haru
+Swimsuit	Futaba
+Swimsuit
+Swimsuit	Yoshizawa
+Loungewear	Joker
+Loungewear
+Loungewear
+Loungewear
+Loungewear
+Loungewear
+Loungewear
+Loungewear
+Loungewear
+Loungewear
+Gekkoukan High	Joker
+Gekkoukan High	Ryuji
+Aigis Costume	Morgana
+Gekkoukan High	Ann
+Gekkoukan High	Yusuke
+Gekkoukan High	Makoto
+Gekkoukan High	Haru
+Gekkoukan High	Futaba
+Gekkoukan High	Akechi
+Gekkoukan High	Yoshizawa
+Yasogami High	Joker
+Yasogami High	Ryuji
+Teddie Costume	Morgana
+Yasogami High	Ann
+Yasogami High	Yusuke
+Yasogami High	Makoto
+Yasogami High	Haru
+Yasogami High	Futaba
+Yasogami High	Akechi
+Yasogami High	Yoshizawa
+St. Hermelin High	Joker
+St. Hermelin High	Ryuji
+Trish Costume v1	Morgana
+St. Hermelin High	Ann
+St. Hermelin High	Yusuke
+St. Hermelin High	Makoto
+St. Hermelin High	Haru
+St. Hermelin High	Futaba
+St. Hermelin High	Akechi
+St. Hermelin High	Yoshizawa
+Seven Sisters High	Joker
+Seven Sisters High	Ryuji
+Trish Costume v2	Morgana
+Seven Sisters High	Ann
+Seven Sisters High	Yusuke
+Seven Sisters High	Makoto
+Seven Sisters High	Haru
+Seven Sisters High	Futaba
+Kasugayama High	Akechi
+Seven Sisters High	Yoshizawa
+Vincent's Outfit	Joker
+Orlando's Fashion	Ryuji
+Stray Sheep's Suit	Morgana
+Catherine's Cami	Ann
+Johnny's Coat	Yusuke
+Katherine's Outfit	Makoto
+Erica's Uniform	Haru
+Toby's Overalls	Futaba
+Boss's Suit	Akechi
+Rin's One Piece	Yoshizawa
+Karukozaka High	Joker
+Karukozaka High	Ryuji
+Karukozaka High	Morgana
+Karukozaka High	Ann
+Karukozaka High	Yusuke
+Karukozaka High	Makoto
+Karukozaka High	Haru
+Karukozaka High	Futaba
+Hazama's Uniform	Akechi
+Karukozaka High	Yoshizawa
+Butler Suit	Joker
+Butler Suit	Ryuji
+Maid Uniform	Morgana
+Maid Uniform	Ann
+Butler Suit	Yusuke
+Maid Uniform	Makoto
+Maid Uniform	Haru
+Maid Uniform	Futaba
+Butler Suit	Akechi
+Maid Uniform	Yoshizawa
+Christmas Outfit	Joker
+Christmas Outfit	Ryuji
+Christmas Outfit	Morgana
+Christmas Outfit	Ann
+Christmas Outfit	Yusuke
+Christmas Outfit	Makoto
+Christmas Outfit	Haru
+Christmas Outfit	Futaba
+Christmas Outfit	Akechi
+Christmas Outfit	Yoshizawa
+Dancewear	Joker
+Dancewear	Ryuji
+Dancewear	Morgana
+Dancewear	Ann
+Dancewear	Yusuke
+Dancewear	Makoto
+Dancewear	Haru
+Dancewear	Futaba
+Dancewear	Akechi
+Dancewear	Yoshizawa
+Shadow Ops Uniform	Joker
+Shadow Ops Uniform	Ryuji
+Shadow Ops Uniform	Morgana
+Shadow Ops Uniform	Ann
+Shadow Ops Uniform	Yusuke
+Shadow Ops Uniform	Makoto
+Shadow Ops Uniform	Haru
+Shadow Ops Uniform	Futaba
+Shadow Ops Uniform	Akechi
+Shadow Ops Uniform	Yoshizawa
+Samurai Garb	Joker
+Samurai Garb	Ryuji
+Burroughs Costume	Morgana
+Samurai Garb	Ann
+Samurai Garb	Yusuke
+Samurai Garb	Makoto
+Samurai Garb	Haru
+Samurai Garb	Futaba
+Samurai Garb	Akechi
+Samurai Garb	Yoshizawa
+Yumizuki High	Joker
+Yumizuki High	Ryuji
+Gouto Costume	Morgana
+Ouran High	Ann
+Yumizuki High	Yusuke
+Ouran	Makoto
+Ouran	Haru
+Ouran High	Futaba
+Imperial Uniform	Akechi
+Ouran High	Yoshizawa
+Starlight Outfit	Joker
+Starlight Outfit	Ryuji
+Starlight Outfit	Morgana
+Starlight Outfit	Ann
+Starlight Outfit	Yusuke
+Starlight Outfit	Makoto
+Starlight Outfit	Haru
+Starlight Outfit	Futaba
+Starlight Outfit	Akechi
+Starlight Outfit
+Moonlight Outfit (no model)	Joker
+Moonlight Outfit (no model)	Ryuji
+Moonlight Outfit (no model)	Morgana
+Moonlight Outfit (no model)	Ann
+Moonlight Outfit (no model)	Yusuke
+Moonlight Outfit (no model)	Makoto
+Moonlight Outfit (no model)	Haru
+Moonlight Outfit (no model)	Futaba
+Moonlight Outfit (no model)	Akechi
+Moonlight Outfit (no model)	Yoshizawa
+Ultramarine Outfit	Joker
+Ultramarine Outfit	Ryuji
+Long Nose Outfit	Morgana
+Ultramarine Outfit	Ann
+Ultramarine Outfit	Yusuke
+Ultramarine Outfit	Makoto
+Ultramarine Outfit	Haru
+Ultramarine Outfit	Futaba
+Ultramarine Outfit	Akechi
+Ultramarine Outfit	Yoshizawa
+Featherman Suit	Joker
+Featherman Suit	Ryuji
+Featherman Suit	Morgana
+Featherman Suit	Ann
+Featherman Suit	Yusuke
+Featherman Suit	Makoto
+Featherman Suit	Haru
+Featherman Suit	Futaba
+Featherman Suit	Akechi
+Featherman Suit	Yoshizawa
+Demonica Head	Joker
+Demonica Head	Ryuji
+Demonica Head	Morgana
+Demonica Head	Ann
+Demonica Head	Yusuke
+Demonica Head	Makoto
+Demonica Head	Haru
+Demonica Head	Futaba
+Demonica Head	Akechi
+Demonica Head	Yoshizawa
+Demonica Suit	Joker
+Demonica Suit	Ryuji
+Demonica Suit	Morgana
+Demonica Suit	Ann
+Demonica Suit	Yusuke
+Demonica Suit	Makoto
+Demonica Suit	Haru
+Demonica Suit	Futaba
+Demonica Suit	Akechi
+Demonica Suit	Yoshizawa
+New Cinema Outfit	Joker
+New Cinema Outfit	Ryuji
+New Cinema Outfit	Morgana
+New Cinema Outfit	Ann
+New Cinema Outfit	Yusuke
+New Cinema Outfit	Makoto
+New Cinema Outfit	Haru
+New Cinema Outfit	Futaba
+New Cinema Outfit	Akechi
+New Cinema Outfit	Yoshizawa

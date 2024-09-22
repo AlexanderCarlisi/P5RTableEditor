@@ -2,6 +2,7 @@ package com.p5rte.Utils;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public final class Constants {
@@ -33,8 +34,16 @@ public final class Constants {
         public static final String DARK_MODE_CSS = RESOURCE_FOLDER + "DarkMode.css";
 
         // Names
-        public static final String PERSONA_NAME_FILE = ROOT_DIR + "/src/main/resources/com/p5rte/PersonaNames.txt";
-        public static final String ENEMY_NAME_FILE = ROOT_DIR + "/src/main/resources/com/p5rte/EnemyNames.txt";
+        public static final String NAMES_DIR = ROOT_DIR + "/src/main/resources/com/p5rte/Names/";
+        public static final String PERSONA_NAME_FILE = NAMES_DIR + "PersonaNames.txt";
+        public static final String ENEMY_NAME_FILE = NAMES_DIR + "EnemyNames.txt";
+        public static final String ARMOR_NAME_FILE = NAMES_DIR + "ArmorNames.txt";
+        public static final String ACCESSORY_NAME_FILE = NAMES_DIR + "AccessoryNames.txt";
+        public static final String CONSUMABLE_NAME_FILE = NAMES_DIR + "ConsumableNames.txt";
+        public static final String KEY_ITEM_NAME_FILE = NAMES_DIR + "KeyItemNames.txt";
+        public static final String MATERIAL_NAME_FILE = NAMES_DIR + "MaterialNames.txt";
+        public static final String SKILL_CARD_NAME_FILE = NAMES_DIR + "SkillCardNames.txt";
+        public static final String OUTFIT_NAME_FILE = NAMES_DIR + "OutfitNames.txt";
     }
     
 
@@ -43,6 +52,19 @@ public final class Constants {
 
     // https://amicitia.miraheze.org/wiki/Persona_5_Royal/Enemies
     public static final String[] enemyIDtoName = readNamesFromFile(Path.ENEMY_NAME_FILE, 783);
+
+    // Persona Modding Discord ITEMID Thread -> https://discord.com/channels/746211612981198989/1219490995209637919
+    private static final HashMap<Integer, String> ITEMID_TO_NAME_MAP = new HashMap<>() {
+        {
+            put(1000, Path.ARMOR_NAME_FILE);
+            put(2000, Path.ACCESSORY_NAME_FILE);
+            put(3000, Path.CONSUMABLE_NAME_FILE);
+            put(4000, Path.KEY_ITEM_NAME_FILE);
+            put(5000, Path.MATERIAL_NAME_FILE);
+            put(6000, Path.SKILL_CARD_NAME_FILE);
+            put(7000, Path.OUTFIT_NAME_FILE);
+        }
+    };
 
 
     private static String[] readNamesFromFile(String path, int size) {
@@ -59,5 +81,26 @@ public final class Constants {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    private static String getItemName(int itemID) {
+        int fileKey = itemID / 1000 * 1000;
+        int targetIndex = itemID % fileKey;
+        String filePath = ITEMID_TO_NAME_MAP.get(fileKey);
+
+        try (Scanner scanner = new Scanner(new File(filePath))) {
+            int index = 0;
+            while (scanner.hasNextLine()) {
+                String name = scanner.nextLine();
+                if (index == targetIndex) {
+                    return name;
+                }
+                index++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Unknown Item";
     }
 }
