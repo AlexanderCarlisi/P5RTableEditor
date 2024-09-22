@@ -73,7 +73,7 @@ public class EnemyEditorController {
             // Clear Resources
             EnemyGeneralController.releaseResources();
             EnemySkillsController.releaseResources();
-            // PEAffinityTabController.releaseResources();
+            EnemyAffinityController.releaseResources();
             EnemyStream.releaseResources();
 
         } catch (IOException e) {
@@ -131,6 +131,6 @@ public class EnemyEditorController {
         // Update Tabs
         EnemyGeneralController.updateFields(enemy);
         EnemySkillsController.updateFields(enemy);
-        // PEAffinityTabController.updateFields(persona);
+        EnemyAffinityController.updateFields(enemy);
     }
 }
