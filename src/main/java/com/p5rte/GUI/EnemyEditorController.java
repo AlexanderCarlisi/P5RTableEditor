@@ -28,6 +28,7 @@ public class EnemyEditorController {
     @FXML private TextField searchField;
     @FXML private VBox catalogueContainer;
     @FXML private Tab generalTab;
+    private int _index;
     private Stage stage;
 
 
@@ -113,6 +114,7 @@ public class EnemyEditorController {
                 statActions.get(stat).accept(enemy, multiplier);
             }
         }
+        handleEnemyButtonClick(_index); // Refresh the current enemy
     }
 
 
@@ -157,6 +159,7 @@ public class EnemyEditorController {
 
 
     private void handleEnemyButtonClick(int index) {
+        _index = index;
         Enemy enemy = EnemyStream.getEnemy(index);
 
         // Set General Tab Name to Persona Name
