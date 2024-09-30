@@ -26,8 +26,8 @@ TODO: (in order of priority)
     - [X] Write EnemyData to Unit Table
 
     - [ ] Enemy Drops Tab
-      - I haven't found any resources on Item IDs, so before I spend time figuring them out, I want to get the rest of this done
-      - Will contain : Money Drops, Exp Drops, (4) Item Drops, and Event Drop
+      - Pretty much done, but most ItemIDs are in the 12000 which I don't know what that coresponds to yet
+      - Researching if someone already knows, but if not will figure it out myself
 
     - [X] Mass Editing of Enemy Data
       - Manipulate Stats by percentage, and whatever else
