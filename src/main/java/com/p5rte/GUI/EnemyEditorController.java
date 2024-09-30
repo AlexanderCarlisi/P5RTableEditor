@@ -79,6 +79,7 @@ public class EnemyEditorController {
             EnemyGeneralController.releaseResources();
             EnemySkillsController.releaseResources();
             EnemyAffinityController.releaseResources();
+            EnemyDropsController.releaseResources();
             EnemyStream.releaseResources();
 
         } catch (IOException e) {
@@ -169,5 +170,6 @@ public class EnemyEditorController {
         EnemyGeneralController.updateFields(enemy);
         EnemySkillsController.updateFields(enemy);
         EnemyAffinityController.updateFields(enemy);
+        EnemyDropsController.updateFields(enemy);
     }
 }

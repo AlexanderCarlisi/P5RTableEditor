@@ -60,9 +60,9 @@
                 <Tab text="Affinity">
                     <fx:include source="EnemyAffinityTab.fxml" />
                 </Tab>
-                <!-- <Tab text="Drops">
+                <Tab text="Drops">
                     <fx:include source="EnemyDropsTab.fxml" />
-                </Tab> -->
+                </Tab>
             </tabs>
         </TabPane>
     </center>
