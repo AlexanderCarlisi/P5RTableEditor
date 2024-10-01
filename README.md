@@ -19,18 +19,13 @@ TODO: (in order of priority)
     - [x] Read from Seg 0
     - [x] Read from Seg 1
     - [x] Properly initialize Enemy instances
-    - Add GUI to edit Enemy Data
     - [x] General Tab
     - [x] Skills Tab 
     - [X] Affinities Tab
     - [X] Write EnemyData to Unit Table
-
-    - [ ] Enemy Drops Tab
-      - Pretty much done, but most ItemIDs are in the 12000 which I don't know what that coresponds to yet
-      - Researching if someone already knows, but if not will figure it out myself
-
+    - [x] Enemy Drops Tab
     - [X] Mass Editing of Enemy Data
-      - Manipulate Stats by percentage, and whatever else
+    - [ ] Code Cleanup
 
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
