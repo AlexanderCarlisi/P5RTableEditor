@@ -34,6 +34,7 @@ public class EnemyDropsController {
                 try {
                     short value = Short.parseShort(newValue);
                     _currentEnemy.itemDrops[INDEX].itemID = value;
+                    s_instance.ITEM_DROPS[INDEX].ITEMLABEL.setText(Constants.getItemName((int) value));
                 } catch (NumberFormatException e) {
                     _currentEnemy.itemDrops[INDEX].itemID = 0;
                 }
