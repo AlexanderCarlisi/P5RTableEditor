@@ -2,6 +2,9 @@ package com.p5rte.GUI;
 
 import java.io.IOException;
 
+import com.p5rte.GUI.EnemyControllers.EnemyEditorController;
+import com.p5rte.GUI.PartyControllers.PartyEditorController;
+import com.p5rte.GUI.PersonaControllers.PersonaEditorController;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.FileStreamUtil;
 

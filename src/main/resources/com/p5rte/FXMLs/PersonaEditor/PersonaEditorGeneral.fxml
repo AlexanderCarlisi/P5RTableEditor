@@ -1,0 +1,84 @@
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.GridPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.p5rte.GUI.PersonaControllers.PersonaGeneralController">
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <GridPane hgap="10" vgap="10">
+                <!-- Persona Name Label -->
+                <Label text="Persona Name" fx:id="personaNameLabel" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-size: 18px;" />
+
+                <!-- Base Stats Section -->
+                <GridPane hgap="10" vgap="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Base Stats" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" style="-fx-font-size: 16px;" />
+                    <Label text="LvL:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="lvlField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Str:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="strengthField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="Mag:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="magicField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="End:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <TextField fx:id="enduranceField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label text="Agi:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <TextField fx:id="agilityField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label text="Luk:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <TextField fx:id="luckField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                </GridPane>
+
+                <!-- Stat Weights Section -->
+                <GridPane hgap="10" vgap="10" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label text="Stat Weights" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" style="-fx-font-size: 16px;" />
+                    <Label text="Str:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="strWeightField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="Mag:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="magWeightField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="End:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <TextField fx:id="endWeightField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label text="Agi:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <TextField fx:id="agiWeightField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label text="Luk:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <TextField fx:id="lukWeightField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                </GridPane>
+
+                <!-- Arcana Section -->
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Arcana" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 16px;" />
+                    <ComboBox fx:id="arcanaComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                </VBox>
+
+                <!-- Bit Flags Section -->
+                <GridPane hgap="10" vgap="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Bit Flags" style="-fx-font-size: 16px;" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" />
+                    <ToggleButton fx:id="DLCFlag" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="DLC" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <ToggleButton fx:id="treasureFlag" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label text="Treasure Demon" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <ToggleButton fx:id="partyFlag" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label text="Party Persona" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <ToggleButton fx:id="storyFlag" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label text="Story Persona" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <ToggleButton fx:id="nRegFlag" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <Label text="Not Registerable" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <ToggleButton fx:id="fusionFlag" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <Label text="Cannot be Fused Normally" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <ToggleButton fx:id="evolvedFlag" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <Label text="Evolved" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                </GridPane>
+
+                <!-- Warning Label -->
+                <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label  fx:id="warningLabel" style="-fx-font-size: 16px;" />
+                </VBox>
+            </GridPane>
+        </ScrollPane>
+    </center>
+</BorderPane>

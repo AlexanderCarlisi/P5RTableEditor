@@ -8,4 +8,10 @@ module com.p5rte {
     exports com.p5rte;
     exports com.p5rte.GUI to javafx.graphics, javafx.fxml;
     opens com.p5rte.GUI to javafx.fxml;
+    exports com.p5rte.GUI.EnemyControllers to javafx.graphics, javafx.fxml;
+    opens com.p5rte.GUI.EnemyControllers to javafx.fxml;
+    exports com.p5rte.GUI.PartyControllers to javafx.graphics, javafx.fxml;
+    opens com.p5rte.GUI.PartyControllers to javafx.fxml;
+    exports com.p5rte.GUI.PersonaControllers to javafx.graphics, javafx.fxml;
+    opens com.p5rte.GUI.PersonaControllers to javafx.fxml;
 }

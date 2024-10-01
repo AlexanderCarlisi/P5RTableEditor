@@ -13,6 +13,7 @@ public final class Constants {
         // Folders
         public static final String SRC = "src/";
         public static final String RESOURCE_FOLDER = "/com/p5rte/";
+        public static final String FXML_FOLDER = RESOURCE_FOLDER + "FXMLs/";
         
         // Table Stuff
         public static final String ROOT_DIR = Paths.get("").toAbsolutePath().toString();
@@ -29,10 +30,10 @@ public final class Constants {
         public static final String ORIGINAL_UNIT_TABLE = ORIGINAL+"/UNIT.TBL";
 
         // FXML Paths
-        public static final String MAIN_MENU = RESOURCE_FOLDER+"MainMenu.fxml";
-        public static final String PERSONA_TABPANE = RESOURCE_FOLDER + "PersonaEditorTabPane.fxml";
-        public static final String PARTY_TABPANE = RESOURCE_FOLDER + "PartyEditorTabPane.fxml";
-        public static final String ENEMY_TABPANE = RESOURCE_FOLDER + "EnemyEditorTabPane.fxml";
+        public static final String MAIN_MENU = FXML_FOLDER + "MainMenu.fxml";
+        public static final String PERSONA_TABPANE = FXML_FOLDER + "PersonaEditor/PersonaEditorTabPane.fxml";
+        public static final String PARTY_TABPANE = FXML_FOLDER + "PartyEditor/PartyEditorTabPane.fxml";
+        public static final String ENEMY_TABPANE = FXML_FOLDER + "EnemyEditor/EnemyEditorTabPane.fxml";
         public static final String DARK_MODE_CSS = RESOURCE_FOLDER + "DarkMode.css";
 
         // Names
@@ -50,27 +51,11 @@ public final class Constants {
     
 
     // https://amicitia.miraheze.org/wiki/Persona_5_Royal/Personas
-    public static String[] personaIDtoName = readNamesFromFile(Path.PERSONA_NAME_FILE);
+    public static final String[] personaIDtoName = readNamesFromFile(Path.PERSONA_NAME_FILE);
 
     // https://amicitia.miraheze.org/wiki/Persona_5_Royal/Enemies
-    public static String[] enemyIDtoName = readNamesFromFile(Path.ENEMY_NAME_FILE);
+    public static final String[] enemyIDtoName = readNamesFromFile(Path.ENEMY_NAME_FILE);
 
-    // Static initialization block
-    // static {
-    //     personaIDtoName = readNamesFromFile(Path.PERSONA_NAME_FILE);
-    //     enemyIDtoName = readNamesFromFile(Path.ENEMY_NAME_FILE);
-    // }
-
-    // I really want to know how much memory this takes up but im too lazy to figure it out
-    // public static final String[][] itemNames = new String[][] {
-    //     readNamesFromFile(Path.ARMOR_NAME_FILE),
-    //     readNamesFromFile(Path.ACCESSORY_NAME_FILE),
-    //     readNamesFromFile(Path.CONSUMABLE_NAME_FILE),
-    //     readNamesFromFile(Path.KEY_ITEM_NAME_FILE),
-    //     readNamesFromFile(Path.MATERIAL_NAME_FILE),
-    //     readNamesFromFile(Path.SKILL_CARD_NAME_FILE),
-    //     readNamesFromFile(Path.OUTFIT_NAME_FILE)
-    // };
 
     // Persona Modding Discord ITEMID Thread -> https://discord.com/channels/746211612981198989/1219490995209637919 (links wonky)
     private static final HashMap<Character, String> ITEMID_TO_NAME_MAP = new HashMap<>() {
