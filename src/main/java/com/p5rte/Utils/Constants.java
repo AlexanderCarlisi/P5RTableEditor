@@ -72,17 +72,16 @@ public final class Constants {
     //     readNamesFromFile(Path.OUTFIT_NAME_FILE)
     // };
 
-    // Persona Modding Discord ITEMID Thread -> https://discord.com/channels/746211612981198989/1219490995209637919 (links honky)
-    // Find out what 12k is, most item drops are 12k
-    private static final HashMap<Integer, String> ITEMID_TO_NAME_MAP = new HashMap<>() {
+    // Persona Modding Discord ITEMID Thread -> https://discord.com/channels/746211612981198989/1219490995209637919 (links wonky)
+    private static final HashMap<Character, String> ITEMID_TO_NAME_MAP = new HashMap<>() {
         {
-            put(1000, Path.ARMOR_NAME_FILE);
-            put(2000, Path.ACCESSORY_NAME_FILE);
-            put(3000, Path.CONSUMABLE_NAME_FILE);
-            put(4000, Path.KEY_ITEM_NAME_FILE);
-            put(5000, Path.MATERIAL_NAME_FILE);
-            put(6000, Path.SKILL_CARD_NAME_FILE);
-            put(7000, Path.OUTFIT_NAME_FILE);
+            put('1', Path.ARMOR_NAME_FILE);
+            put('2', Path.ACCESSORY_NAME_FILE);
+            put('3', Path.CONSUMABLE_NAME_FILE);
+            put('4', Path.KEY_ITEM_NAME_FILE);
+            put('5', Path.MATERIAL_NAME_FILE);
+            put('6', Path.SKILL_CARD_NAME_FILE);
+            put('7', Path.OUTFIT_NAME_FILE);
         }
     };
 
@@ -102,12 +101,15 @@ public final class Constants {
 
 
     public static String getItemName(int itemID) {
-        int fileKey = itemID / 1000 * 1000;
-        int targetIndex = (fileKey != 0) ? itemID % fileKey : 0;
+        String hexString = Integer.toHexString(itemID).toUpperCase();
+        char fileKey = hexString.charAt(0);
+        int baseValue = Integer.parseInt(fileKey + "000", 16);
+        int targetIndex = itemID - baseValue;
         String filePath = ITEMID_TO_NAME_MAP.getOrDefault(fileKey, null);
-
-        if (targetIndex == 0) return "None";
+        
+        if (targetIndex < 0) return "None";
         if (filePath == null) return "Undocumented Item";
+    
         try (Scanner scanner = new Scanner(new File(filePath))) {
             int index = 0;
             while (scanner.hasNextLine()) {
@@ -120,6 +122,7 @@ public final class Constants {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    
         return "Item not Found";
     }
 }
