@@ -137,7 +137,7 @@ public final class Enums {
         Passive;
 
         public static AttackAttribute getAt(int index) {
-            if (index >= 22) return AttackAttribute.Passive;
+            if (index >= 22 || index < 0) return AttackAttribute.Passive;
             return AttackAttribute.values()[index];
         }
     }
