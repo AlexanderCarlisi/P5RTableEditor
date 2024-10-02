@@ -2,19 +2,21 @@ package com.p5rte.GUI.EnemyControllers;
 
 import com.p5rte.Classes.Enemy;
 import com.p5rte.Utils.Enums.ESkill;
+import com.p5rte.Utils.FxUtil;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class EnemySkillsController {
 
     @FXML private VBox skillContainer;
 
     @SuppressWarnings("unchecked")
-    private final ChangeListener<ESkill>[] SKILL_LISTENERS = new ChangeListener[8]; 
+    private final ChangeListener<Object>[] SKILL_LISTENERS = new ChangeListener[8]; 
 
     @SuppressWarnings("unchecked")
     private final ComboBox<ESkill>[] SKILL_BOXES = new ComboBox[8];
@@ -37,11 +39,28 @@ public class EnemySkillsController {
 
             final int INDEX = i;
             SKILL_LISTENERS[INDEX] = ((__, ___, newValue) -> {
-                s_instance._currentEnemy.skillIDs[INDEX] = (short) newValue.ordinal();
+                if (newValue == null) return;
+                ESkill eskill = (ESkill) newValue;
+                s_instance._currentEnemy.skillIDs[INDEX] = (short) eskill.ordinal();
             });
             skillComboBox.valueProperty().addListener(SKILL_LISTENERS[INDEX]);
             skillContainer.getChildren().add(skillComboBox);
             SKILL_BOXES[i] = skillComboBox;
+
+            // Add Search to SkillID and TraitID
+            FxUtil.autoCompleteComboBoxPlus(skillComboBox, (typedText, itemToCompare) -> itemToCompare.name().toLowerCase().contains(typedText.toLowerCase()) || String.valueOf(itemToCompare.ordinal()).equals(typedText));
+            skillComboBox.setConverter(new StringConverter<ESkill>() {
+                @Override
+                public String toString(ESkill object) {
+                    return object != null ? object.name() : "";
+                }
+            
+                @Override
+                public ESkill fromString(String string) {
+                    return skillComboBox.getItems().stream().filter(object ->
+                        object.name().equals(string)).findFirst().orElse(null);
+                }
+            });
         }
     }
 
