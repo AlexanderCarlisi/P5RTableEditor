@@ -1,0 +1,57 @@
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.p5rte.GUI.EnemyControllers.EnemyAffinityController">
+    <center>
+        <VBox spacing="10">
+            <ComboBox fx:id="elementComboBox" />
+            <HBox spacing="10">
+                <ToggleButton fx:id="dacToggle" />
+                <Label text="Double Ailment Chance" />
+            </HBox>
+            <HBox spacing="10">
+                <ToggleButton fx:id="guaranteeToggle" />
+                <Label text="Guarantee Ailment" />
+            </HBox>
+            <HBox spacing="10">
+                <ToggleButton fx:id="ailmentImmuneToggle" />
+                <Label text="Ailment Immune" />
+            </HBox>
+            <HBox spacing="10">
+                <ToggleButton fx:id="resistToggle" />
+                <Label text="Resist" />
+            </HBox>
+            <HBox spacing="10">
+                <ToggleButton fx:id="weakToggle" />
+                <Label text="Weak" />
+            </HBox>
+            <HBox spacing="10">
+                <ToggleButton fx:id="drainToggle" />
+                <Label text="Drain" />
+            </HBox>
+            <HBox spacing="10">
+                <ToggleButton fx:id="repelToggle" />
+                <Label text="Repel" />
+            </HBox>
+            <HBox spacing="10">
+                <ToggleButton fx:id="blockToggle" />
+                <Label text="Null" />
+            </HBox>
+            <HBox spacing="10">
+                <Label text="Multiplier:" />
+                <TextField fx:id="multiplierField" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

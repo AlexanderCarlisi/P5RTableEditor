@@ -2,7 +2,9 @@ package com.p5rte.Utils;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public final class Constants {
@@ -11,6 +13,7 @@ public final class Constants {
         // Folders
         public static final String SRC = "src/";
         public static final String RESOURCE_FOLDER = "/com/p5rte/";
+        public static final String FXML_FOLDER = RESOURCE_FOLDER + "FXMLs/";
         
         // Table Stuff
         public static final String ROOT_DIR = Paths.get("").toAbsolutePath().toString();
@@ -27,10 +30,10 @@ public final class Constants {
         public static final String ORIGINAL_UNIT_TABLE = ORIGINAL+"/UNIT.TBL";
 
         // FXML Paths
-        public static final String MAIN_MENU = RESOURCE_FOLDER+"MainMenu.fxml";
-        public static final String PERSONA_TABPANE = RESOURCE_FOLDER + "PersonaEditorTabPane.fxml";
-        public static final String PARTY_TABPANE = RESOURCE_FOLDER + "PartyEditorTabPane.fxml";
-        public static final String ENEMY_TABPANE = RESOURCE_FOLDER + "EnemyEditorTabPane.fxml";
+        public static final String MAIN_MENU = FXML_FOLDER + "MainMenu.fxml";
+        public static final String PERSONA_TABPANE = FXML_FOLDER + "PersonaEditor/PersonaEditorTabPane.fxml";
+        public static final String PARTY_TABPANE = FXML_FOLDER + "PartyEditor/PartyEditorTabPane.fxml";
+        public static final String ENEMY_TABPANE = FXML_FOLDER + "EnemyEditor/EnemyEditorTabPane.fxml";
         public static final String DARK_MODE_CSS = RESOURCE_FOLDER + "DarkMode.css";
 
         // Names
@@ -48,35 +51,33 @@ public final class Constants {
     
 
     // https://amicitia.miraheze.org/wiki/Persona_5_Royal/Personas
-    public static final String[] personaIDtoName = readNamesFromFile(Path.PERSONA_NAME_FILE, 464);
+    public static final String[] personaIDtoName = readNamesFromFile(Path.PERSONA_NAME_FILE);
 
     // https://amicitia.miraheze.org/wiki/Persona_5_Royal/Enemies
-    public static final String[] enemyIDtoName = readNamesFromFile(Path.ENEMY_NAME_FILE, 783);
+    public static final String[] enemyIDtoName = readNamesFromFile(Path.ENEMY_NAME_FILE);
 
-    // Persona Modding Discord ITEMID Thread -> https://discord.com/channels/746211612981198989/1219490995209637919
-    private static final HashMap<Integer, String> ITEMID_TO_NAME_MAP = new HashMap<>() {
+
+    // Persona Modding Discord ITEMID Thread -> https://discord.com/channels/746211612981198989/1219490995209637919 (links wonky)
+    private static final HashMap<Character, String> ITEMID_TO_NAME_MAP = new HashMap<>() {
         {
-            put(1000, Path.ARMOR_NAME_FILE);
-            put(2000, Path.ACCESSORY_NAME_FILE);
-            put(3000, Path.CONSUMABLE_NAME_FILE);
-            put(4000, Path.KEY_ITEM_NAME_FILE);
-            put(5000, Path.MATERIAL_NAME_FILE);
-            put(6000, Path.SKILL_CARD_NAME_FILE);
-            put(7000, Path.OUTFIT_NAME_FILE);
+            put('1', Path.ARMOR_NAME_FILE);
+            put('2', Path.ACCESSORY_NAME_FILE);
+            put('3', Path.CONSUMABLE_NAME_FILE);
+            put('4', Path.KEY_ITEM_NAME_FILE);
+            put('5', Path.MATERIAL_NAME_FILE);
+            put('6', Path.SKILL_CARD_NAME_FILE);
+            put('7', Path.OUTFIT_NAME_FILE);
         }
     };
 
 
-    private static String[] readNamesFromFile(String path, int size) {
+    private static String[] readNamesFromFile(String path) {
         try (Scanner scanner = new Scanner(new File(path))) {
-            String[] names = new String[size];
-            int index = 0;
+            List<String> names = new ArrayList<>();
             while (scanner.hasNextLine()) {
-                String name = scanner.nextLine();
-                names[index] = name;
-                index++;
+                names.add(scanner.nextLine());
             }
-            return names;
+            return names.toArray(String[]::new);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,11 +85,16 @@ public final class Constants {
     }
 
 
-    private static String getItemName(int itemID) {
-        int fileKey = itemID / 1000 * 1000;
-        int targetIndex = itemID % fileKey;
-        String filePath = ITEMID_TO_NAME_MAP.get(fileKey);
-
+    public static String getItemName(int itemID) {
+        String hexString = Integer.toHexString(itemID).toUpperCase();
+        char fileKey = hexString.charAt(0);
+        int baseValue = Integer.parseInt(fileKey + "000", 16);
+        int targetIndex = itemID - baseValue;
+        String filePath = ITEMID_TO_NAME_MAP.getOrDefault(fileKey, null);
+        
+        if (targetIndex < 0) return "None";
+        if (filePath == null) return "Undocumented Item";
+    
         try (Scanner scanner = new Scanner(new File(filePath))) {
             int index = 0;
             while (scanner.hasNextLine()) {
@@ -101,6 +107,7 @@ public final class Constants {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "Unknown Item";
+    
+        return "Item not Found";
     }
 }

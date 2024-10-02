@@ -34,7 +34,7 @@ public class EnemyStream {
     private static void readEnemies() {
         s_enemies = new Enemy[783];
 
-        try (FileInputStream unitStream = new FileInputStream(Constants.Path.INPUT_UNIT_TABLE);) {
+        try (FileInputStream unitStream = new FileInputStream(Constants.Path.OUTPUT_UNIT_TABLE);) {
             unitStream.skip(0x4); // Skip Array Size
 
             // Segment 0 | Enemy Data

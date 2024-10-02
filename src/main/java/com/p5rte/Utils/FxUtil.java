@@ -4,7 +4,6 @@
 
 package com.p5rte.Utils;
 
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -35,33 +34,36 @@ public class FxUtil {
 
             @Override
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.UP) {
-                    caretPos = -1;
-                    if (comboBox.getEditor().getText() != null) {
-                        moveCaret(comboBox.getEditor().getText().length());
-                    }
-                    return;
-                } else if (event.getCode() == KeyCode.DOWN) {
-                    if (!comboBox.isShowing()) {
-                        comboBox.show();
-                    }
-                    caretPos = -1;
-                    if (comboBox.getEditor().getText() != null) {
-                        moveCaret(comboBox.getEditor().getText().length());
-                    }
-                    return;
-                } else if (event.getCode() == KeyCode.BACK_SPACE) {
-                    if (comboBox.getEditor().getText() != null) {
-                        moveCaretToPos = true;
-                        caretPos = comboBox.getEditor().getCaretPosition();
-                    }
-                } else if (event.getCode() == KeyCode.DELETE) {
-                    if (comboBox.getEditor().getText() != null) {
-                        moveCaretToPos = true;
-                        caretPos = comboBox.getEditor().getCaretPosition();
-                    }
-                } else if (event.getCode() == KeyCode.ENTER) {
-                    return;
+                if (null != event.getCode()) switch (event.getCode()) {
+                    case UP:
+                        caretPos = -1;
+                        if (comboBox.getEditor().getText() != null) {
+                            moveCaret(comboBox.getEditor().getText().length());
+                        }
+                        return;
+                    case DOWN:
+                        if (!comboBox.isShowing()) {
+                            comboBox.show();
+                        }
+                        caretPos = -1;
+                        if (comboBox.getEditor().getText() != null) {
+                            moveCaret(comboBox.getEditor().getText().length());
+                        }
+                        return;
+                    case BACK_SPACE:
+                        if (comboBox.getEditor().getText() != null) {
+                            moveCaretToPos = true;
+                            caretPos = comboBox.getEditor().getCaretPosition();
+                        }   break;
+                    case DELETE:
+                        if (comboBox.getEditor().getText() != null) {
+                            moveCaretToPos = true;
+                            caretPos = comboBox.getEditor().getCaretPosition();
+                        }   break;
+                    case ENTER:
+                        return;
+                    default:
+                        break;
                 }
 
                 if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT || event.getCode().equals(KeyCode.SHIFT) || event.getCode().equals(KeyCode.CONTROL)

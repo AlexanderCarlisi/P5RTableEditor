@@ -31,8 +31,8 @@ public class PersonaStream {
         s_personas = new Persona[464];
 
         // Segment 1 of Persona Table | BitFlags, ArcanaID, Level, Stats, SkillInheritanceID
-        try (FileInputStream personaInputStream = new FileInputStream(Constants.Path.INPUT_PERSONA_TABLE);
-         FileInputStream unitInputStream = new FileInputStream(Constants.Path.INPUT_UNIT_TABLE);) {
+        try (FileInputStream personaInputStream = new FileInputStream(Constants.Path.OUTPUT_PERSONA_TABLE);
+         FileInputStream unitInputStream = new FileInputStream(Constants.Path.OUTPUT_UNIT_TABLE);) {
             
             personaInputStream.skip(0x4); // start of bitflags for first persona
 

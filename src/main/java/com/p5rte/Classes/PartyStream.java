@@ -34,7 +34,7 @@ public class PartyStream {
 
         s_partyMembers = new PartyMember[9];
 
-        try (FileInputStream personaInputStream = new FileInputStream(Constants.Path.INPUT_PERSONA_TABLE)) {
+        try (FileInputStream personaInputStream = new FileInputStream(Constants.Path.OUTPUT_PERSONA_TABLE)) {
             // Persona TBL Segment 2 : Initialize party members
             personaInputStream.skip(39012);
 
