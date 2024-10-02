@@ -25,7 +25,7 @@ TODO: (in order of priority)
     - [X] Write EnemyData to Unit Table
     - [x] Enemy Drops Tab
     - [X] Mass Editing of Enemy Data
-    - [ ] Code Cleanup
+    - [X] Code Cleanup, good enough for now
 
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
