@@ -33,6 +33,9 @@ The release's ZIP folder comes with the following items:
 
 ### Features:
 
+- Edit the Persona Registry
+- Edit Party Member Personas
+- Edit Enemy Data
 - Reset output files to their corresponding input files and originals directory files.
 - User-friendly interface with labels and prompts for easy navigation.
 - Indexed and named enemies in the Registry and Enemy Editors for efficient searching by Index or Name.
