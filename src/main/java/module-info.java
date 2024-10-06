@@ -3,6 +3,7 @@ module com.p5rte {
     requires javafx.fxml;
     requires transitive javafx.graphics;
     requires javafx.base;
+    requires java.logging;
 
     exports com.p5rte;
     exports com.p5rte.GUI;
