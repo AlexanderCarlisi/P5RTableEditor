@@ -28,7 +28,7 @@ The release's ZIP folder comes with the following items:
 ### Steps to Get Started:
 
 1. Place the tables you want to edit into the `inputs` directory.
-2. Run the application (`editorApplication.exe`).
+2. Run the application (`P5RTableEditor.exe`).
 3. The app will generate output files based on your input files; your original input files will remain unmodified.
 
 ### Features:
