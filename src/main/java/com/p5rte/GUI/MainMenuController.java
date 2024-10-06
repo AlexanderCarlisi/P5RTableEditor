@@ -30,16 +30,11 @@ public class MainMenuController {
             personaEditorScene.getStylesheets().add(getClass().getResource(Constants.Path.DARK_MODE_CSS).toExternalForm());
 
             PersonaEditorController controller = loader.getController();
-            if (controller == null) {
-                throw new IllegalStateException("Failed to load PersonaEditorController.");
-            }
             controller.setStage(stage);
-
             stage.setScene(personaEditorScene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            System.err.println(e.getMessage());
+
+        } catch (IOException | IllegalStateException e) {
+            FileStreamUtil.logError(e.getMessage(), e);
         }
     }
 
@@ -52,16 +47,11 @@ public class MainMenuController {
             partyEditorScene.getStylesheets().add(getClass().getResource(Constants.Path.DARK_MODE_CSS).toExternalForm());
 
             PartyEditorController controller = loader.getController();
-            if (controller == null) {
-                throw new IllegalStateException("Failed to load PartyEditorController.");
-            }
             controller.setStage(stage);
-
             stage.setScene(partyEditorScene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            System.err.println(e.getMessage());
+
+        } catch (IOException | IllegalStateException e) {
+            FileStreamUtil.logError(e.getMessage(), e);
         }
     }
 
@@ -74,16 +64,11 @@ public class MainMenuController {
             partyEditorScene.getStylesheets().add(getClass().getResource(Constants.Path.DARK_MODE_CSS).toExternalForm());
 
             EnemyEditorController controller = loader.getController();
-            if (controller == null) {
-                throw new IllegalStateException("Failed to load EnemyEditorController.");
-            }
             controller.setStage(stage);
-
             stage.setScene(partyEditorScene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            System.err.println(e.getMessage());
+
+        } catch (IOException | IllegalStateException e) {
+            FileStreamUtil.logError(e.getMessage(), e);
         }
     }
 

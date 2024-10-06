@@ -1,52 +1,53 @@
 package com.p5rte.Utils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+
 public final class Constants {
     
     public static final class Path {
         // Folders
-        public static final String SRC = "src/";
-        public static final String RESOURCE_FOLDER = "/com/p5rte/";
-        public static final String FXML_FOLDER = RESOURCE_FOLDER + "FXMLs/";
-        
-        // Table Stuff
         public static final String ROOT_DIR = Paths.get("").toAbsolutePath().toString();
+        public static final String RESOURCES_FOLDER = Paths.get(ROOT_DIR, "src/main/resources/com/p5rte").toString();
+        public static final String FXML_FOLDER = Paths.get(RESOURCES_FOLDER, "FXMLs").toString();
+        public static final String NAMES_FOLDER = Paths.get(RESOURCES_FOLDER, "Names").toString();
         public static final String INPUT = Paths.get(ROOT_DIR, "input").toString();
         public static final String OUTPUT = Paths.get(ROOT_DIR, "output").toString();
         public static final String ORIGINAL = Paths.get(ROOT_DIR, "originals").toString();
 
-        public static final String INPUT_PERSONA_TABLE = INPUT+"/PERSONA.TBL";
-        public static final String OUTPUT_PERSONA_TABLE = OUTPUT+"/PERSONA.TBL";
-        public static final String ORIGINAL_PERSONA_TABLE = ORIGINAL+"/PERSONA.TBL";
+        // Persona Table
+        public static final String INPUT_PERSONA_TABLE = Paths.get(INPUT, "PERSONA.TBL").toString();
+        public static final String OUTPUT_PERSONA_TABLE = Paths.get(OUTPUT, "PERSONA.TBL").toString();
+        public static final String ORIGINAL_PERSONA_TABLE = Paths.get(ORIGINAL, "PERSONA.TBL").toString();
 
-        public static final String INPUT_UNIT_TABLE = INPUT+"/UNIT.TBL";
-        public static final String OUTPUT_UNIT_TABLE = OUTPUT+"/UNIT.TBL";
-        public static final String ORIGINAL_UNIT_TABLE = ORIGINAL+"/UNIT.TBL";
+        // Unit Table
+        public static final String INPUT_UNIT_TABLE = Paths.get(INPUT, "UNIT.TBL").toString();
+        public static final String OUTPUT_UNIT_TABLE = Paths.get(OUTPUT, "UNIT.TBL").toString();
+        public static final String ORIGINAL_UNIT_TABLE = Paths.get(ORIGINAL, "UNIT.TBL").toString();
 
         // FXML Paths
-        public static final String MAIN_MENU = FXML_FOLDER + "MainMenu.fxml";
-        public static final String PERSONA_TABPANE = FXML_FOLDER + "PersonaEditor/PersonaEditorTabPane.fxml";
-        public static final String PARTY_TABPANE = FXML_FOLDER + "PartyEditor/PartyEditorTabPane.fxml";
-        public static final String ENEMY_TABPANE = FXML_FOLDER + "EnemyEditor/EnemyEditorTabPane.fxml";
-        public static final String DARK_MODE_CSS = RESOURCE_FOLDER + "DarkMode.css";
+        public static final String DARK_MODE_CSS = "/com/p5rte/DarkMode.css";
+        public static final String MAIN_MENU = "/com/p5rte/FXMLs/MainMenu.fxml";
+        public static final String PERSONA_TABPANE = "/com/p5rte/FXMLs/PersonaEditor/PersonaEditorTabPane.fxml";
+        public static final String PARTY_TABPANE = "/com/p5rte/FXMLs/PartyEditor/PartyEditorTabPane.fxml";
+        public static final String ENEMY_TABPANE = "/com/p5rte/FXMLs/EnemyEditor/EnemyEditorTabPane.fxml";
 
         // Names
-        public static final String NAMES_DIR = ROOT_DIR + "/src/main/resources/com/p5rte/Names/";
-        public static final String PERSONA_NAME_FILE = NAMES_DIR + "PersonaNames.txt";
-        public static final String ENEMY_NAME_FILE = NAMES_DIR + "EnemyNames.txt";
-        public static final String ARMOR_NAME_FILE = NAMES_DIR + "ArmorNames.txt";
-        public static final String ACCESSORY_NAME_FILE = NAMES_DIR + "AccessoryNames.txt";
-        public static final String CONSUMABLE_NAME_FILE = NAMES_DIR + "ConsumableNames.txt";
-        public static final String KEY_ITEM_NAME_FILE = NAMES_DIR + "KeyItemNames.txt";
-        public static final String MATERIAL_NAME_FILE = NAMES_DIR + "MaterialNames.txt";
-        public static final String SKILL_CARD_NAME_FILE = NAMES_DIR + "SkillCardNames.txt";
-        public static final String OUTFIT_NAME_FILE = NAMES_DIR + "OutfitNames.txt";
+        public static final String PERSONA_NAME_FILE = "/com/p5rte/Names/PersonaNames.txt";
+        public static final String ENEMY_NAME_FILE = "/com/p5rte/Names/EnemyNames.txt";
+        public static final String ARMOR_NAME_FILE = "/com/p5rte/Names/ArmorNames.txt";
+        public static final String ACCESSORY_NAME_FILE = "/com/p5rte/Names/AccessoryNames.txt";
+        public static final String CONSUMABLE_NAME_FILE = "/com/p5rte/Names/ConsumableNames.txt";
+        public static final String KEY_ITEM_NAME_FILE = "/com/p5rte/Names/KeyItemNames.txt";
+        public static final String MATERIAL_NAME_FILE = "/com/p5rte/Names/MaterialNames.txt";
+        public static final String SKILL_CARD_NAME_FILE = "/com/p5rte/Names/SkillCardNames.txt";
+        public static final String OUTFIT_NAME_FILE = "/com/p5rte/Names/OutfitNames.txt";
     }
     
 
@@ -72,14 +73,15 @@ public final class Constants {
 
 
     private static String[] readNamesFromFile(String path) {
-        try (Scanner scanner = new Scanner(new File(path))) {
+        try (InputStream inputStream = Constants.class.getResourceAsStream(path);
+             Scanner scanner = new Scanner(inputStream)) {
             List<String> names = new ArrayList<>();
             while (scanner.hasNextLine()) {
                 names.add(scanner.nextLine());
             }
             return names.toArray(String[]::new);
         } catch (Exception e) {
-            e.printStackTrace();
+            FileStreamUtil.logError(e.getMessage(), e);
         }
         return null;
     }

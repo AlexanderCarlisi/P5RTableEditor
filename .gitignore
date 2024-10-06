@@ -3,8 +3,8 @@ target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.l
 target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
 .vscode/settings.json
-target/original-p5rteableeditor-1.0-SNAPSHOT.jar
-target/p5rteableeditor-1.0-SNAPSHOT.jar
+target/original-p5rtableeditor-1.0-SNAPSHOT.jar
+target/p5rtableeditor-1.0-SNAPSHOT.jar
 *.TBL
 input/*
 output/*

@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import com.p5rte.Classes.PartyStream;
 import com.p5rte.Classes.PersonaStream;
@@ -14,11 +18,22 @@ import com.p5rte.GUI.GUIManager;
 
 public class FileStreamUtil {
 
+    private static final Logger logger = Logger.getLogger(FileStreamUtil.class.getName());
+
     public static void start() {
         initializeTableFile(Constants.Path.INPUT_PERSONA_TABLE, Constants.Path.OUTPUT_PERSONA_TABLE);
         initializeTableFile(Constants.Path.INPUT_UNIT_TABLE, Constants.Path.OUTPUT_UNIT_TABLE);
     }
 
+    public static void startLogger() {
+        try {
+            FileHandler fileHandler = new FileHandler("application.log", true); 
+            fileHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(fileHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void initializeTableFile(String inputPath, String outputPath) {
         File inputFile = new File(inputPath);
@@ -106,5 +121,10 @@ public class FileStreamUtil {
         start();
         PersonaStream.restart();
         PartyStream.restart();
+    }
+
+
+    public static void logError(String message, Throwable e) {
+        logger.log(Level.SEVERE, message, e);
     }
 }

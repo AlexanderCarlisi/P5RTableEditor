@@ -15,18 +15,7 @@ References:
   - This whole project wouldn't have been possible without this : https://github.com/tge-was-taken/010-Editor-Templates
 
 TODO: (in order of priority)
-  - Enemy Editing : Segments 0 and 1 of Unit.TBL
-    - [x] Read from Seg 0
-    - [x] Read from Seg 1
-    - [x] Properly initialize Enemy instances
-    - [x] General Tab
-    - [x] Skills Tab 
-    - [X] Affinities Tab
-    - [X] Write EnemyData to Unit Table
-    - [x] Enemy Drops Tab
-    - [X] Mass Editing of Enemy Data
-    - [X] Code Cleanup, good enough for now
-
+  - Handle Bugs that popup from v0.3.0
   - Skill Editing : Segments 1 and 2 of Skill.TBL
   - Trait Editing : Segment 4 of Skill.TBL
   - ITEM TBL
