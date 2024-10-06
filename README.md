@@ -1,24 +1,53 @@
-This App is for Persona 5 Royal (PC) Modding.
+# P5R Table Editor
 
-The purpose of this app is to be a more user-friendly way of editing Tables.
-The current method to edit tables requires shifting through a sea of 464 personas with no names in 010 editor.
-I can only imagine how intimidating it is for someone who wants to Mod P5R but saw 010 editor, so I'm making this App.
+P5R Table Editor is a tool designed for the PC version of *Persona 5 Royal*, enabling modders to easily edit Table files. This application simplifies the editing process for various game data.
 
-Current Features:
-  - Uses 2 Tables | Persona.TBL, UNIT.TBL
-  - Edit Registry Persona : Stats, StatWeights, Arcana, BitFlags, SkillInheritance, Skills/Trait, and Affinities.
-  - Searchable Catalogue of Registry Persona, you can search via Index or Name.
-  - Searchable Catalogue of Skills and Traits, Index and Name as well
+## Supported Editing
 
-References:
-  - Names and Indexs for Persona : https://amicitia.miraheze.org/wiki/Persona_5_Royal/Personas
-  - This whole project wouldn't have been possible without this : https://github.com/tge-was-taken/010-Editor-Templates
+Currently, the P5R Table Editor supports editing the following data:
 
-TODO: (in order of priority)
-  - Handle Bugs that popup from v0.3.0
-  - Skill Editing : Segments 1 and 2 of Skill.TBL
-  - Trait Editing : Segment 4 of Skill.TBL
-  - ITEM TBL
-  - NAME TBL
-    - The more I look into Name.TBL the less I want to do it
-  - More to come...
+- **PERSONA.TBL**: Persona Registry, Party Member Personas
+- **UNIT.TBL**: Party Member Personas, Enemy Data
+
+## References Used
+
+- Names and Indexes for Persona: [Amicitia](https://amicitia.miraheze.org/wiki/Persona_5_Royal/Personas)
+- The 010 Editor Templates by tge-was-taken: [GitHub Repository](https://github.com/tge-was-taken/010-Editor-Templates)
+
+## How to Use
+
+The release's ZIP folder comes with the following items:
+
+- `inputs` directory
+- `outputs` directory
+- `originals` directory
+- `editorApplication.exe` file
+- `README.txt` - instructions on how to use the app
+- `application.log` - log file for errors
+
+### Steps to Get Started:
+
+1. Place the tables you want to edit into the `inputs` directory.
+2. Run the application (`editorApplication.exe`).
+3. The app will generate output files based on your input files; your original input files will remain unmodified.
+
+### Features:
+
+- Reset output files to their corresponding input files and originals directory files.
+- User-friendly interface with labels and prompts for easy navigation.
+- Indexed and named enemies in the Registry and Enemy Editors for efficient searching by Index or Name.
+- Mass edit enemy stats by selecting a stat and applying a multiplier.
+
+### Saving Changes:
+
+When you click "Return to Main Menu," the app will prompt you to save your changes. After saving, your outputs directory will contain the new tables. Replace your mod's tables with those in the output folder to begin testing your mod!
+
+## Troubleshooting
+
+If you notice a value resetting to zero after saving or changing tabs, this is due to the value being invalid. 
+
+For further assistance or suggestions, feel free to reach out!
+
+---
+
+Thank you for using P5R Table Editor. Happy modding!
