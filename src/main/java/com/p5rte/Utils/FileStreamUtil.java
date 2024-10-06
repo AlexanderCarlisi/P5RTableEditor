@@ -21,6 +21,11 @@ public class FileStreamUtil {
     private static final Logger logger = Logger.getLogger(FileStreamUtil.class.getName());
 
     public static void start() {
+        initializeTableFile(Constants.Path.INPUT_PERSONA_TABLE, Constants.Path.OUTPUT_PERSONA_TABLE);
+        initializeTableFile(Constants.Path.INPUT_UNIT_TABLE, Constants.Path.OUTPUT_UNIT_TABLE);
+    }
+
+    public static void startLogger() {
         try {
             FileHandler fileHandler = new FileHandler("application.log", true); 
             fileHandler.setFormatter(new SimpleFormatter());
@@ -28,10 +33,7 @@ public class FileStreamUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        initializeTableFile(Constants.Path.INPUT_PERSONA_TABLE, Constants.Path.OUTPUT_PERSONA_TABLE);
-        initializeTableFile(Constants.Path.INPUT_UNIT_TABLE, Constants.Path.OUTPUT_UNIT_TABLE);
     }
-
 
     public static void initializeTableFile(String inputPath, String outputPath) {
         File inputFile = new File(inputPath);
