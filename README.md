@@ -21,7 +21,7 @@ The release's ZIP folder comes with the following items:
 - `inputs` directory
 - `outputs` directory
 - `originals` directory
-- `editorApplication.exe` file
+- `P5RTableEditor-version#.exe` file
 - `README.txt` - instructions on how to use the app
 - `application.log` - log file for errors
 
