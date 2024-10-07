@@ -1,6 +1,5 @@
 package com.p5rte.Utils;
 
-import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -97,7 +96,8 @@ public final class Constants {
         if (targetIndex < 0) return "None";
         if (filePath == null) return "Undocumented Item";
     
-        try (Scanner scanner = new Scanner(new File(filePath))) {
+        try (InputStream inputStream = Constants.class.getResourceAsStream(filePath);
+             Scanner scanner = new Scanner(inputStream)) {
             int index = 0;
             while (scanner.hasNextLine()) {
                 String name = scanner.nextLine();
@@ -107,7 +107,7 @@ public final class Constants {
                 index++;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            FileStreamUtil.logError(filePath, e);
         }
     
         return "Item not Found";
