@@ -73,16 +73,17 @@ public class EnemyStream {
             unitStream.skip(0x4); // Skip Array Size
             byte[] affinityBytes = unitStream.readNBytes(313210); // Each affinity is 40 bytes for 783 enemies
             for (int i = 0; i < 783; i++) {
+                HashMap<AffinityIndex, Affinity> affMap = new HashMap<>();
                 for (int afi = 0; afi < 20; afi++) {
-                    s_enemies[i].affinities.put(Enums.AffinityIndex.values()[afi], new Affinity(affinityBytes[i * 40 + 1], new HashMap<>()));
-                
+                    int offset = i * 40 + afi * 2; 
                     HashMap<Enums.AffinityDataIndex, Boolean> data = new HashMap<>();
-                    byte dataByte = affinityBytes[i * 40];
+                    byte dataByte = affinityBytes[offset];
                     for (int shift = 0; shift < 8; shift++) {
                         data.put(AffinityDataIndex.values()[7 - shift], (dataByte >> shift & 1) == 1);
                     }
-                    s_enemies[i].affinities.put(Enums.AffinityIndex.values()[afi], new Affinity(affinityBytes[i * 40 + 1], data));
+                    affMap.put(Enums.AffinityIndex.values()[afi], new Affinity(affinityBytes[offset + 1], data));
                 }
+                s_enemies[i].affinities = affMap;
             }
             
         } catch(IOException e) {
@@ -127,7 +128,7 @@ public class EnemyStream {
                 dos.writeShort(enemy.attackDamage);
             }
 
-            dos.writeInt(31320); // Write Array Size Seg 1 start
+            dos.writeInt(313210); // Write Array Size Seg 1 start
 
             for (Enemy enemy : s_enemies) {
                 // Serialize Affinities
