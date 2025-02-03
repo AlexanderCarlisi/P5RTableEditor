@@ -78,8 +78,8 @@ public class PartyStream {
             personaIndex += 2;
 
             // 3rd Evolution personas
-            for (int pm = 0; pm < s_partyMembers.length; pm++) {
-                s_partyMembers[pm].personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 2);
+            for (PartyMember partyMember : s_partyMembers) {
+                partyMember.personas[2] = readPartyMemberPersona(personaInputStream, EPartyMemberPersona.values()[personaIndex], 2);
                 personaIndex++;
             }
             
