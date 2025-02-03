@@ -1,4 +1,4 @@
-package com.p5rte.Classes;
+package com.p5rte.Classes.Streams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.HashMap;
 
+import com.p5rte.Classes.Affinity;
+import com.p5rte.Classes.Enemy;
+import com.p5rte.Classes.Enemy.EventDrop;
+import com.p5rte.Classes.Enemy.ItemDrop;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.Enums;
 import com.p5rte.Utils.Enums.AffinityDataIndex;

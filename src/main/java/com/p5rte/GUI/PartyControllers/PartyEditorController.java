@@ -2,12 +2,12 @@ package com.p5rte.GUI.PartyControllers;
 
 import com.p5rte.Classes.PartyMember;
 import com.p5rte.Classes.PartyMemberPersona;
-import com.p5rte.Classes.PartyStream;
 import com.p5rte.Classes.Persona;
-import com.p5rte.Classes.PersonaStream;
+import com.p5rte.Classes.Streams.PartyStream;
+import com.p5rte.Classes.Streams.PersonaStream;
 import com.p5rte.GUI.GUIManager;
 import com.p5rte.GUI.MainMenuController;
-import com.p5rte.GUI.PersonaControllers.PersonaAffinityController;
+import com.p5rte.GUI.PersonaControllers.AffinityController;
 import com.p5rte.GUI.PersonaControllers.PersonaSkillsController;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.Enums.EPartyMember;
@@ -76,7 +76,7 @@ public class PartyEditorController {
             // Clear Resources from Tabs
             PartyGeneralController.releaseResources();
             PersonaSkillsController.releaseResources();
-            PersonaAffinityController.releaseResources();
+            AffinityController.releaseResources();
             PartyGainsController.releaseResources();
             PartyThresholdsController.releaseResources();
             PartyStream.releaseResources();
@@ -110,7 +110,11 @@ public class PartyEditorController {
 
         generalTab.setText(registryPersona.getName());
         PersonaSkillsController.updateFields(partyPersona);
-        PersonaAffinityController.updateFields(registryPersona);
+        AffinityController.updateFields(
+            (affinityIndex, affinityDataIndex, selected) -> registryPersona.setAffinityData(affinityIndex, affinityDataIndex, selected),
+            (affinityIndex, multiplier) -> registryPersona.setAffinityMultiplier(affinityIndex, multiplier),
+            registryPersona::getAffinity
+        );
         PartyGainsController.updateFields(partyPersona);
         PartyThresholdsController.updateFields(partyMember);
         PartyGeneralController.updateFields(PartyStream.getPartyMember(ePartyMember), index, registryPersona); // Goes last to Disable Editor

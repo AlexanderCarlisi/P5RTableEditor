@@ -114,5 +114,22 @@ public class FxUtil {
             return comboBox.getItems().get(comboBox.getSelectionModel().getSelectedIndex());
         }
     }
+
+    @FunctionalInterface
+    public interface FunctionRunnable<T, R> {
+        R run(T input);
+    }
     
+    @FunctionalInterface
+    public interface TriConsumer<T, U, V> {
+        void accept(T t, U u, V v);
+        
+        default TriConsumer<T, U, V> andThen(TriConsumer<? super T, ? super U, ? super V> after) {
+            if (after == null) throw new NullPointerException();
+            return (t, u, v) -> {
+                accept(t, u, v);
+                after.accept(t, u, v);
+            };
+        }
+    }
 }

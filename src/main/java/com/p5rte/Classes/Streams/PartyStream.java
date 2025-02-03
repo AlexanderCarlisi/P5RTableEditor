@@ -1,4 +1,4 @@
-package com.p5rte.Classes;
+package com.p5rte.Classes.Streams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -6,6 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import com.p5rte.Classes.PartyMember;
+import com.p5rte.Classes.PartyMemberPersona;
+import com.p5rte.Classes.Persona;
+import com.p5rte.Classes.Skill;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.Enums.EPartyMember;
 import com.p5rte.Utils.Enums.EPartyMemberPersona;

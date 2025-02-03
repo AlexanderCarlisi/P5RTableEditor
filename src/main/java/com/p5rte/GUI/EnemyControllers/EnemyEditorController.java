@@ -8,9 +8,10 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 import com.p5rte.Classes.Enemy;
-import com.p5rte.Classes.EnemyStream;
+import com.p5rte.Classes.Streams.EnemyStream;
 import com.p5rte.GUI.GUIManager;
 import com.p5rte.GUI.MainMenuController;
+import com.p5rte.GUI.PersonaControllers.AffinityController;
 import com.p5rte.Utils.Constants;
 import com.p5rte.Utils.Enums.EnemyMassEditableStat;
 
@@ -80,7 +81,7 @@ public class EnemyEditorController {
             // Clear Resources
             EnemyGeneralController.releaseResources();
             EnemySkillsController.releaseResources();
-            EnemyAffinityController.releaseResources();
+            AffinityController.releaseResources();
             EnemyDropsController.releaseResources();
             EnemyStream.releaseResources();
 
@@ -171,7 +172,11 @@ public class EnemyEditorController {
         // Update Tabs
         EnemyGeneralController.updateFields(enemy);
         EnemySkillsController.updateFields(enemy);
-        EnemyAffinityController.updateFields(enemy);
+        AffinityController.updateFields(
+            (affinityIndex, affinityDataIndex, selected) -> enemy.setAffinityData(affinityIndex, affinityDataIndex, selected),
+            (affinityIndex, multiplier) -> enemy.setAffinityMultiplier(affinityIndex, multiplier), 
+            enemy::getAffinity
+        );
         EnemyDropsController.updateFields(enemy);
     }
 }

@@ -3,6 +3,7 @@ package com.p5rte.Classes;
 import java.util.HashMap;
 
 import com.p5rte.Utils.Enums;
+import com.p5rte.Utils.Enums.AffinityDataIndex;
 import com.p5rte.Utils.Enums.AffinityIndex;
 import com.p5rte.Utils.Enums.SkillLearnability;
 
@@ -132,5 +133,13 @@ public class Persona {
 
     public void setStatWeight(int index, int weight) {
         _statWeights[index] = weight;
+    }
+
+    public void setAffinityData(AffinityIndex ai, AffinityDataIndex adi, boolean value) {
+        _affinities.get(ai).data.put(adi, value);
+    }
+
+    public void setAffinityMultiplier(AffinityIndex ai, int multiplier) {
+        _affinities.get(ai).multiplier = multiplier;
     }
 }

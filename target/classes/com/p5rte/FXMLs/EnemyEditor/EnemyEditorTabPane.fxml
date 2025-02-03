@@ -58,7 +58,7 @@
                     <fx:include source="EnemySkillsTab.fxml" />
                 </Tab>
                 <Tab text="Affinity">
-                    <fx:include source="EnemyAffinityTab.fxml" />
+                    <fx:include source="../PersonaEditor/EditorAffinity.fxml" />
                 </Tab>
                 <Tab text="Drops">
                     <fx:include source="EnemyDropsTab.fxml" />

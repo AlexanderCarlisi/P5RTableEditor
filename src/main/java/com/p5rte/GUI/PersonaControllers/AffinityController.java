@@ -1,10 +1,13 @@
 package com.p5rte.GUI.PersonaControllers;
 
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 
-import com.p5rte.Classes.Persona;
+import com.p5rte.Classes.Affinity;
 import com.p5rte.Utils.Enums.AffinityDataIndex;
 import com.p5rte.Utils.Enums.AffinityIndex;
+import com.p5rte.Utils.FxUtil.FunctionRunnable;
+import com.p5rte.Utils.FxUtil.TriConsumer;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -14,7 +17,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
 
 
-public class PersonaAffinityController {
+public class AffinityController {
 
     // FXML Elements
     @FXML private ComboBox<AffinityIndex> elementComboBox;
@@ -35,16 +38,18 @@ public class PersonaAffinityController {
     @SuppressWarnings("unchecked")
     private final ChangeListener<Boolean>[] toggleChangeListeners = new ChangeListener[8];
 
-    private static PersonaAffinityController s_instance;
-    private Persona _currentPersona;
+    private static AffinityController s_instance;
+    private TriConsumer<AffinityIndex, AffinityDataIndex, Boolean> updateData;
+    private BiConsumer<AffinityIndex, Integer> updateMultiplier;
+    private FunctionRunnable<AffinityIndex, Affinity> getAffinity;
 
-    private final ChangeListener<AffinityIndex> ELEMENT_LISTENER = (__, ___, ____) -> updateFields(_currentPersona);
+    private final ChangeListener<AffinityIndex> ELEMENT_LISTENER = (__, ___, ____) -> updateFields(updateData, updateMultiplier, getAffinity);
     private final ChangeListener<String> MULTIPLIER_LISTENER = (__, ___, newVal) -> {
-        if (_currentPersona == null) return;
+        if (s_instance.updateMultiplier == null) return;
         AffinityIndex affinity = elementComboBox.getValue();
         if (affinity == null) return;
 
-        _currentPersona.getAffinity(affinity).multiplier = readMultiplierField(newVal);
+        s_instance.updateMultiplier.accept(affinity, readMultiplierField(newVal));
     };
     
 
@@ -72,11 +77,11 @@ public class PersonaAffinityController {
         for (int i = 0; i < 8; i++) {
             final int index = i;
             toggleChangeListeners[i] = (__, ___, newVal) -> {
-                if (_currentPersona == null) return;
+                if (updateData == null) return;
                 AffinityIndex affinity = elementComboBox.getValue();
                 if (affinity == null) return;
 
-                _currentPersona.getAffinity(affinity).data.put(AffinityDataIndex.values()[index], newVal);
+                s_instance.updateData.accept(affinity, AffinityDataIndex.values()[index], newVal);
             };
             TOGGLE_BUTTONS[i].selectedProperty().addListener(toggleChangeListeners[i]);
         }
@@ -85,18 +90,20 @@ public class PersonaAffinityController {
     }
 
 
-    public static void updateFields(Persona persona) {
+    public static void updateFields(TriConsumer<AffinityIndex, AffinityDataIndex, Boolean> updateData, BiConsumer<AffinityIndex, Integer> updateMultiplier, FunctionRunnable<AffinityIndex, Affinity> getAffinity) {
         if (s_instance == null) return;
-        s_instance._currentPersona = persona;
+        s_instance.updateData = updateData;
+        s_instance.updateMultiplier = updateMultiplier;
+        s_instance.getAffinity = getAffinity;
 
         AffinityIndex affinity = s_instance.elementComboBox.getValue();
         if (affinity == null) return;
 
-        HashMap<AffinityDataIndex, Boolean> data = persona.getAffinity(affinity).data;
+        HashMap<AffinityDataIndex, Boolean> data = s_instance.getAffinity.run(affinity).data;
         for (int i = 0; i < 8; i++) {
             s_instance.TOGGLE_BUTTONS[i].setSelected(data.get(AffinityDataIndex.values()[i]));
         }
-        s_instance.multiplierField.setText(String.valueOf(persona.getAffinity(affinity).multiplier));
+        s_instance.multiplierField.setText(String.valueOf(getAffinity.run(affinity).multiplier));
     }
 
 

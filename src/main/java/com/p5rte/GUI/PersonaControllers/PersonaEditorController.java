@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.p5rte.Classes.Persona;
-import com.p5rte.Classes.PersonaStream;
+import com.p5rte.Classes.Streams.PersonaStream;
 import com.p5rte.GUI.GUIManager;
 import com.p5rte.GUI.MainMenuController;
 import com.p5rte.Utils.Constants;
@@ -75,7 +75,7 @@ public class PersonaEditorController {
             // Clear Resources
             PersonaGeneralController.releaseResources();
             PersonaSkillsController.releaseResources();
-            PersonaAffinityController.releaseResources();
+            AffinityController.releaseResources();
             PersonaStream.releaseResources();
 
         } catch (Exception e) {
@@ -133,6 +133,10 @@ public class PersonaEditorController {
         // Update Tabs
         PersonaGeneralController.updateFields(persona, index);
         PersonaSkillsController.updateFields(persona);
-        PersonaAffinityController.updateFields(persona);
+        AffinityController.updateFields(
+            (affinityIndex, affinityDataIndex, selected) -> persona.setAffinityData(affinityIndex, affinityDataIndex, selected),
+            (affinityIndex, multiplier) -> persona.setAffinityMultiplier(affinityIndex, multiplier), 
+            persona::getAffinity
+        );
     }
 }

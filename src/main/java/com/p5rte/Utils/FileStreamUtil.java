@@ -11,9 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import com.p5rte.Classes.PartyStream;
-import com.p5rte.Classes.PersonaStream;
 import com.p5rte.Classes.Skill;
+import com.p5rte.Classes.Streams.PartyStream;
+import com.p5rte.Classes.Streams.PersonaStream;
 import com.p5rte.GUI.GUIManager;
 
 public class FileStreamUtil {

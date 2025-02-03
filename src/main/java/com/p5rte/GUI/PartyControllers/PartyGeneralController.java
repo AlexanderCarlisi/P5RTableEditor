@@ -2,7 +2,7 @@ package com.p5rte.GUI.PartyControllers;
 
 import com.p5rte.Classes.PartyMember;
 import com.p5rte.Classes.Persona;
-import com.p5rte.GUI.PersonaControllers.PersonaAffinityController;
+import com.p5rte.GUI.PersonaControllers.AffinityController;
 import com.p5rte.GUI.PersonaControllers.PersonaSkillsController;
 import com.p5rte.Utils.Enums;
 import com.p5rte.Utils.Enums.Arcana;
@@ -181,7 +181,7 @@ public class PartyGeneralController {
         }
         
         PersonaSkillsController.disableEditor(disable);
-        PersonaAffinityController.disableEditor(disable);
+        AffinityController.disableEditor(disable);
         PartyGainsController.disableEditor(disable);
     }
 

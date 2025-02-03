@@ -1,7 +1,7 @@
 package com.p5rte.GUI.PartyControllers;
 
 import com.p5rte.Classes.PartyMember;
-import com.p5rte.Classes.PartyStream;
+import com.p5rte.Classes.Streams.PartyStream;
 import com.p5rte.Utils.Enums.EPartyMember;
 
 import javafx.beans.value.ChangeListener;

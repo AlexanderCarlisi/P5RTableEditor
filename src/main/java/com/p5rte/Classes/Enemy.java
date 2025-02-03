@@ -2,7 +2,7 @@ package com.p5rte.Classes;
 
 import java.util.HashMap;
 
-import com.p5rte.Utils.Enums;
+import com.p5rte.Utils.Enums.AffinityDataIndex;
 import com.p5rte.Utils.Enums.AffinityIndex;
 import com.p5rte.Utils.Enums.AttackAttribute;
 
@@ -57,5 +57,15 @@ public class Enemy {
     public boolean getFlagAsBoolean(int position) {
         position--; // get shift amount from Bit position
         return (flagBits & (1 << position)) != 0;
+    }
+
+    public void setAffinityData(AffinityIndex ai, AffinityDataIndex adi, boolean value) {
+        this.affinities.get(ai).data.put(adi, value);
+    }
+    public Affinity getAffinity(AffinityIndex index) {
+        return this.affinities.get(index);
+    }
+    public void setAffinityMultiplier(AffinityIndex ai, int multiplier) {
+        this.affinities.get(ai).multiplier = multiplier;
     }
 }
