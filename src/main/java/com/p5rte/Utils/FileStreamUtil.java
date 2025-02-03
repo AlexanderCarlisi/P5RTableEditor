@@ -70,7 +70,7 @@ public class FileStreamUtil {
         for (int i = 0; i < count; i++) {
             int pendingLevels = skillBytes[i * 4];
             int learnability = skillBytes[i * 4 + 1];
-            int id = readShort(skillBytes[i * 4 + 2], skillBytes[i * 4 + 3]); // should really look into this, im just reading a short why is it so compliated?
+            int id = readShort(skillBytes[i * 4 + 2], skillBytes[i * 4 + 3]);
             skills[i] = new Skill(pendingLevels, learnability, id);
         }
         
