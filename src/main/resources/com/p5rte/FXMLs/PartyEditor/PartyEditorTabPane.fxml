@@ -57,7 +57,7 @@
                     <fx:include source="../PersonaEditor/PersonaEditorSkills.fxml" />
                 </Tab>
                 <Tab text="Affinities">
-                    <fx:include source="../PersonaEditor/PersonaEditorAffinity.fxml" />
+                    <fx:include source="../PersonaEditor/EditorAffinity.fxml" />
                 </Tab>
                 <Tab text="Stat Gains">
                     <fx:include source="PartyEditorGains.fxml" />
